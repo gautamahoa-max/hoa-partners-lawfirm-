@@ -29,7 +29,7 @@ export default function Accolades() {
           <p className="text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wider font-mono">
             Tiêu chuẩn hành nghề quốc tế
           </p>
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#0F2144] tracking-normal font-serif">
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#0F2144] tracking-normal leading-[1.45] sm:leading-[1.4] font-serif">
             &ldquo;Trình độ ngang bằng với các hãng luật quốc tế hàng đầu&rdquo;
           </h2>
           <p className="mt-2 text-xs sm:text-sm text-slate-600">

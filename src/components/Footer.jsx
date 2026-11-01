@@ -22,7 +22,7 @@ export default function Footer() {
                 <ScaleIcon className="w-6 h-6" />
               </div>
               <div>
-                <span className="text-xl font-bold text-white font-serif tracking-tight">
+                <span className="text-xl font-bold text-white font-serif tracking-normal">
                   HÒA &amp; CỘNG SỰ
                 </span>
                 <p className="text-xs text-slate-400">

@@ -18,7 +18,10 @@ export default function Hero() {
               Văn phòng Luật sư &bull; Đoàn Luật sư Việt Nam
             </p>
 
-            <h1 className="text-3xl sm:text-4xl lg:text-[2.85rem] font-bold text-[#0F2144] tracking-normal leading-[1.4] sm:leading-[1.35] font-serif">
+            <h1 
+              className="text-2xl sm:text-3xl lg:text-[2.75rem] font-bold text-[#0F2144] tracking-normal font-serif"
+              style={{ lineHeight: 1.55 }}
+            >
               Bảo vệ quyền lợi hợp pháp bằng sự chuẩn mực của pháp luật và chiến lược tranh tụng kiên định.
             </h1>
 
@@ -63,7 +66,7 @@ export default function Hero() {
                     <ScaleIcon className="w-5 h-5" />
                   </div>
                   <div>
-                    <h2 className="text-base font-bold text-[#0F2144] font-serif leading-tight">
+                    <h2 className="text-base font-bold text-[#0F2144] font-serif leading-normal">
                       Hòa &amp; Cộng sự
                     </h2>
                     <p className="text-xs text-slate-500">Hãng luật điều hành</p>

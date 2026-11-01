@@ -152,7 +152,7 @@ export default function Services({ onSelectService }) {
           <p className="text-xs font-mono font-semibold text-slate-500 mb-2 uppercase tracking-wider">
             Lĩnh vực hành nghề
           </p>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0F2144] tracking-normal leading-[1.35] font-serif">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0F2144] tracking-normal leading-[1.45] sm:leading-[1.4] font-serif">
             Các lĩnh vực tư vấn và tranh tụng cốt lõi
           </h2>
           <p className="mt-3 text-base text-slate-600 leading-relaxed">

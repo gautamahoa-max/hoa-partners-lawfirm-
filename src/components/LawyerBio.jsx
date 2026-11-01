@@ -67,7 +67,7 @@ export default function LawyerBio() {
               Tôn chỉ hành nghề
             </p>
 
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0F2144] tracking-normal font-serif leading-[1.35]">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0F2144] tracking-normal font-serif leading-[1.45] sm:leading-[1.4]">
               Tận tâm bảo vệ quyền lợi, định hình giải pháp pháp lý vững bền
             </h2>
 

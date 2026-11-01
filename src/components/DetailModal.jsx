@@ -38,7 +38,7 @@ export default function DetailModal({ service, onClose, onSelectServiceForConsul
             <span className="font-mono text-xs text-slate-400 font-semibold block mb-0.5">
               Mã hồ sơ: {service.code || 'PL-01'}
             </span>
-            <h3 className="text-xl sm:text-2xl font-bold text-slate-900 font-serif">
+            <h3 className="text-xl sm:text-2xl font-bold text-[#0F2144] font-serif leading-[1.4]">
               {service.title}
             </h3>
             <p className="text-xs text-slate-500 mt-1">

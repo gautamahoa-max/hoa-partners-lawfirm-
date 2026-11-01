@@ -45,7 +45,7 @@ export default function ContactSection() {
               <p className="text-xs font-mono font-semibold text-slate-500 mb-2 uppercase tracking-wider">
                 Thông tin liên hệ
               </p>
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0F2144] tracking-normal leading-[1.35] font-serif">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0F2144] tracking-normal leading-[1.45] sm:leading-[1.4] font-serif">
                 Tiếp nhận hồ sơ và Tư vấn trực tiếp
               </h2>
               <p className="mt-3 text-base text-slate-600 leading-relaxed">

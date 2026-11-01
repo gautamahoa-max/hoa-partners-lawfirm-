@@ -67,7 +67,7 @@ export default function Navbar() {
               <ScaleIcon className="w-5 h-5" />
             </div>
             <div>
-              <span className="text-xl sm:text-2xl font-bold tracking-tight text-[#0F2144] font-serif block leading-none">
+              <span className="text-xl sm:text-2xl font-bold tracking-normal text-[#0F2144] font-serif block leading-normal">
                 HÒA &amp; CỘNG SỰ
               </span>
               <span className="text-[10px] uppercase font-mono tracking-widest text-slate-500 mt-1 block">
