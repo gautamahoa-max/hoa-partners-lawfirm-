@@ -1,46 +1,38 @@
 # Design System: HÒA & CỘNG SỰ (HOA & PARTNERS LAW FIRM)
-*Structured pursuant to Anthropic Frontend Design Philosophy & Taste-Design Directives.*
+*Synthesized from YKVN Tier-1 Law Practice & Anthropic Frontend-Design Directives.*
 
 ## 1. Visual Theme & Atmosphere
-An authoritative, editorial, and disciplined presence reflecting the solemnity and intellectual rigor of an elite Vietnamese law practice. Replaces startup SaaS landing page tropes with an authentic legal dossier vernacular — clean hairline rules, generous margins, restrained typography, and functional interactive tools.
+An authoritative, stately, and corporate presence modeled after Vietnam's premier tier-1 corporate law practice (**YKVN**). Blends international legal rigor with domestic courtroom mastery.
 
-- **Atmosphere:** Restrained, scholarly, courtroom dignity.
-- **Density:** 5 (Daily App Balanced — spacious breathing room for legal texts).
+- **Atmosphere:** Tier-1 Corporate Law Firm, Courtroom Gravitas, International Arbitration Prestige.
+- **Density:** 5 (Daily App Balanced — spacious, highly legible).
 - **Variance:** 6 (Architectural & Editorial Grid).
-- **Motion:** Purposeful, restrained motion answering user actions.
+- **Motion:** Restrained, functional micro-feedback answering user actions.
 
 ---
 
-## 2. Color Palette & Roles
-- **Parchment White (`#FDFDFC`)**: Primary background canvas, evoking archival legal paper.
-- **Warm Panel Slate (`#F8F9FA`)**: Dossier panels and calculation containers.
-- **Dossier Slate (`#111827` / `#0F172A`)**: High-contrast primary text, statutory citations, and solid buttons.
-- **Muted Steel (`#64748B`)**: Secondary text, procedural metadata, and footnotes.
-- **Hairline Rule (`#E5E7EB` / `#E2E8F0`)**: 1px structural separators replacing generic card drop-shadows.
-- **Sealing Wax Amber (`#9A6B2F` / `#B4821A`)**: A single, disciplined accent color drawn from traditional legal seal wax.
+## 2. Color Palette & Roles (YKVN Palette)
+- **Deep Marine Navy (`#0F2144` / `#142859`)**: Primary corporate brand color, evoking institutional stability, sovereignty, and trust.
+- **Parchment Surface (`#F8F9FA` / `#FDFDFC`)**: Primary background canvas, providing clean contrast without eye strain.
+- **Pure White (`#FFFFFF`)**: Interior card surfaces and navigation bar.
+- **Dignified Crimson Accent (`#C5221F`)**: Selective indicator for primary action triggers and legal seals.
+- **Hairline Border (`#E2E8F0` / `#E5E7EB`)**: 1px structural rules replacing fluffy drop shadows.
 
 ---
 
-## 3. Typography Architecture (Anthropic Frontend-Design Directives)
-- **Headings & Display:** `Playfair Display` — High-contrast editorial serif, set in sentence case without gimmicky single-word color accents.
-- **Body & Legal Codes:** `Be Vietnam Pro` — Humanist sans-serif with pristine Vietnamese diacritics support. Line lengths constrained to less than 75 characters.
-- **Monospace Digits:** `system-ui, monospace` for court fee calculations (Resolution 326/2016) and case file codes (`TT-01`, `DN-02`).
-- **Banned:** `Inter`, generic serifs (`Times New Roman`, `Georgia`), all-caps tracked labels, appended arrow characters (`→`).
+## 3. Structural Architecture (YKVN Signature Elements)
+- **Top Utility Bar:** Multi-jurisdiction offices (Hà Nội &bull; TP. Hồ Chí Minh &bull; Singapore), 24/7 hotline, and bilingual switcher (VI / EN).
+- **Dual-Tab Practice System:**
+  - Tab 1: **Lĩnh Vực Tư Vấn (Practice Areas)** — Trọng Tài Quốc Tế, Ngân Hàng & Tài Chính, M&A, Tranh Tụng Tòa Án, Bất Động Sản, Pháp Chế Thường Xuyên.
+  - Tab 2: **Ngành Nghề Tư Vấn (Industry Sectors)** — Năng lượng, Ngân hàng, Bất động sản, Công nghiệp, Công nghệ & Logistics.
+- **International Directory Recognition:** Citations and band tiers from *Chambers and Partners*, *The Legal 500*, and *IFLR1000*.
+- **Managing Partner Profile:** Formal executive partner introduction for **Luật sư Võ Văn Hoà (Managing Partner)**.
+- **Statutory Court Fee Engine:** Interactive calculation compliant with **Resolution 326/2016/UBTVQH14**.
 
 ---
 
-## 4. Anti-Patterns Eradicated (AI Tells Eliminated)
-- **NO single-word colored accents in headlines.**
-- **NO all-caps tracked-out eyebrow labels.**
-- **NO generic 3-card SaaS shadow kits.**
-- **NO appended arrow symbols (`→` / `&rarr;`) on buttons and links.**
-- **NO fake metric dashboards or fabricated percentages.**
-- **NO emojis anywhere in interface chrome.**
-- **NO pure black (`#000000`).**
-
----
-
-## 5. Interactive UX & Event-Driven Lead Intake
-- **Resolution 326/2016/UBTVQH14 Court Fee Engine:** Accurate statutory tier calculation paired with smooth `useAnimatedNumber`.
-- **Legal Risk Diagnostic:** 4-question interactive assessment for corporate compliance.
-- **Event-Driven Lead Intake:** Dispatches `app-prefill-lead` directly into the confidential legal consultation form.
+## 4. Typography Architecture (Anthropic Frontend-Design Directives)
+- **Headlines:** `Playfair Display` with `leading-[1.38]` and `tracking-normal` — calibrated specifically for Vietnamese stacked diacritics to guarantee zero vertical character collision.
+- **Body:** `Be Vietnam Pro` — Humanist sans-serif with natural sentence case. Line lengths constrained to less than 75 characters.
+- **Monospace Digits:** `system-ui, monospace` for court fees, decree numbers, and docket codes (`TT-01`, `DN-02`).
+- **Banned:** `Inter`, all-caps tracked-out eyebrows, single-word colored accents, appended arrow characters (`→`), fake percentages.
