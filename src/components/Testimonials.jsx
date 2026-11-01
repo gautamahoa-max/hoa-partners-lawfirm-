@@ -36,22 +36,22 @@ export default function Testimonials() {
   ];
 
   return (
-    <section id="danh-gia" className="py-20 bg-[#FDFDFC] border-b border-slate-200">
+    <section id="an-le" className="py-20 bg-[#FAF9F6] border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="max-w-3xl mb-14 text-left">
-          <p className="text-xs font-semibold text-slate-500 mb-2">
-            Hồ sơ vụ việc
+          <p className="text-xs font-mono font-semibold text-slate-500 mb-2 uppercase tracking-wider">
+            Án lệ thực tiễn
           </p>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight font-serif">
-            Án lệ và Vụ việc tiêu biểu
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0F2144] tracking-normal leading-[1.35] font-serif">
+            Hồ sơ vụ việc và Án lệ tiêu biểu
           </h2>
           <p className="mt-3 text-base text-slate-600 leading-relaxed">
             Các tranh chấp thực tế và thương vụ đã được luật sư đại diện giải quyết thành công qua con đường đàm phán, trọng tài và tòa án.
           </p>
         </div>
 
-        {/* Danh sách vụ việc dạng bản tin án lệ (Case Record Archive) */}
+        {/* Danh sách vụ việc */}
         <div className="space-y-6 mb-16 text-left">
           {cases.map((item, idx) => (
             <div
@@ -60,14 +60,14 @@ export default function Testimonials() {
             >
               <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 pb-4 border-b border-slate-100">
                 <div>
-                  <span className="text-xs font-medium text-slate-500 block mb-1">
+                  <span className="text-xs font-mono font-medium text-slate-500 block mb-1">
                     Cơ quan tài phán: {item.forum}
                   </span>
-                  <h3 className="text-lg font-bold text-slate-900 font-serif">
+                  <h3 className="text-lg font-bold text-[#0F2144] font-serif">
                     {item.nature}
                   </h3>
                 </div>
-                <div className="text-sm font-semibold text-slate-800 font-mono sm:text-right flex-shrink-0">
+                <div className="text-sm font-semibold text-slate-900 font-mono sm:text-right flex-shrink-0">
                   Giá trị: {item.value}
                 </div>
               </div>
@@ -79,7 +79,7 @@ export default function Testimonials() {
           ))}
         </div>
 
-        {/* Phản hồi từ thân chủ theo chuẩn tòa soạn */}
+        {/* Phản hồi từ thân chủ */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-left border-t border-slate-200 pt-12">
           {clientNotes.map((note, idx) => (
             <div key={idx} className="space-y-4">
