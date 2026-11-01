@@ -18,7 +18,7 @@ export default function Hero({ onOpenRiskModal }) {
               Văn phòng Luật sư &bull; Đoàn Luật sư Việt Nam
             </p>
 
-            <h1 className="text-3xl sm:text-4xl lg:text-[3.25rem] font-bold text-slate-900 tracking-tight leading-[1.18] font-serif">
+            <h1 className="text-2xl sm:text-4xl lg:text-[2.75rem] font-bold text-slate-900 tracking-normal leading-[1.4] sm:leading-[1.35] font-serif">
               Bảo vệ quyền lợi hợp pháp bằng sự chuẩn mực của pháp luật và chiến lược tranh tụng kiên định.
             </h1>
 
