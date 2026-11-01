@@ -1,65 +1,46 @@
 # Design System: HÒA & CỘNG SỰ (HOA & PARTNERS LAW FIRM)
+*Structured pursuant to Anthropic Frontend Design Philosophy & Taste-Design Directives.*
 
 ## 1. Visual Theme & Atmosphere
-A dignified, authoritative, and gallery-restrained aesthetic tailored for an elite law firm. High typographic tension, generous spatial margins, asymmetric editorial grids, and tactile micro-motion. The atmosphere is solemn yet warmly human — reflecting deep legal intellect, uncompromising integrity, and relentless client protection.
+An authoritative, editorial, and disciplined presence reflecting the solemnity and intellectual rigor of an elite Vietnamese law practice. Replaces startup SaaS landing page tropes with an authentic legal dossier vernacular — clean hairline rules, generous margins, restrained typography, and functional interactive tools.
 
-- **Density:** 5 (Daily App Balanced — spacious breathing room for complex legal reading)
-- **Variance:** 7 (Offset Asymmetric — breaking away from repetitive template layouts)
-- **Motion:** 6 (Fluid CSS with Spring Physics — smooth counters and tactile push feedbacks)
+- **Atmosphere:** Restrained, scholarly, courtroom dignity.
+- **Density:** 5 (Daily App Balanced — spacious breathing room for legal texts).
+- **Variance:** 6 (Architectural & Editorial Grid).
+- **Motion:** Purposeful, restrained motion answering user actions.
 
 ---
 
 ## 2. Color Palette & Roles
-- **Canvas White (`#FBFBFB`)**: Primary background surface, providing clarity, openness, and impartiality.
-- **Pure Surface (`#FFFFFF`)**: Card, calculator, and modal fill.
-- **Charcoal Ink (`#0F172A`)**: Primary text, headings, and high-gravity structural cards. Never pure `#000000`.
-- **Muted Steel (`#64748B`)**: Secondary text, procedural steps, and legal statutory citations.
-- **Whisper Border (`rgba(226, 232, 240, 0.8)`)**: 1px crisp structural division lines.
-- **Royal Amber Gold (`#B4821A`)**: Single curated accent for key monetary figures, verified stamps, and primary interactive highlights (saturation calibrated at 74%).
-
-*(Strictly 1 accent color. Saturation < 80%. No neon purple/blue AI glows.)*
+- **Parchment White (`#FDFDFC`)**: Primary background canvas, evoking archival legal paper.
+- **Warm Panel Slate (`#F8F9FA`)**: Dossier panels and calculation containers.
+- **Dossier Slate (`#111827` / `#0F172A`)**: High-contrast primary text, statutory citations, and solid buttons.
+- **Muted Steel (`#64748B`)**: Secondary text, procedural metadata, and footnotes.
+- **Hairline Rule (`#E5E7EB` / `#E2E8F0`)**: 1px structural separators replacing generic card drop-shadows.
+- **Sealing Wax Amber (`#9A6B2F` / `#B4821A`)**: A single, disciplined accent color drawn from traditional legal seal wax.
 
 ---
 
-## 3. Typography Rules
-- **Display & Headlines:** `Playfair Display` — High-contrast editorial serif with track-tight spacing (`tracking-tight`), commanding respect and intellectual depth.
-- **Body:** `Be Vietnam Pro` — Modern, ultra-legible humanist sans-serif with flawless Vietnamese diacritics support, relaxed leading (`leading-relaxed`), and a strict 65ch max-width per reading line.
-- **Monospace / Digits:** `system-ui, monospace` for financial amounts, Resolution 326 court fee tiers, and article numbering.
-- **Banned:** `Inter` (prohibited for premium editorial feel), generic serifs (`Times New Roman`, `Georgia`, `Garamond`), oversaturated gradient text.
+## 3. Typography Architecture (Anthropic Frontend-Design Directives)
+- **Headings & Display:** `Playfair Display` — High-contrast editorial serif, set in sentence case without gimmicky single-word color accents.
+- **Body & Legal Codes:** `Be Vietnam Pro` — Humanist sans-serif with pristine Vietnamese diacritics support. Line lengths constrained to less than 75 characters.
+- **Monospace Digits:** `system-ui, monospace` for court fee calculations (Resolution 326/2016) and case file codes (`TT-01`, `DN-02`).
+- **Banned:** `Inter`, generic serifs (`Times New Roman`, `Georgia`), all-caps tracked labels, appended arrow characters (`→`).
 
 ---
 
-## 4. Component Stylings
-- **Buttons:** Flat, solid fill with tactile physical push feedback (`active:translate-y-[1px] active:scale-[0.99]`). Zero neon glows or artificial drop-shadow flares.
-- **Cards & Enclosures:** Generously rounded corners (`rounded-3xl` and `rounded-2xl`). Soft, ambient whisper shadow (`shadow-xl shadow-slate-200/40`). Dense sections use clean `border-t` dividers rather than nested box-in-a-box structures.
-- **Interactive Calculator:** Direct input slider paired with `useAnimatedNumber` for smooth numeric transitions, displaying official legal fee schedules.
-- **Inputs & Forms:** Explicit label positioned above input, helper note below, custom Vietnamese validation strings. Clean focus borders with zero layout shift.
-- **Modals:** Centered backdrop blur (`backdrop-blur-sm bg-slate-900/60`), spring entry fade, accessible Escape key listener, and keyboard trap.
+## 4. Anti-Patterns Eradicated (AI Tells Eliminated)
+- **NO single-word colored accents in headlines.**
+- **NO all-caps tracked-out eyebrow labels.**
+- **NO generic 3-card SaaS shadow kits.**
+- **NO appended arrow symbols (`→` / `&rarr;`) on buttons and links.**
+- **NO fake metric dashboards or fabricated percentages.**
+- **NO emojis anywhere in interface chrome.**
+- **NO pure black (`#000000`).**
 
 ---
 
-## 5. Layout Principles
-- **Asymmetric Grid Architecture:** Eliminates generic 3-equal-column cards. Practices and case studies are arranged in high-impact 2-column asymmetric splits and editorial hierarchies.
-- **Spatial Separation:** No absolute-positioned overlapping of text over images. Every element maintains clear, unambiguous visual boundary.
-- **Mobile-First Collapse:** Multi-column layouts cleanly collapse to single-column under 768px. Zero horizontal overflow (`overflow-x-hidden`).
-- **Tactile Touch Targets:** All clickable triggers maintain minimum 44px hit-box.
-
----
-
-## 6. Motion & Interaction
-- **Tactile Feedback:** Subtle 1px spring translate on click triggers.
-- **Perpetual Micro-Interactions:** Subtle status beacon pulse for online availability indicator; smooth infinite ticker for partner institutions.
-- **Hardware Acceleration:** Animations restricted exclusively to `transform` and `opacity` properties to prevent reflow bottlenecks.
-
----
-
-## 7. Anti-Patterns (Strictly Enforced)
-- **NO emojis anywhere** in web components.
-- **NO `Inter` font**.
-- **NO pure black (`#000000`)**.
-- **NO 3-equal-cards generic template rows**.
-- **NO neon glowing shadows or cyber gradients**.
-- **NO overlapping text/image collisions**.
-- **NO AI copywriting clichés** ("Next-Gen", "Seamless", "Elevate", "Công cụ đột phá đỉnh cao").
-- **NO filler UI text** ("Scroll to explore", "Swipe down").
-- **NO fabricated fake uptime metrics** ("99.999% SLA").
+## 5. Interactive UX & Event-Driven Lead Intake
+- **Resolution 326/2016/UBTVQH14 Court Fee Engine:** Accurate statutory tier calculation paired with smooth `useAnimatedNumber`.
+- **Legal Risk Diagnostic:** 4-question interactive assessment for corporate compliance.
+- **Event-Driven Lead Intake:** Dispatches `app-prefill-lead` directly into the confidential legal consultation form.

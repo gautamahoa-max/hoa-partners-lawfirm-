@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { calculateCourtFee, estimateLegalFee } from '../utils/courtFeeCalc';
 import { formatCurrency, formatNumber } from '../utils/formatters';
 import { useAnimatedNumber } from '../utils/useAnimatedNumber';
-import { CalculatorIcon, ScaleIcon, CheckCircleIcon, ArrowRightIcon } from './Icons';
+import { CalculatorIcon, CheckCircleIcon } from './Icons';
 
 export default function LegalCalculator() {
   const [activeTab, setActiveTab] = useState('courtFee'); // 'courtFee' | 'legalFee'
@@ -31,12 +31,12 @@ export default function LegalCalculator() {
   // Xử lý gửi sự kiện Pre-fill phễu chuyển đổi
   const handleConsultThisCase = () => {
     const detailData = {
-      serviceType: activeTab === 'courtFee' ? 'Tranh tụng / Khởi kiện' : legalFeeResult.name,
+      serviceType: activeTab === 'courtFee' ? 'Tranh tụng và khởi kiện' : legalFeeResult.name,
       disputeValue: `${formatCurrency(disputeValue)}`,
       courtFeeEst: `${formatCurrency(courtFeeResult.courtFee)}`,
-      legalFeeEst: activeTab === 'courtFee' ? 'Theo thương lượng vụ việc' : `${formatCurrency(legalFeeResult.baseFee)}`,
+      legalFeeEst: activeTab === 'courtFee' ? 'Theo thỏa thuận vụ việc' : `${formatCurrency(legalFeeResult.baseFee)}`,
       note: activeTab === 'courtFee'
-        ? `Khách tính án phí: Loại tranh chấp ${caseType === 'commercial' ? 'Kinh doanh thương mại' : 'Dân sự / Đất đai'}, giá trị tranh chấp: ${formatCurrency(disputeValue)}, dự tính án phí: ${formatCurrency(courtFeeResult.courtFee)}.`
+        ? `Khách tra cứu án phí: Loại tranh chấp ${caseType === 'commercial' ? 'Kinh doanh thương mại' : 'Dân sự và đất đai'}, giá trị tranh chấp: ${formatCurrency(disputeValue)}, dự tính án phí sơ thẩm: ${formatCurrency(courtFeeResult.courtFee)}.`
         : `Khách chọn gói dịch vụ: ${legalFeeResult.name}, dự toán chi phí cơ sở: ${formatCurrency(legalFeeResult.baseFee)}.`,
     };
 
@@ -53,49 +53,48 @@ export default function LegalCalculator() {
   };
 
   return (
-    <section id="tinh-an-phi" className="py-16 md:py-24 bg-slate-50 border-b border-slate-200/80">
+    <section id="tinh-an-phi" className="py-20 bg-[#F8F9FA] border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Tiêu đề & Giới thiệu */}
-        <div className="max-w-3xl mx-auto text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-bold uppercase tracking-wider mb-3">
-            <CalculatorIcon className="w-4 h-4 text-amber-700" />
-            Công Cụ Tương Tác Trực Tuyến
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight font-serif">
-            Tra Cứu Án Phí &amp; Dự Toán Chi Phí Pháp Lý
+        {/* Tiêu đề & Giới thiệu chuẩn phong cách công báo */}
+        <div className="max-w-3xl mb-12 text-left">
+          <p className="text-xs font-semibold text-slate-500 mb-2">
+            Công cụ pháp lý trực tuyến
+          </p>
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight font-serif">
+            Tra cứu án phí và dự toán chi phí tố tụng
           </h2>
-          <p className="mt-3 text-base sm:text-lg text-slate-600">
-            Minh bạch chi phí tố tụng theo đúng <strong>Nghị quyết 326/2016/UBTVQH14</strong> của Ủy ban Thường vụ Quốc hội.
+          <p className="mt-3 text-base text-slate-600 leading-relaxed">
+            Áp dụng mức thu án phí sơ thẩm đối với vụ án có giá ngạch theo đúng <strong>Nghị quyết số 326/2016/UBTVQH14</strong> của Ủy ban Thường vụ Quốc hội.
           </p>
 
-          {/* Tab Switcher */}
-          <div className="inline-flex p-1.5 bg-white border border-slate-200 rounded-2xl shadow-sm mt-8">
+          {/* Tab Switcher tinh giản */}
+          <div className="inline-flex p-1 bg-white border border-slate-300 rounded-lg shadow-sm mt-6">
             <button
               onClick={() => setActiveTab('courtFee')}
-              className={`px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${
+              className={`px-4 py-2 rounded text-xs font-semibold transition-all ${
                 activeTab === 'courtFee'
-                  ? 'bg-slate-900 text-white shadow-md'
+                  ? 'bg-slate-900 text-white'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              1. Tính Án Phí Tòa Án (NQ 326)
+              Án phí Tòa án (Nghị quyết 326)
             </button>
             <button
               onClick={() => setActiveTab('legalFee')}
-              className={`px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${
+              className={`px-4 py-2 rounded text-xs font-semibold transition-all ${
                 activeTab === 'legalFee'
-                  ? 'bg-slate-900 text-white shadow-md'
+                  ? 'bg-slate-900 text-white'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              2. Dự Toán Phí Luật Sư Tư Vấn
+              Thù lao Luật sư tư vấn
             </button>
           </div>
         </div>
 
         {/* Khối tính toán chính */}
-        <div className="max-w-4xl mx-auto bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/90 shadow-xl shadow-slate-200/50">
+        <div className="max-w-4xl bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 text-left">
           
           {activeTab === 'courtFee' ? (
             /* TAB 1: TÍNH ÁN PHÍ */
@@ -103,37 +102,37 @@ export default function LegalCalculator() {
               
               {/* Chọn loại tranh chấp */}
               <div>
-                <label className="block text-sm font-bold text-slate-900 mb-2">
-                  Lựa chọn loại quan hệ tranh chấp:
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                  Quan hệ tranh chấp:
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <button
                     type="button"
                     onClick={() => setCaseType('commercial')}
-                    className={`p-4 rounded-2xl border text-left transition-all ${
+                    className={`p-4 rounded-xl border text-left transition-all ${
                       caseType === 'commercial'
-                        ? 'border-slate-900 bg-slate-900 text-white shadow-md'
-                        : 'border-slate-200 bg-slate-50/50 text-slate-700 hover:border-slate-300'
+                        ? 'border-slate-900 bg-slate-900 text-white'
+                        : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300'
                     }`}
                   >
-                    <p className="font-bold text-sm">Tranh Chấp Kinh Doanh, Thương Mại</p>
+                    <p className="font-bold text-sm">Tranh chấp kinh doanh, thương mại</p>
                     <p className={`text-xs mt-1 ${caseType === 'commercial' ? 'text-slate-300' : 'text-slate-500'}`}>
-                      Hợp đồng kinh tế, cổ đông, mua bán hàng hóa, đầu tư
+                      Hợp đồng kinh tế, tranh chấp thành viên công ty, mua bán hàng hóa
                     </p>
                   </button>
 
                   <button
                     type="button"
                     onClick={() => setCaseType('civil')}
-                    className={`p-4 rounded-2xl border text-left transition-all ${
+                    className={`p-4 rounded-xl border text-left transition-all ${
                       caseType === 'civil'
-                        ? 'border-slate-900 bg-slate-900 text-white shadow-md'
-                        : 'border-slate-200 bg-slate-50/50 text-slate-700 hover:border-slate-300'
+                        ? 'border-slate-900 bg-slate-900 text-white'
+                        : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300'
                     }`}
                   >
-                    <p className="font-bold text-sm">Tranh Chấp Dân Sự, Đất Đai, Thừa Kế</p>
+                    <p className="font-bold text-sm">Tranh chấp dân sự, đất đai, thừa kế</p>
                     <p className={`text-xs mt-1 ${caseType === 'civil' ? 'text-slate-300' : 'text-slate-500'}`}>
-                      Bất động sản, chia thừa kế, hợp đồng vay tài sản cá nhân
+                      Quyền sử dụng đất, chia di sản thừa kế, hợp đồng vay tài sản
                     </p>
                   </button>
                 </div>
@@ -142,10 +141,10 @@ export default function LegalCalculator() {
               {/* Nhập & Thanh trượt Giá trị tranh chấp */}
               <div>
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
-                  <label htmlFor="dispute-slider" className="text-sm font-bold text-slate-900">
+                  <label htmlFor="dispute-slider" className="text-xs font-bold text-slate-700 uppercase tracking-wider">
                     Giá trị tài sản hoặc số tiền tranh chấp (VNĐ):
                   </label>
-                  <span className="text-xl sm:text-2xl font-extrabold text-slate-900 font-serif whitespace-nowrap flex-shrink-0">
+                  <span className="text-xl sm:text-2xl font-bold text-slate-900 font-mono whitespace-nowrap flex-shrink-0">
                     {formatCurrency(disputeValue)}
                   </span>
                 </div>
@@ -159,21 +158,21 @@ export default function LegalCalculator() {
                   step="10000000"
                   value={disputeValue}
                   onChange={(e) => setDisputeValue(Number(e.target.value))}
-                  className="w-full h-2.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-slate-900"
+                  className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-slate-900"
                 />
 
                 {/* Các nút bấm nhanh số tiền */}
                 <div className="flex flex-wrap items-center gap-2 mt-4">
-                  <span className="text-xs text-slate-500 font-medium">Chọn nhanh:</span>
+                  <span className="text-xs text-slate-500">Mốc nhanh:</span>
                   {[100000000, 300000000, 500000000, 1000000000, 2000000000].map((quickVal) => (
                     <button
                       key={quickVal}
                       type="button"
                       onClick={() => setDisputeValue(quickVal)}
-                      className={`text-xs px-3 py-1.5 rounded-lg border font-semibold transition-colors ${
+                      className={`text-xs px-3 py-1 rounded border font-medium transition-colors ${
                         disputeValue === quickVal
-                          ? 'bg-amber-100 text-amber-900 border-amber-300'
-                          : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
+                          ? 'bg-slate-900 text-white border-slate-900'
+                          : 'bg-white text-slate-600 border-slate-300 hover:bg-slate-50'
                       }`}
                     >
                       {formatNumber(quickVal / 1000000)} triệu
@@ -183,66 +182,66 @@ export default function LegalCalculator() {
               </div>
 
               {/* Bảng kết quả hiển thị chuẩn NQ 326 */}
-              <div className="bg-slate-50 rounded-2xl p-6 border border-slate-200/80 space-y-4">
+              <div className="bg-[#F8F9FA] rounded-xl p-6 border border-slate-200 space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-4 border-b border-slate-200">
                   {/* Án phí sơ thẩm */}
-                  <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm text-left">
-                    <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                      Mức Án Phí Sơ Thẩm Phải Nộp
+                  <div className="bg-white p-5 rounded-lg border border-slate-200">
+                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                      Án phí sơ thẩm dự tính
                     </p>
-                    <p className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-serif mt-2 whitespace-nowrap flex-shrink-0">
+                    <p className="text-2xl font-bold text-slate-900 font-mono mt-2 whitespace-nowrap flex-shrink-0">
                       {formatCurrency(animatedCourtFee)}
                     </p>
-                    <p className="text-[11px] text-slate-500 mt-1">
-                      Căn cứ: {courtFeeResult.formulaDescription}
+                    <p className="text-xs text-slate-500 mt-1">
+                      {courtFeeResult.formulaDescription}
                     </p>
                   </div>
 
                   {/* Tiền tạm ứng án phí (50%) */}
-                  <div className="bg-white p-5 rounded-xl border border-amber-200 shadow-sm text-left">
-                    <p className="text-xs font-bold uppercase tracking-wider text-amber-700">
-                      Tiền Tạm Ứng Án Phí (Khi nộp đơn khởi kiện)
+                  <div className="bg-white p-5 rounded-lg border border-slate-200">
+                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                      Tạm ứng án phí (nộp khi khởi kiện)
                     </p>
-                    <p className="text-2xl sm:text-3xl font-extrabold text-amber-700 font-serif mt-2 whitespace-nowrap flex-shrink-0">
+                    <p className="text-2xl font-bold text-slate-900 font-mono mt-2 whitespace-nowrap flex-shrink-0">
                       {formatCurrency(animatedAdvanceFee)}
                     </p>
-                    <p className="text-[11px] text-slate-500 mt-1">
-                      Bằng 50% án phí sơ thẩm theo Điều 7 NQ 326/2016
+                    <p className="text-xs text-slate-500 mt-1">
+                      Bằng 50% mức án phí sơ thẩm theo Điều 7 Nghị quyết 326
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-2.5 text-xs text-slate-500 pt-1">
-                  <CheckCircleIcon className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
+                <div className="flex items-start gap-2 text-xs text-slate-500 pt-1">
+                  <CheckCircleIcon className="w-4 h-4 text-slate-600 flex-shrink-0 mt-0.5" />
                   <span>
-                    <strong>Lưu ý từ Luật sư:</strong> Bên nào thắng kiện toàn bộ sẽ được Tòa án tuyên trả lại toàn bộ tiền tạm ứng án phí đã nộp; bên thua kiện sẽ phải chịu toàn bộ án phí theo bản án.
+                    Bên thắng kiện toàn bộ sẽ được Tòa án tuyên trả lại số tiền tạm ứng án phí đã nộp; bên thua kiện có nghĩa vụ nộp toàn bộ án phí theo quyết định của bản án có hiệu lực.
                   </span>
                 </div>
               </div>
 
             </div>
           ) : (
-            /* TAB 2: DỰ TOÁN PHÍ DỊCH VỤ LUẬT SƯ */
-            <div className="space-y-8">
+            /* TAB 2: DỰ TOÁN THÙ LAO LUẬT SƯ */
+            <div className="space-y-6">
               <div>
-                <label className="block text-sm font-bold text-slate-900 mb-3">
-                  Chọn gói dịch vụ pháp lý bạn cần:
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                  Dịch vụ cần tham khảo:
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {[
-                    { id: 'litigation', name: 'Đại diện Tranh tụng Tòa án / VIAC' },
-                    { id: 'contract', name: 'Soạn thảo & Rà soát Hợp đồng' },
-                    { id: 'retainer', name: 'Luật sư Pháp chế Thường xuyên Doanh nghiệp' },
-                    { id: 'incorporation', name: 'Thành lập & Tái cấu trúc Doanh nghiệp' },
+                    { id: 'litigation', name: 'Đại diện tranh tụng Tòa án và Trọng tài VIAC' },
+                    { id: 'contract', name: 'Soạn thảo và rà soát hợp đồng kinh tế' },
+                    { id: 'retainer', name: 'Cố vấn pháp chế thường xuyên doanh nghiệp' },
+                    { id: 'incorporation', name: 'Thành lập và tái cấu trúc doanh nghiệp' },
                   ].map((srv) => (
                     <button
                       key={srv.id}
                       type="button"
                       onClick={() => setSelectedService(srv.id)}
-                      className={`p-4 rounded-2xl border text-left transition-all ${
+                      className={`p-4 rounded-xl border text-left transition-all ${
                         selectedService === srv.id
-                          ? 'border-slate-900 bg-slate-900 text-white shadow-md'
-                          : 'border-slate-200 bg-slate-50/50 text-slate-700 hover:border-slate-300'
+                          ? 'border-slate-900 bg-slate-900 text-white'
+                          : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300'
                       }`}
                     >
                       <p className="font-bold text-sm">{srv.name}</p>
@@ -251,27 +250,26 @@ export default function LegalCalculator() {
                 </div>
               </div>
 
-              {/* Bảng kết quả ước tính thù lao */}
-              <div className="bg-slate-50 rounded-2xl p-6 border border-slate-200/80">
-                <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm text-left">
+              <div className="bg-[#F8F9FA] rounded-xl p-6 border border-slate-200">
+                <div className="bg-white p-5 rounded-lg border border-slate-200 text-left">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-100">
                     <div>
-                      <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                      <span className="text-xs text-slate-500">
                         {legalFeeResult.name}
                       </span>
                       <h4 className="text-base font-bold text-slate-900 mt-1">
-                        Mức Thù Lao Tham Khảo Cơ Sở
+                        Thù lao cơ sở tham khảo
                       </h4>
                     </div>
-                    <span className="text-2xl sm:text-3xl font-extrabold text-amber-700 font-serif whitespace-nowrap flex-shrink-0">
+                    <span className="text-2xl font-bold text-slate-900 font-mono whitespace-nowrap flex-shrink-0">
                       Từ {formatCurrency(animatedLegalFee)}
                     </span>
                   </div>
-                  <p className="text-sm text-slate-600 mt-3 leading-relaxed">
-                    <strong>Phạm vi thực hiện:</strong> {legalFeeResult.notes}
+                  <p className="text-xs sm:text-sm text-slate-600 mt-3 leading-relaxed">
+                    <strong>Phạm vi:</strong> {legalFeeResult.notes}
                   </p>
-                  <p className="text-xs text-slate-500 mt-2 italic">
-                    * Mức thù lao thực tế sẽ được Luật sư báo giá cố định sau khi trực tiếp nghiên cứu hồ sơ tài liệu của Quý khách, cam kết không phát sinh chi phí ẩn.
+                  <p className="text-xs text-slate-500 mt-2">
+                    Thù lao chính thức sẽ được thỏa thuận trên cơ sở độ phức tạp của hồ sơ, thời gian thực hiện và được ghi rõ trong Hợp đồng dịch vụ pháp lý.
                   </p>
                 </div>
               </div>
@@ -279,23 +277,22 @@ export default function LegalCalculator() {
             </div>
           )}
 
-          {/* Nút Chuyển Đổi Phễu (Event-Driven Pre-fill) */}
-          <div className="pt-6 mt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="text-left">
+          {/* Chuyển sang form tiếp nhận vụ việc */}
+          <div className="pt-6 mt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>
               <p className="text-xs text-slate-500">
-                Cần Luật sư tư vấn chiến lược và bảo vệ quyền lợi cho vụ việc này?
+                Cần luật sư phân tích chứng cứ và chiến lược cho vụ việc này?
               </p>
-              <p className="text-sm font-bold text-slate-800">
-                Nhận tư vấn trực tiếp 1:1 cùng Luật sư trong 30 phút.
+              <p className="text-sm font-semibold text-slate-900">
+                Đặt lịch tư vấn trực tiếp với Luật sư Võ Văn Hoà.
               </p>
             </div>
 
             <button
               onClick={handleConsultThisCase}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-sm font-bold bg-slate-900 text-white hover:bg-slate-800 active:translate-y-[1px] active:scale-[0.99] shadow-lg shadow-slate-900/15 transition-all duration-150 whitespace-nowrap"
+              className="w-full sm:w-auto px-6 py-3 rounded-lg text-sm font-semibold bg-slate-900 text-white hover:bg-slate-800 active:translate-y-[1px] transition-all whitespace-nowrap"
             >
-              <span>Đặt Lịch Tư Vấn Phương Án Này</span>
-              <ArrowRightIcon className="w-4 h-4" />
+              Tiếp tục với phương án này
             </button>
           </div>
 
