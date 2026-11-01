@@ -2,7 +2,8 @@
 
 > **Hãng Luật & Cố Vấn Pháp Lý Doanh Nghiệp Hàng Đầu**  
 > *"Vững Pháp Lý - Trọn Niềm Tin"*  
-> Sáng lập & Điều hành: **Luật sư Võ Văn Hoà**
+> Sáng lập & Điều hành: **Luật sư Võ Văn Hoà**  
+> 🌐 **Website trực tuyến:** [https://gautamahoa-max.github.io/hoa-partners-lawfirm-/](https://gautamahoa-max.github.io/hoa-partners-lawfirm-/)
 
 ---
 
@@ -15,7 +16,7 @@ Trang web chính thức của **Công ty Luật TNHH Hòa & Cộng sự** (HOA &
 ## ✨ Các Tính Năng Nổi Bật
 
 1. **Giao Diện Đẳng Cấp & Chuẩn Mực Pháp Lý**:
-   - Tông màu hoàng gia: Deep Navy Blue (`#0A2647`) kết hợp Vàng Kim (`#C59B27`) tượng trưng cho Cán cân công lý và trí tuệ pháp luật.
+   - Tông màu hoàng gia: Deep Midnight Navy (`#0A2647`) kết hợp Vàng Kim (`#C59B27`) tượng trưng cho Cán cân công lý và trí tuệ pháp luật.
    - Bố cục thông thoáng, tinh gọn, không rườm rà, loại bỏ triệt để các khối viền lồng nhau.
 
 2. **Bảng Tính Án Phí Tòa Án (Nghị quyết 326/2016/UBTVQH14)**:
@@ -49,10 +50,10 @@ Trang web chính thức của **Công ty Luật TNHH Hòa & Cộng sự** (HOA &
 
 ```bash
 # 1. Clone repository về máy
-git clone <URL_REPOSITORY_CỦA_BẠN>
+git clone https://github.com/gautamahoa-max/hoa-partners-lawfirm-.git
 
 # 2. Di chuyển vào thư mục dự án
-cd hoa-partners-lawfirm
+cd hoa-partners-lawfirm-
 
 # 3. Cài đặt các gói phụ thuộc
 npm install
@@ -63,19 +64,6 @@ npm run dev
 # 5. Đóng gói bản chạy thực tế (Production Build)
 npm run build
 ```
-
----
-
-## 🌐 Triển Khai Lên GitHub Pages (Mở Từ Bất Kỳ Thiết Bị Nào)
-
-Dự án đã được cấu hình sẵn **GitHub Actions** tự động tại `.github/workflows/deploy.yml` và file `.nojekyll` trong `public/`.
-
-### Kích hoạt GitHub Pages trên GitHub:
-1. Đẩy code lên repository GitHub của bạn trên branch `main`.
-2. Truy cập vào kho lưu trữ trên GitHub -> chọn tab **Settings**.
-3. Tại menu bên trái, chọn **Pages** (mục Code and automation).
-4. Ở phần **Build and deployment** > **Source**, chọn **GitHub Actions**.
-5. GitHub sẽ tự động build và cung cấp cho bạn một đường link công khai (ví dụ: `https://<ten-user>.github.io/<ten-repo>/`) để bạn có thể mở trang web từ điện thoại, máy tính bảng hoặc bất kỳ máy tính nào!
 
 ---
 
