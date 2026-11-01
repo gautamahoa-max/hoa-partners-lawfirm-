@@ -281,7 +281,7 @@ export default function ContactSection() {
 
                   <button
                     type="submit"
-                    className="w-full py-4 px-6 rounded-xl text-base font-bold bg-slate-900 text-white hover:bg-slate-800 shadow-xl shadow-slate-900/15 hover:shadow-slate-900/25 transition-all flex items-center justify-center gap-2"
+                    className="w-full py-4 px-6 rounded-xl text-base font-bold bg-slate-900 text-white hover:bg-slate-800 active:translate-y-[1px] active:scale-[0.99] shadow-xl shadow-slate-900/15 hover:shadow-slate-900/25 transition-all duration-150 flex items-center justify-center gap-2"
                   >
                     <span>Gửi Yêu Cầu Cho Luật Sư Phụ Trách</span>
                     <ArrowRightIcon className="w-4 h-4" />

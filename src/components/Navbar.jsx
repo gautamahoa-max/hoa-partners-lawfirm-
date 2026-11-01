@@ -97,7 +97,7 @@ export default function Navbar({ onOpenRiskModal }) {
           <div className="flex items-center gap-3">
             <button
               onClick={() => handleNavClick('#lien-he')}
-              className="hidden sm:inline-flex items-center justify-center px-5 py-2.5 rounded-xl text-sm font-bold bg-slate-900 text-white hover:bg-slate-800 shadow-lg shadow-slate-900/15 hover:shadow-xl transition-all duration-200"
+              className="hidden sm:inline-flex items-center justify-center px-5 py-2.5 rounded-xl text-sm font-bold bg-slate-900 text-white hover:bg-slate-800 active:translate-y-[1px] active:scale-[0.99] shadow-md shadow-slate-900/15 hover:shadow-lg transition-all duration-150"
             >
               Đặt Lịch Tư Vấn
             </button>

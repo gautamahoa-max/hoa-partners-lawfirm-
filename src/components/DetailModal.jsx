@@ -102,7 +102,7 @@ export default function DetailModal({ service, onClose, onSelectServiceForConsul
               onClose();
               onSelectServiceForConsult(service);
             }}
-            className="w-full sm:w-auto px-6 py-3 rounded-xl text-sm font-bold bg-slate-900 text-white hover:bg-slate-800 shadow-md shadow-slate-900/15 flex items-center justify-center gap-2 transition-all"
+            className="w-full sm:w-auto px-6 py-3 rounded-xl text-sm font-bold bg-slate-900 text-white hover:bg-slate-800 active:translate-y-[1px] active:scale-[0.99] shadow-md shadow-slate-900/15 flex items-center justify-center gap-2 transition-all duration-150"
           >
             <span>Đặt Lịch Tư Vấn Lĩnh Vực Này</span>
             <ArrowRightIcon className="w-4 h-4" />

@@ -292,7 +292,7 @@ export default function LegalCalculator() {
 
             <button
               onClick={handleConsultThisCase}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-sm font-bold bg-slate-900 text-white hover:bg-slate-800 shadow-lg shadow-slate-900/15 transition-all whitespace-nowrap"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-sm font-bold bg-slate-900 text-white hover:bg-slate-800 active:translate-y-[1px] active:scale-[0.99] shadow-lg shadow-slate-900/15 transition-all duration-150 whitespace-nowrap"
             >
               <span>Đặt Lịch Tư Vấn Phương Án Này</span>
               <ArrowRightIcon className="w-4 h-4" />

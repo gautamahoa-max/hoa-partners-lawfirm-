@@ -186,7 +186,7 @@ export default function LegalRiskCheckerModal({ isOpen, onClose, onFinishAssessm
               <button
                 type="button"
                 onClick={handleConsultFromAssessment}
-                className="w-full py-3.5 px-4 rounded-xl text-sm font-bold bg-slate-900 text-white hover:bg-slate-800 shadow-md shadow-slate-900/15 transition-all flex items-center justify-center gap-2"
+                className="w-full py-3.5 px-4 rounded-xl text-sm font-bold bg-slate-900 text-white hover:bg-slate-800 active:translate-y-[1px] active:scale-[0.99] shadow-md shadow-slate-900/15 transition-all duration-150 flex items-center justify-center gap-2"
               >
                 <span>Nhận Tư Vấn Khắc Phục Lỗ Hổng</span>
                 <ArrowRightIcon className="w-4 h-4" />
