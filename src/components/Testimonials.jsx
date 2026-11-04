@@ -68,11 +68,6 @@ export default function Testimonials() {
                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
                   {item.summary}
                 </p>
-
-                <div className="pt-2 flex items-center gap-2 text-[11px] font-medium text-emerald-700">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
-                  <span>{testData.resultBadge}</span>
-                </div>
               </div>
             </div>
           ))}
