@@ -84,13 +84,10 @@ export default function Footer() {
         {/* Đường kẻ ngang hairline kiểu Cravath */}
         <div className="border-t border-[#0F2144]/30 mt-14 mb-6" />
 
-        {/* Dòng ghi chú bản quyền và thông cáo pháp lý dưới cùng */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-[11px] text-slate-500 font-medium text-left">
+        {/* Dòng ghi chú bản quyền và thông cáo pháp lý dưới cùng kiểu Cravath */}
+        <div className="text-[11px] text-slate-500 font-medium text-left">
           <p>
             Thông tin hành nghề luật sư. &copy; {currentYear} Công ty Luật TNHH Hòa &amp; Cộng sự.
-          </p>
-          <p>
-            Bảo mật theo Điều 25 Luật Luật sư &bull; Giấy phép 0108929/TP/ĐKHĐ
           </p>
         </div>
 
