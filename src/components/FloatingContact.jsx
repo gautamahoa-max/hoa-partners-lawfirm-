@@ -12,8 +12,8 @@ export default function FloatingContact() {
 
       if (contactEl) {
         const rect = contactEl.getBoundingClientRect();
-        // Hiện ra khi kéo gần tới phần liên hệ (cách 350px) hoặc đã vào phần chân trang
-        setIsVisible(rect.top <= window.innerHeight + 350);
+        // Hiện ra khi kéo gần tới phần chân trang (cách 500px) hoặc đã vào phần chân trang
+        setIsVisible(rect.top <= window.innerHeight + 500);
       } else {
         // Dự phòng khi chưa mount DOM id: khi cuộn qua 70% chiều dài trang hoặc cách đáy dưới 1000px
         setIsVisible(totalHeight - scrollPosition < 1000 || (scrollPosition / totalHeight) > 0.7);

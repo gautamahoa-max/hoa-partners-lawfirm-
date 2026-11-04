@@ -5,7 +5,6 @@ import Accolades from './components/Accolades';
 import Services from './components/Services';
 import LawyerBio from './components/LawyerBio';
 import Testimonials from './components/Testimonials';
-import ContactSection from './components/ContactSection';
 import Footer from './components/Footer';
 import DetailModal from './components/DetailModal';
 import FloatingContact from './components/FloatingContact';
@@ -42,9 +41,6 @@ export default function App() {
 
         {/* 6. Hồ Sơ Tiêu Biểu & Vụ Việc Thực Tế */}
         <Testimonials />
-
-        {/* 7. Phiếu Tiếp Nhận Hồ Sơ & Thông Tin Liên Hệ */}
-        <ContactSection />
       </main>
 
       {/* 8. Chân Trang Pháp Lý */}
