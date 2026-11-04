@@ -26,10 +26,10 @@ export default function Accolades() {
         
         {/* Tiêu đề theo phong cách YKVN */}
         <div className="max-w-3xl mb-12 text-left">
-          <p className="text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wider font-mono">
+          <p className="text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wider">
             Tiêu chuẩn hành nghề quốc tế
           </p>
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#0F2144] tracking-normal leading-[1.45] sm:leading-[1.4] font-serif">
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#0F2144] tracking-tight leading-[1.35] sm:leading-[1.3]">
             &ldquo;Trình độ ngang bằng với các hãng luật quốc tế hàng đầu&rdquo;
           </h2>
           <p className="mt-2 text-xs sm:text-sm text-slate-600">
@@ -47,7 +47,7 @@ export default function Accolades() {
               <div>
                 <div className="flex items-center gap-2 mb-3">
                   <AwardIcon className="w-4 h-4 text-[#C5221F]" />
-                  <span className="text-xs font-bold text-[#0F2144] font-serif">
+                  <span className="text-xs font-bold text-[#0F2144] tracking-tight">
                     {item.source}
                   </span>
                 </div>
@@ -57,7 +57,7 @@ export default function Accolades() {
                 </blockquote>
               </div>
 
-              <div className="mt-6 pt-3 border-t border-slate-200/80 text-[11px] font-semibold text-slate-600 font-mono">
+              <div className="mt-6 pt-3 border-t border-slate-200/80 text-[11px] font-semibold text-slate-600">
                 {item.tier}
               </div>
             </div>

@@ -17,15 +17,15 @@ export default function LawyerBio() {
           <div className="lg:col-span-5 text-left">
             <div className="bg-[#FAF9F6] rounded-xl p-8 border border-slate-200 space-y-6">
               
-              <div className="w-16 h-16 rounded bg-[#0F2144] text-amber-400 font-serif font-bold text-2xl flex items-center justify-center">
+              <div className="w-16 h-16 rounded bg-[#0F2144] text-amber-400 font-bold text-2xl flex items-center justify-center">
                 VH
               </div>
 
               <div>
-                <h3 className="text-2xl font-bold font-serif text-[#0F2144]">
+                <h3 className="text-2xl font-bold tracking-tight text-[#0F2144]">
                   Luật sư Võ Văn Hoà
                 </h3>
-                <p className="text-xs font-semibold text-slate-500 mt-1 uppercase tracking-wider font-mono">
+                <p className="text-xs font-semibold text-slate-500 mt-1 uppercase tracking-wider">
                   Luật sư Điều hành &bull; Người sáng lập
                 </p>
               </div>
@@ -63,11 +63,11 @@ export default function LawyerBio() {
 
           {/* Cột phải: Giá trị cốt lõi và Tôn chỉ hành nghề */}
           <div className="lg:col-span-7 space-y-6 text-left">
-            <p className="text-xs font-mono font-semibold text-slate-500 uppercase tracking-wider">
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
               Tôn chỉ hành nghề
             </p>
 
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0F2144] tracking-normal font-serif leading-[1.45] sm:leading-[1.4]">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0F2144] tracking-tight leading-[1.35] sm:leading-[1.3]">
               Tận tâm bảo vệ quyền lợi, định hình giải pháp pháp lý vững bền
             </h2>
 

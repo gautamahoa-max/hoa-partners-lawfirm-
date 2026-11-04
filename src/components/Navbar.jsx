@@ -38,7 +38,7 @@ export default function Navbar() {
               <span>Hotline: 098.888.6447</span>
             </a>
             <span className="text-slate-600">|</span>
-            <div className="flex items-center gap-2 text-xs font-mono">
+            <div className="flex items-center gap-2 text-xs font-semibold">
               <button
                 onClick={() => setLang('vi')}
                 className={`${lang === 'vi' ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-white'}`}
@@ -67,10 +67,10 @@ export default function Navbar() {
               <ScaleIcon className="w-5 h-5" />
             </div>
             <div>
-              <span className="text-xl sm:text-2xl font-bold tracking-normal text-[#0F2144] font-serif block leading-normal">
+              <span className="text-xl sm:text-2xl font-bold tracking-tight text-[#0F2144] block leading-normal">
                 HÒA &amp; CỘNG SỰ
               </span>
-              <span className="text-[10px] uppercase font-mono tracking-widest text-slate-500 mt-1 block">
+              <span className="text-[10px] uppercase font-semibold tracking-wider text-slate-500 mt-0.5 block">
                 HOA &amp; ASSOCIATES LAW FIRM
               </span>
             </div>

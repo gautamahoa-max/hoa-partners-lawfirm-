@@ -40,10 +40,10 @@ export default function Testimonials() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="max-w-3xl mb-14 text-left">
-          <p className="text-xs font-mono font-semibold text-slate-500 mb-2 uppercase tracking-wider">
+          <p className="text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wider">
             Hồ sơ thực tiễn
           </p>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0F2144] tracking-normal leading-[1.45] sm:leading-[1.4] font-serif">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0F2144] tracking-tight leading-[1.35] sm:leading-[1.3]">
             Hồ sơ tiêu biểu &amp; Vụ việc thực tế
           </h2>
           <p className="mt-3 text-base text-slate-600 leading-relaxed">
@@ -60,14 +60,14 @@ export default function Testimonials() {
             >
               <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 pb-4 border-b border-slate-100">
                 <div>
-                  <span className="text-xs font-mono font-medium text-slate-500 block mb-1">
+                  <span className="text-xs font-semibold text-slate-500 block mb-1">
                     Cơ quan tài phán: {item.forum}
                   </span>
-                  <h3 className="text-lg font-bold text-[#0F2144] font-serif">
+                  <h3 className="text-lg font-bold text-[#0F2144] tracking-tight">
                     {item.nature}
                   </h3>
                 </div>
-                <div className="text-sm font-semibold text-slate-900 font-mono sm:text-right flex-shrink-0">
+                <div className="text-sm font-bold text-slate-900 sm:text-right flex-shrink-0">
                   Giá trị: {item.value}
                 </div>
               </div>

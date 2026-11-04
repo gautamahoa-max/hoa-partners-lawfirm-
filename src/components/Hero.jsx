@@ -14,13 +14,12 @@ export default function Hero() {
           
           {/* Cột trái: Tuyên ngôn pháp lý tối giản */}
           <div className="lg:col-span-7 space-y-7 text-left">
-            <p className="text-xs font-mono font-medium text-slate-500 uppercase tracking-wider">
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
               Văn phòng Luật sư &bull; Đoàn Luật sư Việt Nam
             </p>
 
             <h1 
-              className="text-2xl sm:text-3xl lg:text-[2.75rem] font-bold text-[#0F2144] tracking-normal font-serif"
-              style={{ lineHeight: 1.55 }}
+              className="text-2xl sm:text-3xl lg:text-[2.65rem] font-bold text-[#0F2144] tracking-tight leading-[1.35] sm:leading-[1.3]"
             >
               Bảo vệ quyền lợi hợp pháp bằng sự chuẩn mực của pháp luật và chiến lược tranh tụng kiên định.
             </h1>
@@ -66,7 +65,7 @@ export default function Hero() {
                     <ScaleIcon className="w-5 h-5" />
                   </div>
                   <div>
-                    <h2 className="text-base font-bold text-[#0F2144] font-serif leading-normal">
+                    <h2 className="text-base font-bold text-[#0F2144] tracking-tight leading-normal">
                       Hòa &amp; Cộng sự
                     </h2>
                     <p className="text-xs text-slate-500">Hãng luật điều hành</p>
@@ -79,7 +78,7 @@ export default function Hero() {
 
               {/* Tuyên ngôn của Luật sư Sáng lập */}
               <div className="space-y-2">
-                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider font-mono">
+                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
                   Tôn chỉ nghề nghiệp
                 </p>
                 <blockquote className="text-sm text-slate-700 italic border-l-2 border-[#0F2144] pl-3.5 py-1 leading-relaxed">

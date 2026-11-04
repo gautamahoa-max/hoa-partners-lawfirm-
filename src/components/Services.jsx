@@ -254,10 +254,10 @@ export default function Services({ onNavigateToPage }) {
         
         {/* Header danh mục chuyên môn tối giản, trang trọng */}
         <div className="max-w-3xl mx-auto text-center mb-14">
-          <p className="text-xs font-mono font-semibold text-slate-500 mb-2.5 uppercase tracking-[0.2em]">
+          <p className="text-xs font-semibold text-slate-500 mb-2.5 uppercase tracking-[0.2em]">
             Lĩnh vực hành nghề &bull; 6 Trụ cột chuyên môn
           </p>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0F2144] tracking-normal leading-[1.4] font-serif">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0F2144] tracking-tight leading-[1.35] sm:leading-[1.3]">
             Các lĩnh vực tư vấn và tranh tụng cốt lõi
           </h2>
           <p className="mt-3.5 text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl mx-auto">
@@ -413,12 +413,12 @@ export default function Services({ onNavigateToPage }) {
               </div>
 
               {/* Nhãn thể loại */}
-              <span className="relative z-10 text-[9px] font-mono font-bold tracking-[0.2em] uppercase text-slate-400">
+              <span className="relative z-10 text-[9px] font-bold tracking-[0.2em] uppercase text-slate-400">
                 TRỤ CỘT CHUYÊN MÔN
               </span>
 
               {/* Tiêu đề lĩnh vực */}
-              <h4 className="relative z-10 text-xs sm:text-[13px] font-bold text-[#0F2144] font-serif leading-snug px-2 line-clamp-2 mt-0.5">
+              <h4 className="relative z-10 text-xs sm:text-[13px] font-bold text-[#0F2144] tracking-tight leading-snug px-2 line-clamp-2 mt-0.5">
                 {currentService.shortName}
               </h4>
 
@@ -473,7 +473,7 @@ export default function Services({ onNavigateToPage }) {
                     <span>Lĩnh vực tư vấn &amp; Tranh tụng</span>
                   </div>
 
-                  <h3 className="text-xl sm:text-2xl font-bold text-[#0F2144] font-serif leading-snug">
+                  <h3 className="text-xl sm:text-2xl font-bold text-[#0F2144] tracking-tight leading-snug">
                     {selectedServiceForModal.title}
                   </h3>
                 </div>
@@ -499,7 +499,7 @@ export default function Services({ onNavigateToPage }) {
 
               {/* Phạm vi giải quyết trọng tâm (4 ô) */}
               <div className="space-y-2 mb-6">
-                <span className="text-xs font-bold font-mono uppercase tracking-wider text-slate-500 block">
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-500 block">
                   PHẠM VI GIẢI QUYẾT TRỌNG TÂM:
                 </span>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-slate-700">

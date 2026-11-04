@@ -17,16 +17,16 @@ export default function Footer() {
           
           {/* Cột trái: Tên hãng luật sang trọng kiểu Cravath */}
           <div>
-            <h2 className="text-2xl sm:text-[1.75rem] font-serif font-bold text-[#0F2144] tracking-wide">
+            <h2 className="text-2xl sm:text-[1.75rem] font-bold text-[#0F2144] tracking-tight">
               HÒA &amp; CỘNG SỰ
             </h2>
-            <p className="text-[11px] font-mono uppercase tracking-[0.2em] text-slate-500 mt-2">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.15em] text-slate-500 mt-2">
               HOA &amp; ASSOCIATES LAW FIRM &bull; LUẬT SƯ VÕ VĂN HOÀ
             </p>
           </div>
 
           {/* Cột phải: Các liên kết chữ hoa tinh giản (Cravath style) */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-16 gap-y-4 text-xs font-mono tracking-widest uppercase text-[#0F2144]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-16 gap-y-4 text-xs font-semibold tracking-wider uppercase text-[#0F2144]">
             <div>
               <a
                 href="tel:0988886447"
@@ -85,7 +85,7 @@ export default function Footer() {
         <div className="border-t border-[#0F2144]/30 mt-14 mb-6" />
 
         {/* Dòng ghi chú bản quyền và thông cáo pháp lý dưới cùng */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-[11px] text-slate-500 font-mono text-left">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-[11px] text-slate-500 font-medium text-left">
           <p>
             Thông tin hành nghề luật sư. &copy; {currentYear} Công ty Luật TNHH Hòa &amp; Cộng sự.
           </p>
