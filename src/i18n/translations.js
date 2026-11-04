@@ -1,7 +1,7 @@
 export const TRANSLATIONS = {
   vi: {
     navbar: {
-      locations: 'Hà Nội • TP. Hồ Chí Minh • Singapore',
+      locations: 'TP.HCM • Đắk Lắk',
       tagline: 'Hãng luật tranh tụng & tư vấn doanh nghiệp',
       hotline: 'Hotline: 098.888.6447',
       firmName: 'HÒA & CỘNG SỰ',
@@ -19,7 +19,7 @@ export const TRANSLATIONS = {
     hero: {
       bar: 'Đoàn Luật sư Việt Nam',
       firm: 'Công ty Luật TNHH Hòa & Cộng sự',
-      locations: 'Hà Nội • TP.HCM • Singapore',
+      locations: 'TP.HCM • Đắk Lắk',
       headline: 'Bảo vệ quyền lợi hợp pháp bằng sự chuẩn mực của pháp luật và chiến lược tranh tụng kiên định.',
       desc: 'Hãng luật chuyên sâu trong lĩnh vực Trọng tài thương mại quốc tế (VIAC, SIAC), Tranh tụng Tòa án các cấp, Mua bán & Sáp nhập (M&A) và Cố vấn pháp chế chiến lược cho các tổ chức kinh tế và nhà đầu tư.',
       p1Tag: '01 • BẢO MẬT TUYỆT ĐỐI',
@@ -186,7 +186,7 @@ export const TRANSLATIONS = {
       degree: 'Thạc sĩ Luật Kinh tế (LL.M) • Cử nhân Luật (LL.B)',
       quote: '“Một người hành nghề Luật giỏi không chỉ nắm vững điều luật, mà phải thấu hiểu bản chất quan hệ kinh tế và đồng hành cùng thân chủ bằng sự liêm chính.”',
       creds: [
-        'Thành viên Liên đoàn Luật sư Việt Nam & Đoàn Luật sư TP. Hà Nội',
+        'Thành viên Liên đoàn Luật sư Việt Nam & Đoàn Luật sư',
         'Hơn 15 năm kinh nghiệm tranh tụng thương mại và đàm phán hợp đồng',
         'Chuyên sâu về Trọng tài quốc tế (VIAC, SIAC), M&A và Bất động sản',
       ],
@@ -275,7 +275,7 @@ export const TRANSLATIONS = {
       practice: 'LĨNH VỰC HÀNH NGHỀ',
       dossier: 'HỒ SƠ TIÊU BIỂU',
       about: 'VỀ CHÚNG TÔI',
-      locations: 'HÀ NỘI • TP.HCM • SINGAPORE',
+      locations: 'TP.HCM • ĐẮK LẮK',
       copyright: 'Thông tin hành nghề luật sư. © {year} Công ty Luật TNHH Hòa & Cộng sự.',
     },
     detailPage: {
@@ -305,7 +305,7 @@ export const TRANSLATIONS = {
 
   en: {
     navbar: {
-      locations: 'Hanoi • Ho Chi Minh City • Singapore',
+      locations: 'HCMC • Dak Lak',
       tagline: 'Litigation & Corporate Advisory Law Firm',
       hotline: 'Hotline: +84 98.888.6447',
       firmName: 'HOA & ASSOCIATES',
@@ -323,7 +323,7 @@ export const TRANSLATIONS = {
     hero: {
       bar: 'Vietnam Bar Federation',
       firm: 'Hoa & Associates Law Firm LLC',
-      locations: 'Hanoi • HCMC • Singapore',
+      locations: 'HCMC • Dak Lak',
       headline: 'Defending client rights through legal excellence and resolute litigation strategy.',
       desc: 'A specialized boutique firm dedicated to International Commercial Arbitration (VIAC, SIAC), Court Litigation across all levels, Mergers & Acquisitions (M&A), and Strategic General Counsel for corporations and investors.',
       p1Tag: '01 • ABSOLUTE PRIVILEGE',
@@ -490,7 +490,7 @@ export const TRANSLATIONS = {
       degree: 'Master of Economic Laws (LL.M) • Bachelor of Laws (LL.B)',
       quote: '“A truly skilled lawyer does not merely master statutory provisions, but deeply grasps the commercial essence of transactions and stands beside clients with absolute integrity.”',
       creds: [
-        'Member of Vietnam Bar Federation & Hanoi Bar Association',
+        'Member of Vietnam Bar Federation & Bar Association',
         'Over 15 years of experience in commercial litigation and high-stakes contract negotiation',
         'Specialized in International Arbitration (VIAC, SIAC), M&A, and Real Estate',
       ],
@@ -579,7 +579,7 @@ export const TRANSLATIONS = {
       practice: 'PRACTICE AREAS',
       dossier: 'CASE DOCKET',
       about: 'ABOUT US',
-      locations: 'HANOI • HCMC • SINGAPORE',
+      locations: 'HCMC • DAK LAK',
       copyright: 'Attorney Advertising. © {year} Hoa & Associates Law Firm LLC.',
     },
     detailPage: {
