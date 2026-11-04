@@ -9,8 +9,13 @@ export const PRACTICE_AREAS = [
     sliceLines: ['Trọng tài', 'Quốc tế'],
     shortDesc: 'Đại diện thân chủ trong các vụ kiện trọng tài phức tạp tại Trung tâm Trọng tài Quốc tế Việt Nam (VIAC), SIAC (Singapore) và ICC.',
     icon: GavelIcon,
-    color: '#1D4789',       // Deep Royal Blue
-    activeColor: '#2563EB', // Electric Blue (illuminated)
+    color: '#0F2648',
+    gradStart: '#0F2648',
+    gradEnd: '#1E477A',
+    activeGradStart: '#1B4783',
+    activeGradEnd: '#2563EB',
+    activeColor: '#2563EB',
+    accentColor: '#93C5FD',
     glowColor: 'rgba(37, 99, 235, 0.45)',
     details: {
       basis: 'Luật Trọng tài Thương mại 2010, Quy tắc Tố tụng VIAC, Quy tắc SIAC và Công ước New York 1958.',
@@ -36,8 +41,13 @@ export const PRACTICE_AREAS = [
     sliceLines: ['Tranh tụng', 'Tòa án'],
     shortDesc: 'Đại diện bảo vệ quyền lợi hợp pháp của thân chủ tại Tòa án nhân dân sơ thẩm, phúc thẩm và giám đốc thẩm trong các vụ án kinh tế, dân sự và đất đai.',
     icon: ScaleIcon,
-    color: '#991B1B',       // Deep Crimson
-    activeColor: '#DC2626', // Bright Crimson Red (illuminated)
+    color: '#55131C',
+    gradStart: '#55131C',
+    gradEnd: '#8A202E',
+    activeGradStart: '#8A202E',
+    activeGradEnd: '#DC2626',
+    activeColor: '#DC2626',
+    accentColor: '#FCA5A5',
     glowColor: 'rgba(220, 38, 38, 0.45)',
     details: {
       basis: 'Bộ luật Tố tụng Dân sự 2015, Bộ luật Dân sự 2015, Luật Tố tụng Hành chính 2015.',
@@ -63,9 +73,14 @@ export const PRACTICE_AREAS = [
     sliceLines: ['Mua bán &', 'Sáp nhập'],
     shortDesc: 'Thẩm định pháp lý (Legal Due Diligence), cấu trúc thương vụ, đàm phán hợp đồng mua bán cổ phần (SPA) và xin chấp thuận tập trung kinh tế.',
     icon: BriefcaseIcon,
-    color: '#B45309',       // Deep Bronze Amber
-    activeColor: '#F59E0B', // Luminous Gold Amber (illuminated)
-    glowColor: 'rgba(245, 158, 11, 0.45)',
+    color: '#633310',
+    gradStart: '#633310',
+    gradEnd: '#9C551F',
+    activeGradStart: '#9C551F',
+    activeGradEnd: '#D97706',
+    activeColor: '#D97706',
+    accentColor: '#FCD34D',
+    glowColor: 'rgba(217, 119, 6, 0.45)',
     details: {
       basis: 'Luật Doanh nghiệp 2020, Luật Đầu tư 2020, Luật Cạnh tranh 2018.',
       scope: [
@@ -90,8 +105,13 @@ export const PRACTICE_AREAS = [
     sliceLines: ['Ngân hàng', '& Tài chính'],
     shortDesc: 'Tư vấn pháp lý cho các định chế tài chính, ngân hàng trong các giao dịch tín dụng hợp vốn, phát hành trái phiếu và tài trợ dự án.',
     icon: LandmarkIcon,
-    color: '#0F766E',       // Deep Teal
-    activeColor: '#0D9488', // Bright Teal / Aqua (illuminated)
+    color: '#0A3B39',
+    gradStart: '#0A3B39',
+    gradEnd: '#176B67',
+    activeGradStart: '#176B67',
+    activeGradEnd: '#0D9488',
+    activeColor: '#0D9488',
+    accentColor: '#5EEAD4',
     glowColor: 'rgba(13, 148, 136, 0.45)',
     details: {
       basis: 'Luật Các tổ chức tín dụng 2024, Luật Chứng khoán 2019, các thông tư của Ngân hàng Nhà nước.',
@@ -117,8 +137,13 @@ export const PRACTICE_AREAS = [
     sliceLines: ['Bất động sản', '& Dự án'],
     shortDesc: 'Tư vấn thủ tục chấp thuận chủ trương đầu tư dự án khu đô thị, khu công nghiệp, hợp đồng xây dựng EPC và giải quyết tranh chấp quyền sử dụng đất.',
     icon: FileTextIcon,
-    color: '#4338CA',       // Deep Indigo
-    activeColor: '#6366F1', // Electric Indigo / Violet (illuminated)
+    color: '#201C53',
+    gradStart: '#201C53',
+    gradEnd: '#403B8C',
+    activeGradStart: '#403B8C',
+    activeGradEnd: '#6366F1',
+    activeColor: '#6366F1',
+    accentColor: '#C7D2FE',
     glowColor: 'rgba(99, 102, 241, 0.45)',
     details: {
       basis: 'Luật Đất đai 2024, Luật Nhà ở 2023, Luật Kinh doanh Bất động sản 2023, Luật Xây dựng.',
@@ -144,8 +169,13 @@ export const PRACTICE_AREAS = [
     sliceLines: ['Pháp chế', 'Doanh nghiệp'],
     shortDesc: 'Cố vấn pháp luật nội bộ trọn gói cho doanh nghiệp: rà soát hợp đồng hàng ngày, quy chế lao động, bảo vệ dữ liệu và giải quyết bất đồng nội bộ.',
     icon: ShieldCheckIcon,
-    color: '#065F46',       // Deep Forest Emerald
-    activeColor: '#10B981', // Bright Emerald Green (illuminated)
+    color: '#093326',
+    gradStart: '#093326',
+    gradEnd: '#175E47',
+    activeGradStart: '#175E47',
+    activeGradEnd: '#10B981',
+    activeColor: '#10B981',
+    accentColor: '#6EE7B7',
     glowColor: 'rgba(16, 185, 129, 0.45)',
     details: {
       basis: 'Luật Doanh nghiệp 2020, Bộ luật Lao động 2019, Nghị định bảo vệ dữ liệu cá nhân (Nghị định 13/2023/NĐ-CP).',
@@ -196,7 +226,6 @@ function describeDonutSlice(cx, cy, rInner, rOuter, startAngle, endAngle) {
 export default function Services({ onNavigateToPage }) {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [selectedServiceForModal, setSelectedServiceForModal] = useState(null);
-  const [viewMode, setViewMode] = useState('donut'); // 'donut' hoặc 'grid'
 
   const activeIndex = hoveredIndex !== null ? hoveredIndex : 0;
   const currentService = PRACTICE_AREAS[activeIndex];
@@ -204,7 +233,7 @@ export default function Services({ onNavigateToPage }) {
 
   const cx = 200;
   const cy = 200;
-  const baseInnerRadius = 98;
+  const baseInnerRadius = 104;
   const baseOuterRadius = 172;
 
   const handleSliceClick = (item) => {
@@ -220,264 +249,189 @@ export default function Services({ onNavigateToPage }) {
   };
 
   return (
-    <section id="linh-vuc" className="py-20 bg-white border-b border-slate-200">
+    <section id="linh-vuc" className="py-20 sm:py-24 bg-white border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Header danh mục & Nút chuyển chế độ xem */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 text-left">
-          <div className="max-w-3xl">
-            <p className="text-xs font-mono font-semibold text-slate-500 mb-2 uppercase tracking-wider">
-              Lĩnh vực hành nghề &bull; 6 Trụ cột chuyên môn
-            </p>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0F2144] tracking-normal leading-[1.45] sm:leading-[1.4] font-serif">
-              Các lĩnh vực tư vấn và tranh tụng cốt lõi
-            </h2>
-            <p className="mt-3 text-base text-slate-600 leading-relaxed">
-              Mỗi lĩnh vực là một mảnh ghép chuyên sâu. Nhấp vào từng mảnh bánh donut để mở hồ sơ hoặc xem chi tiết toàn diện ở trang riêng.
-            </p>
-          </div>
-
-          {/* Bộ chọn giao diện: Donut hoặc Lưới */}
-          <div className="flex items-center gap-1 p-1 bg-[#F1F3F5] rounded-lg self-start md:self-auto border border-slate-200">
-            <button
-              onClick={() => setViewMode('donut')}
-              className={`px-3.5 py-1.5 rounded text-xs font-semibold transition-all ${
-                viewMode === 'donut'
-                  ? 'bg-white text-[#0F2144] shadow-sm'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              Biểu đồ Donut
-            </button>
-            <button
-              onClick={() => setViewMode('grid')}
-              className={`px-3.5 py-1.5 rounded text-xs font-semibold transition-all ${
-                viewMode === 'grid'
-                  ? 'bg-white text-[#0F2144] shadow-sm'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              Lưới 6 thẻ
-            </button>
-          </div>
+        {/* Header danh mục chuyên môn tối giản, trang trọng */}
+        <div className="max-w-3xl mx-auto text-center mb-14">
+          <p className="text-xs font-mono font-semibold text-slate-500 mb-2.5 uppercase tracking-[0.2em]">
+            Lĩnh vực hành nghề &bull; 6 Trụ cột chuyên môn
+          </p>
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0F2144] tracking-normal leading-[1.4] font-serif">
+            Các lĩnh vực tư vấn và tranh tụng cốt lõi
+          </h2>
+          <p className="mt-3.5 text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl mx-auto">
+            Mỗi lĩnh vực được phụ trách chuyên sâu bởi đội ngũ Hòa &amp; Cộng sự, cam kết bảo vệ tối đa quyền lợi hợp pháp và giá trị thương vụ cho thân chủ.
+          </p>
         </div>
 
-        {/* ================= CHẾ ĐỘ 1: BIỂU ĐỒ DONUT (TRUNG TÂM, TINH GỌN) ================= */}
-        {viewMode === 'donut' && (
-          <div className="flex flex-col items-center">
+        {/* ================= BIỂU ĐỒ VÒNG TRÒN TƯƠNG TÁC CAO CẤP ================= */}
+        <div className="flex flex-col items-center">
+          
+          {/* Vòng tròn tương tác 6 phân khúc chuẩn Precision Dial */}
+          <div className="relative w-full max-w-[440px] aspect-square flex items-center justify-center my-2">
             
-            {/* Vòng bánh Donut 6 mảnh tương tác đặt tại trung tâm */}
-            <div className="relative w-full max-w-[440px] aspect-square flex items-center justify-center my-4">
-              
-              <svg
-                viewBox="0 0 400 400"
-                className="w-full h-full overflow-visible drop-shadow-sm select-none"
-              >
-                <defs>
-                  {PRACTICE_AREAS.map((item, i) => (
-                    <filter key={`glow-${i}`} id={`donut-glow-${i}`} x="-20%" y="-20%" width="140%" height="140%">
-                      <feDropShadow dx="0" dy="6" stdDeviation="8" floodColor={item.glowColor} />
+            <svg
+              viewBox="0 0 400 400"
+              className="w-full h-full overflow-visible drop-shadow-md select-none"
+            >
+              <defs>
+                {PRACTICE_AREAS.map((item, i) => (
+                  <React.Fragment key={`defs-${i}`}>
+                    <linearGradient id={`slice-grad-${i}`} x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor={item.gradStart} />
+                      <stop offset="100%" stopColor={item.gradEnd} />
+                    </linearGradient>
+                    <linearGradient id={`slice-grad-active-${i}`} x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor={item.activeGradStart} />
+                      <stop offset="100%" stopColor={item.activeGradEnd} />
+                    </linearGradient>
+                    <filter id={`donut-glow-${i}`} x="-30%" y="-30%" width="160%" height="160%">
+                      <feDropShadow dx="0" dy="8" stdDeviation="10" floodColor={item.glowColor} />
                     </filter>
-                  ))}
-                </defs>
+                  </React.Fragment>
+                ))}
+              </defs>
 
-                {/* Vòng viền trang trí trang nhã */}
-                <circle cx={cx} cy={cy} r={baseOuterRadius + 4} fill="none" stroke="#F1F3F5" strokeWidth="2" strokeDasharray="4 4" />
+              {/* Vòng viền định vị chuẩn xác phong cách chế tác cao cấp */}
+              <circle cx={cx} cy={cy} r={baseOuterRadius + 6} fill="none" stroke="#E2E8F0" strokeWidth="1" opacity="0.6" />
+              <circle cx={cx} cy={cy} r={baseInnerRadius - 6} fill="none" stroke="#E2E8F0" strokeWidth="1" opacity="0.6" />
 
-                {/* 6 mảnh Donut */}
-                {PRACTICE_AREAS.map((item, i) => {
-                  const isSliceActive = hoveredIndex === i;
-                  const hasActive = hoveredIndex !== null;
+              {/* 6 mảnh ghép phân khúc vòm */}
+              {PRACTICE_AREAS.map((item, i) => {
+                const isSliceActive = hoveredIndex === i;
+                const hasActive = hoveredIndex !== null;
 
-                  // Góc bắt đầu và kết thúc với khe hở 3 độ giữa các mảnh
-                  const startAngle = i * 60 + 1.5;
-                  const endAngle = (i + 1) * 60 - 1.5;
-                  const midAngle = i * 60 + 30;
+                // Góc bắt đầu và kết thúc với khe hở mảnh 2.2 độ
+                const startAngle = i * 60 + 1.2;
+                const endAngle = (i + 1) * 60 - 1.2;
+                const midAngle = i * 60 + 30;
 
-                  // Độ giãn bán kính khi active: to lên 1 chút (outer +12px, inner -4px)
-                  const rOuter = isSliceActive ? baseOuterRadius + 12 : baseOuterRadius;
-                  const rInner = isSliceActive ? baseInnerRadius - 4 : baseInnerRadius;
+                // Khi active: mở rộng bán kính và đẩy tâm ra ngoài
+                const rOuter = isSliceActive ? baseOuterRadius + 12 : baseOuterRadius;
+                const rInner = isSliceActive ? baseInnerRadius - 3 : baseInnerRadius;
 
-                  // Độ đẩy tâm ra phía ngoài theo góc (offset 10px)
-                  const offsetDistance = isSliceActive ? 10 : 0;
-                  const offsetAngleRad = ((midAngle - 90) * Math.PI) / 180.0;
-                  const tx = Math.cos(offsetAngleRad) * offsetDistance;
-                  const ty = Math.sin(offsetAngleRad) * offsetDistance;
+                const offsetDistance = isSliceActive ? 10 : 0;
+                const offsetAngleRad = ((midAngle - 90) * Math.PI) / 180.0;
+                const tx = Math.cos(offsetAngleRad) * offsetDistance;
+                const ty = Math.sin(offsetAngleRad) * offsetDistance;
 
-                  // Vị trí hiển thị chữ trên mảnh bánh
-                  const labelRadius = (rInner + rOuter) / 2;
-                  const labelPos = polarToCartesian(cx, cy, labelRadius, midAngle);
+                const labelRadius = (rInner + rOuter) / 2;
+                const labelPos = polarToCartesian(cx, cy, labelRadius, midAngle);
+                const tickPos = polarToCartesian(cx, cy, baseOuterRadius + 6, midAngle);
 
-                  const slicePath = describeDonutSlice(cx, cy, rInner, rOuter, startAngle, endAngle);
+                const slicePath = describeDonutSlice(cx, cy, rInner, rOuter, startAngle, endAngle);
 
-                  return (
-                    <g
-                      key={item.id}
-                      className="cursor-pointer transition-all duration-300 ease-out"
-                      transform={`translate(${tx.toFixed(2)}, ${ty.toFixed(2)})`}
-                      onClick={() => handleSliceClick(item)}
-                      onMouseEnter={() => setHoveredIndex(i)}
-                      onMouseLeave={() => setHoveredIndex(null)}
-                      onTouchStart={() => setHoveredIndex(i)}
-                    >
-                      {/* Đường path của mảnh */}
-                      <path
-                        d={slicePath}
-                        fill={isSliceActive ? item.activeColor : item.color}
-                        filter={isSliceActive ? `url(#donut-glow-${i})` : 'none'}
-                        opacity={isSliceActive ? 1 : hasActive ? 0.65 : 0.9}
-                        stroke="#FFFFFF"
-                        strokeWidth={isSliceActive ? '3' : '2'}
-                        className="transition-all duration-300 ease-out"
+                return (
+                  <g
+                    key={item.id}
+                    className="cursor-pointer transition-all duration-300 ease-out"
+                    transform={`translate(${tx.toFixed(2)}, ${ty.toFixed(2)})`}
+                    onClick={() => handleSliceClick(item)}
+                    onMouseEnter={() => setHoveredIndex(i)}
+                    onMouseLeave={() => setHoveredIndex(null)}
+                    onTouchStart={() => setHoveredIndex(i)}
+                  >
+                    {/* Đường vòm mảnh ghép với gradient chuyển sắc sâu thẳm */}
+                    <path
+                      d={slicePath}
+                      fill={isSliceActive ? `url(#slice-grad-active-${i})` : `url(#slice-grad-${i})`}
+                      filter={isSliceActive ? `url(#donut-glow-${i})` : 'none'}
+                      opacity={isSliceActive ? 1 : hasActive ? 0.48 : 0.94}
+                      stroke="#FFFFFF"
+                      strokeWidth={isSliceActive ? '2.5' : '1.5'}
+                      className="transition-all duration-300 ease-out"
+                    />
+
+                    {/* Điểm nhấn viền ngoài khi active */}
+                    {isSliceActive && (
+                      <circle
+                        cx={tickPos.x - tx}
+                        cy={tickPos.y - ty}
+                        r={3.5}
+                        fill={item.activeColor}
+                        className="animate-pulse"
                       />
+                    )}
 
-                      {/* Tên lĩnh vực đầy đủ 2 dòng trên mảnh bánh */}
-                      <g transform={`translate(${labelPos.x.toFixed(2)}, ${labelPos.y.toFixed(2)})`} className="pointer-events-none select-none">
-                        <text
-                          textAnchor="middle"
-                          y={-5}
-                          fill="#FFFFFF"
-                          fontSize={isSliceActive ? '11.5' : '10.5'}
-                          fontWeight="700"
-                          className="transition-all duration-300 drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
-                        >
-                          {item.sliceLines[0]}
-                        </text>
-                        <text
-                          textAnchor="middle"
-                          y={9}
-                          fill="#FFFFFF"
-                          fontSize={isSliceActive ? '11' : '10'}
-                          fontWeight="600"
-                          className="transition-all duration-300 drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
-                        >
-                          {item.sliceLines[1]}
-                        </text>
-                      </g>
+                    {/* Nội dung nhãn chuyên môn trên mảnh ghép */}
+                    <g transform={`translate(${labelPos.x.toFixed(2)}, ${labelPos.y.toFixed(2)})`} className="pointer-events-none select-none">
+                      {/* Hạt chỉ thị tinh xảo */}
+                      <circle
+                        cx={0}
+                        cy={-14}
+                        r={isSliceActive ? 3.5 : 2.5}
+                        fill={isSliceActive ? item.accentColor : 'rgba(255, 255, 255, 0.75)'}
+                        className="transition-all duration-300"
+                      />
+                      <text
+                        textAnchor="middle"
+                        y={-1}
+                        fill="#FFFFFF"
+                        fontSize={isSliceActive ? '11.5' : '10.5'}
+                        fontWeight="700"
+                        letterSpacing="0.25px"
+                        className="transition-all duration-300 font-sans drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
+                      >
+                        {item.sliceLines[0]}
+                      </text>
+                      <text
+                        textAnchor="middle"
+                        y={13}
+                        fill={isSliceActive ? '#FFFFFF' : 'rgba(255, 255, 255, 0.92)'}
+                        fontSize={isSliceActive ? '10.5' : '9.5'}
+                        fontWeight="600"
+                        letterSpacing="0.25px"
+                        className="transition-all duration-300 font-sans drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
+                      >
+                        {item.sliceLines[1]}
+                      </text>
                     </g>
-                  );
-                })}
-              </svg>
+                  </g>
+                );
+              })}
+            </svg>
 
-              {/* Trung tâm lỗ bánh Donut (Center Hub tương tác) */}
+            {/* Trung tâm vòng tròn: Thiết kế Chronometer sang trọng, đa tầng */}
+            <div
+              onClick={() => handleSliceClick(currentService)}
+              className="absolute w-[182px] h-[182px] rounded-full bg-white border border-slate-200 shadow-[0_16px_40px_-10px_rgba(15,33,68,0.12)] p-4 flex flex-col items-center justify-center text-center cursor-pointer hover:shadow-[0_22px_50px_-10px_rgba(15,33,68,0.22)] hover:border-slate-300 transition-all duration-300 group"
+              title="Nhấp để xem hồ sơ lĩnh vực"
+            >
+              {/* Viền hairline trang nhã bên trong */}
+              <div className="absolute inset-2 rounded-full border border-slate-100 pointer-events-none" />
+
+              {/* Huy hiệu biểu tượng chuyên môn */}
               <div
-                onClick={() => handleSliceClick(currentService)}
-                className="absolute w-[172px] h-[172px] rounded-full bg-[#FAF9F6] border-2 border-slate-200/90 shadow-inner flex flex-col items-center justify-center p-3 text-center cursor-pointer hover:bg-white hover:border-slate-300 transition-all group"
-                title="Nhấp để xem hồ sơ lĩnh vực"
+                className="relative z-10 w-11 h-11 rounded-full flex items-center justify-center shadow-md transition-transform duration-300 group-hover:scale-110 mb-1"
+                style={{
+                  background: `linear-gradient(135deg, ${currentService.activeGradStart}, ${currentService.activeGradEnd})`,
+                  color: '#FFFFFF',
+                }}
               >
-                <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center mb-1.5 transition-transform group-hover:scale-110 shadow-sm"
-                  style={{ backgroundColor: currentService.activeColor, color: '#FFFFFF' }}
-                >
-                  <CurrentIcon className="w-5 h-5 text-white" />
-                </div>
-
-                <p
-                  className="text-[10px] font-bold tracking-wider uppercase mb-0.5"
-                  style={{ color: currentService.activeColor }}
-                >
-                  Lĩnh vực chuyên môn
-                </p>
-
-                <h4 className="text-xs sm:text-[13px] font-bold text-[#0F2144] line-clamp-2 px-1 font-serif leading-tight">
-                  {currentService.shortName}
-                </h4>
-
-                <span className="text-[10px] text-slate-500 mt-1 font-medium group-hover:text-[#0F2144] flex items-center gap-0.5">
-                  Nhấp xem tóm tắt &rarr;
-                </span>
+                <CurrentIcon className="w-5 h-5 text-white" />
               </div>
 
-            </div>
+              {/* Nhãn thể loại */}
+              <span className="relative z-10 text-[9px] font-mono font-bold tracking-[0.2em] uppercase text-slate-400">
+                TRỤ CỘT CHUYÊN MÔN
+              </span>
 
-            <p className="text-xs text-slate-500 mt-4 font-medium text-center">
-              💡 Chạm vào từng mảnh bánh donut để xem tóm tắt hồ sơ &amp; chuyển sang trang chi tiết
-            </p>
+              {/* Tiêu đề lĩnh vực */}
+              <h4 className="relative z-10 text-xs sm:text-[13px] font-bold text-[#0F2144] font-serif leading-snug px-2 line-clamp-2 mt-0.5">
+                {currentService.shortName}
+              </h4>
 
-            {/* Dải 6 chip chọn nhanh bên dưới bánh Donut */}
-            <div className="w-full max-w-4xl mt-10 pt-6 border-t border-slate-200">
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
-                {PRACTICE_AREAS.map((item, i) => {
-                  const isHovered = hoveredIndex === i;
-                  return (
-                    <button
-                      key={item.id}
-                      onClick={() => handleSliceClick(item)}
-                      onMouseEnter={() => setHoveredIndex(i)}
-                      onMouseLeave={() => setHoveredIndex(null)}
-                      className={`px-3 py-2.5 rounded-lg border text-left transition-all flex items-center gap-2 ${
-                        isHovered
-                          ? 'bg-white shadow-sm scale-[1.02]'
-                          : 'bg-[#FAF9F6] hover:bg-white text-slate-600 border-slate-200'
-                      }`}
-                      style={{
-                        borderColor: isHovered ? item.activeColor : '#E2E8F0',
-                      }}
-                    >
-                      <span
-                        className="w-2.5 h-2.5 rounded-full flex-shrink-0"
-                        style={{ backgroundColor: isHovered ? item.activeColor : item.color }}
-                      />
-                      <div className="truncate">
-                        <span className="text-xs font-semibold text-slate-800 truncate block">
-                          {item.shortName}
-                        </span>
-                      </div>
-                    </button>
-                  );
-                })}
+              {/* Nút gợi ý hành động tinh gọn */}
+              <div className="relative z-10 mt-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-semibold tracking-wide bg-slate-50 text-slate-700 border border-slate-200/80 group-hover:bg-[#0F2144] group-hover:text-white group-hover:border-[#0F2144] transition-all duration-300 shadow-sm">
+                <span>Xem hồ sơ</span>
+                <span className="transition-transform group-hover:translate-x-0.5">&rarr;</span>
               </div>
             </div>
 
           </div>
-        )}
 
-        {/* ================= CHẾ ĐỘ 2: LƯỚI 6 THẺ TRUYỀN THỐNG ================= */}
-        {viewMode === 'grid' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-slate-200 border border-slate-200 rounded-lg overflow-hidden">
-            {PRACTICE_AREAS.map((service) => {
-              const Icon = service.icon;
-              return (
-                <div
-                  key={service.id}
-                  role="button"
-                  tabIndex={0}
-                  onClick={() => handleSliceClick(service)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                      handleSliceClick(service);
-                    }
-                  }}
-                  className="bg-white p-7 sm:p-8 hover:bg-[#FAF9F6] transition-colors cursor-pointer text-left flex flex-col justify-between group"
-                >
-                  <div>
-                    <div className="flex items-center justify-between mb-5">
-                      <span
-                        className="w-2.5 h-2.5 rounded-full"
-                        style={{ backgroundColor: service.activeColor }}
-                      />
-                      <Icon className="w-5 h-5 text-slate-600 group-hover:text-[#0F2144] transition-colors" />
-                    </div>
-
-                    <h3 className="text-lg font-bold text-[#0F2144] font-serif leading-snug group-hover:text-[#142859] transition-colors">
-                      {service.title}
-                    </h3>
-
-                    <p className="mt-3 text-xs sm:text-sm text-slate-600 leading-relaxed">
-                      {service.shortDesc}
-                    </p>
-                  </div>
-
-                  <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-                    <span className="truncate pr-2">Căn cứ: {service.details.basis.split(',')[0]}</span>
-                    <span className="text-[#0F2144] font-semibold whitespace-nowrap group-hover:underline">Chi tiết</span>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
+        </div>
 
         {/* ================= MODAL HIỂN THỊ THẺ TÓM TẮT KHI NHẤP VÀO 1 MẢNH ================= */}
         {selectedServiceForModal && (
