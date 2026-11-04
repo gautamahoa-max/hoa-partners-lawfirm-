@@ -125,9 +125,6 @@ export default function Services({ onNavigateToPage }) {
         
         {/* Header danh mục chuyên môn tối giản, trang trọng */}
         <div className="max-w-3xl mx-auto text-center mb-14">
-          <p className="text-xs font-semibold text-slate-500 mb-2.5 uppercase tracking-[0.2em]">
-            {servicesText.eyebrow}
-          </p>
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0F2144] tracking-tight leading-[1.35] sm:leading-[1.3]">
             {servicesText.title}
           </h2>
