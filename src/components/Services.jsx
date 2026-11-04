@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { GavelIcon, BriefcaseIcon, FileTextIcon, LandmarkIcon, ShieldCheckIcon, ScaleIcon } from './Icons';
+import { GavelIcon, BriefcaseIcon, FileTextIcon, LandmarkIcon, ShieldCheckIcon, ScaleIcon, CloseIcon, CheckCircleIcon } from './Icons';
 
 export const PRACTICE_AREAS = [
   {
@@ -12,7 +12,6 @@ export const PRACTICE_AREAS = [
     color: '#1D4789',       // Deep Royal Blue
     activeColor: '#2563EB', // Electric Blue (illuminated)
     glowColor: 'rgba(37, 99, 235, 0.45)',
-    accentBg: 'bg-blue-50 text-blue-900 border-blue-200',
     details: {
       basis: 'Luật Trọng tài Thương mại 2010, Quy tắc Tố tụng VIAC, Quy tắc SIAC và Công ước New York 1958.',
       scope: [
@@ -40,7 +39,6 @@ export const PRACTICE_AREAS = [
     color: '#991B1B',       // Deep Crimson
     activeColor: '#DC2626', // Bright Crimson Red (illuminated)
     glowColor: 'rgba(220, 38, 38, 0.45)',
-    accentBg: 'bg-red-50 text-red-900 border-red-200',
     details: {
       basis: 'Bộ luật Tố tụng Dân sự 2015, Bộ luật Dân sự 2015, Luật Tố tụng Hành chính 2015.',
       scope: [
@@ -68,7 +66,6 @@ export const PRACTICE_AREAS = [
     color: '#B45309',       // Deep Bronze Amber
     activeColor: '#F59E0B', // Luminous Gold Amber (illuminated)
     glowColor: 'rgba(245, 158, 11, 0.45)',
-    accentBg: 'bg-amber-50 text-amber-900 border-amber-200',
     details: {
       basis: 'Luật Doanh nghiệp 2020, Luật Đầu tư 2020, Luật Cạnh tranh 2018.',
       scope: [
@@ -96,7 +93,6 @@ export const PRACTICE_AREAS = [
     color: '#0F766E',       // Deep Teal
     activeColor: '#0D9488', // Bright Teal / Aqua (illuminated)
     glowColor: 'rgba(13, 148, 136, 0.45)',
-    accentBg: 'bg-teal-50 text-teal-900 border-teal-200',
     details: {
       basis: 'Luật Các tổ chức tín dụng 2024, Luật Chứng khoán 2019, các thông tư của Ngân hàng Nhà nước.',
       scope: [
@@ -124,7 +120,6 @@ export const PRACTICE_AREAS = [
     color: '#4338CA',       // Deep Indigo
     activeColor: '#6366F1', // Electric Indigo / Violet (illuminated)
     glowColor: 'rgba(99, 102, 241, 0.45)',
-    accentBg: 'bg-indigo-50 text-indigo-900 border-indigo-200',
     details: {
       basis: 'Luật Đất đai 2024, Luật Nhà ở 2023, Luật Kinh doanh Bất động sản 2023, Luật Xây dựng.',
       scope: [
@@ -152,7 +147,6 @@ export const PRACTICE_AREAS = [
     color: '#065F46',       // Deep Forest Emerald
     activeColor: '#10B981', // Bright Emerald Green (illuminated)
     glowColor: 'rgba(16, 185, 129, 0.45)',
-    accentBg: 'bg-emerald-50 text-emerald-900 border-emerald-200',
     details: {
       basis: 'Luật Doanh nghiệp 2020, Bộ luật Lao động 2019, Nghị định bảo vệ dữ liệu cá nhân (Nghị định 13/2023/NĐ-CP).',
       scope: [
@@ -199,12 +193,12 @@ function describeDonutSlice(cx, cy, rInner, rOuter, startAngle, endAngle) {
   ].join(' ');
 }
 
-export default function Services({ onSelectService }) {
-  const [selectedIndex, setSelectedIndex] = useState(0);
+export default function Services({ onNavigateToPage }) {
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [selectedServiceForModal, setSelectedServiceForModal] = useState(null);
   const [viewMode, setViewMode] = useState('donut'); // 'donut' hoặc 'grid'
 
-  const activeIndex = hoveredIndex !== null ? hoveredIndex : selectedIndex;
+  const activeIndex = hoveredIndex !== null ? hoveredIndex : 0;
   const currentService = PRACTICE_AREAS[activeIndex];
   const CurrentIcon = currentService.icon;
 
@@ -212,6 +206,18 @@ export default function Services({ onSelectService }) {
   const cy = 200;
   const baseInnerRadius = 105;
   const baseOuterRadius = 172;
+
+  const handleSliceClick = (item) => {
+    // Chỉ hiện ra phần thông tin tóm tắt khi nhấp vào 1 mảnh (dạng popup/modal)
+    setSelectedServiceForModal(item);
+  };
+
+  const handleOpenDetailPage = (serviceId) => {
+    setSelectedServiceForModal(null);
+    if (onNavigateToPage) {
+      onNavigateToPage(serviceId);
+    }
+  };
 
   return (
     <section id="linh-vuc" className="py-20 bg-white border-b border-slate-200">
@@ -227,7 +233,7 @@ export default function Services({ onSelectService }) {
               Các lĩnh vực tư vấn và tranh tụng cốt lõi
             </h2>
             <p className="mt-3 text-base text-slate-600 leading-relaxed">
-              Mỗi lĩnh vực được phân chia thành một mảnh ghép trong hệ sinh thái pháp lý toàn diện của hãng luật. Chạm vào từng mảnh trên biểu đồ tròn để khám phá năng lực chuyên sâu.
+              Mỗi lĩnh vực là một mảnh ghép chuyên sâu. Nhấp vào từng mảnh bánh donut để mở hồ sơ hoặc xem chi tiết toàn diện ở trang riêng.
             </p>
           </div>
 
@@ -256,259 +262,165 @@ export default function Services({ onSelectService }) {
           </div>
         </div>
 
-        {/* ================= CHẾ ĐỘ 1: BIỂU ĐỒ DONUT (MẶC ĐỊNH) ================= */}
+        {/* ================= CHẾ ĐỘ 1: BIỂU ĐỒ DONUT (TRUNG TÂM, TINH GỌN) ================= */}
         {viewMode === 'donut' && (
-          <div className="space-y-10">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+          <div className="flex flex-col items-center">
+            
+            {/* Vòng bánh Donut 6 mảnh tương tác đặt tại trung tâm */}
+            <div className="relative w-full max-w-[440px] aspect-square flex items-center justify-center my-4">
               
-              {/* Cột Trái: Bánh Donut 6 mảnh tương tác */}
-              <div className="lg:col-span-6 flex flex-col items-center">
-                <div className="relative w-full max-w-[420px] aspect-square flex items-center justify-center">
-                  
-                  <svg
-                    viewBox="0 0 400 400"
-                    className="w-full h-full overflow-visible drop-shadow-sm select-none"
-                  >
-                    <defs>
-                      {PRACTICE_AREAS.map((item, i) => (
-                        <filter key={`glow-${i}`} id={`donut-glow-${i}`} x="-20%" y="-20%" width="140%" height="140%">
-                          <feDropShadow dx="0" dy="6" stdDeviation="8" floodColor={item.glowColor} />
-                        </filter>
-                      ))}
-                    </defs>
+              <svg
+                viewBox="0 0 400 400"
+                className="w-full h-full overflow-visible drop-shadow-sm select-none"
+              >
+                <defs>
+                  {PRACTICE_AREAS.map((item, i) => (
+                    <filter key={`glow-${i}`} id={`donut-glow-${i}`} x="-20%" y="-20%" width="140%" height="140%">
+                      <feDropShadow dx="0" dy="6" stdDeviation="8" floodColor={item.glowColor} />
+                    </filter>
+                  ))}
+                </defs>
 
-                    {/* Vòng nền mờ trang nhã */}
-                    <circle cx={cx} cy={cy} r={baseOuterRadius + 4} fill="none" stroke="#F1F3F5" strokeWidth="2" strokeDasharray="4 4" />
+                {/* Vòng viền trang trí trang nhã */}
+                <circle cx={cx} cy={cy} r={baseOuterRadius + 4} fill="none" stroke="#F1F3F5" strokeWidth="2" strokeDasharray="4 4" />
 
-                    {/* 6 mảnh Donut */}
-                    {PRACTICE_AREAS.map((item, i) => {
-                      const isSliceActive = activeIndex === i;
-                      const hasActive = activeIndex !== null;
+                {/* 6 mảnh Donut */}
+                {PRACTICE_AREAS.map((item, i) => {
+                  const isSliceActive = hoveredIndex === i;
+                  const hasActive = hoveredIndex !== null;
 
-                      // Góc bắt đầu và kết thúc với khe hở 3 độ giữa các mảnh
-                      const startAngle = i * 60 + 1.5;
-                      const endAngle = (i + 1) * 60 - 1.5;
-                      const midAngle = i * 60 + 30;
+                  // Góc bắt đầu và kết thúc với khe hở 3 độ giữa các mảnh
+                  const startAngle = i * 60 + 1.5;
+                  const endAngle = (i + 1) * 60 - 1.5;
+                  const midAngle = i * 60 + 30;
 
-                      // Độ giãn bán kính khi active: to lên 1 chút (outer +14px, inner -6px)
-                      const rOuter = isSliceActive ? baseOuterRadius + 14 : baseOuterRadius;
-                      const rInner = isSliceActive ? baseInnerRadius - 6 : baseInnerRadius;
+                  // Độ giãn bán kính khi active: to lên 1 chút (outer +14px, inner -6px)
+                  const rOuter = isSliceActive ? baseOuterRadius + 14 : baseOuterRadius;
+                  const rInner = isSliceActive ? baseInnerRadius - 6 : baseInnerRadius;
 
-                      // Độ đẩy tâm ra phía ngoài theo góc (offset 12px)
-                      const offsetDistance = isSliceActive ? 12 : 0;
-                      const offsetAngleRad = ((midAngle - 90) * Math.PI) / 180.0;
-                      const tx = Math.cos(offsetAngleRad) * offsetDistance;
-                      const ty = Math.sin(offsetAngleRad) * offsetDistance;
+                  // Độ đẩy tâm ra phía ngoài theo góc (offset 12px)
+                  const offsetDistance = isSliceActive ? 12 : 0;
+                  const offsetAngleRad = ((midAngle - 90) * Math.PI) / 180.0;
+                  const tx = Math.cos(offsetAngleRad) * offsetDistance;
+                  const ty = Math.sin(offsetAngleRad) * offsetDistance;
 
-                      // Vị trí hiển thị chữ mã hiệu trên mảnh bánh
-                      const labelRadius = (rInner + rOuter) / 2;
-                      const labelPos = polarToCartesian(cx, cy, labelRadius, midAngle);
+                  // Vị trí hiển thị chữ mã hiệu trên mảnh bánh
+                  const labelRadius = (rInner + rOuter) / 2;
+                  const labelPos = polarToCartesian(cx, cy, labelRadius, midAngle);
 
-                      const slicePath = describeDonutSlice(cx, cy, rInner, rOuter, startAngle, endAngle);
+                  const slicePath = describeDonutSlice(cx, cy, rInner, rOuter, startAngle, endAngle);
 
-                      return (
-                        <g
-                          key={item.id}
-                          className="cursor-pointer transition-all duration-300 ease-out"
-                          transform={`translate(${tx.toFixed(2)}, ${ty.toFixed(2)})`}
-                          onClick={() => {
-                            setSelectedIndex(i);
-                            onSelectService(item);
-                          }}
-                          onMouseEnter={() => setHoveredIndex(i)}
-                          onMouseLeave={() => setHoveredIndex(null)}
-                          onTouchStart={() => setSelectedIndex(i)}
+                  return (
+                    <g
+                      key={item.id}
+                      className="cursor-pointer transition-all duration-300 ease-out"
+                      transform={`translate(${tx.toFixed(2)}, ${ty.toFixed(2)})`}
+                      onClick={() => handleSliceClick(item)}
+                      onMouseEnter={() => setHoveredIndex(i)}
+                      onMouseLeave={() => setHoveredIndex(null)}
+                      onTouchStart={() => setHoveredIndex(i)}
+                    >
+                      {/* Đường path của mảnh */}
+                      <path
+                        d={slicePath}
+                        fill={isSliceActive ? item.activeColor : item.color}
+                        filter={isSliceActive ? `url(#donut-glow-${i})` : 'none'}
+                        opacity={isSliceActive ? 1 : hasActive ? 0.65 : 0.9}
+                        stroke="#FFFFFF"
+                        strokeWidth={isSliceActive ? '3' : '2'}
+                        className="transition-all duration-300 ease-out"
+                      />
+
+                      {/* Nhãn mã hiệu & tên viết tắt trên mảnh */}
+                      <g transform={`translate(${labelPos.x}, ${labelPos.y})`} className="pointer-events-none select-none">
+                        <text
+                          textAnchor="middle"
+                          y={-3}
+                          fill="#FFFFFF"
+                          fontSize={isSliceActive ? '13' : '11.5'}
+                          fontWeight="bold"
+                          fontFamily="monospace"
+                          className="transition-all duration-300 drop-shadow-sm"
                         >
-                          {/* Đường path của mảnh */}
-                          <path
-                            d={slicePath}
-                            fill={isSliceActive ? item.activeColor : item.color}
-                            filter={isSliceActive ? `url(#donut-glow-${i})` : 'none'}
-                            opacity={isSliceActive ? 1 : hasActive ? 0.65 : 0.9}
-                            stroke={isSliceActive ? '#FFFFFF' : '#FFFFFF'}
-                            strokeWidth={isSliceActive ? '3' : '2'}
-                            className="transition-all duration-300 ease-out"
-                          />
+                          {item.code}
+                        </text>
+                        <text
+                          textAnchor="middle"
+                          y={12}
+                          fill="rgba(255, 255, 255, 0.95)"
+                          fontSize={isSliceActive ? '10' : '9'}
+                          fontWeight="600"
+                          className="transition-all duration-300 drop-shadow-sm"
+                        >
+                          {item.shortName.split(' ')[0]}
+                        </text>
+                      </g>
+                    </g>
+                  );
+                })}
+              </svg>
 
-                          {/* Nhãn mã hiệu & tên viết tắt trên mảnh */}
-                          <g transform={`translate(${labelPos.x}, ${labelPos.y})`} className="pointer-events-none select-none">
-                            <text
-                              textAnchor="middle"
-                              y={-3}
-                              fill="#FFFFFF"
-                              fontSize={isSliceActive ? '13' : '11.5'}
-                              fontWeight="bold"
-                              fontFamily="monospace"
-                              className="transition-all duration-300 drop-shadow-sm"
-                            >
-                              {item.code}
-                            </text>
-                            <text
-                              textAnchor="middle"
-                              y={12}
-                              fill="rgba(255, 255, 255, 0.92)"
-                              fontSize={isSliceActive ? '10' : '9'}
-                              fontWeight="600"
-                              className="transition-all duration-300 drop-shadow-sm"
-                            >
-                              {item.shortName.split(' ')[0]}
-                            </text>
-                          </g>
-                        </g>
-                      );
-                    })}
-                  </svg>
-
-                  {/* Trung tâm lỗ bánh Donut (Center Hub tương tác) */}
-                  <div
-                    onClick={() => onSelectService(currentService)}
-                    className="absolute w-[184px] h-[184px] rounded-full bg-[#FAF9F6] border-2 border-slate-200/90 shadow-inner flex flex-col items-center justify-center p-3 text-center cursor-pointer hover:bg-white hover:border-slate-300 transition-all group"
-                    title="Bấm để xem chi tiết hồ sơ & căn cứ pháp lý"
-                  >
-                    <div
-                      className="w-10 h-10 rounded-full flex items-center justify-center mb-1.5 transition-transform group-hover:scale-110 shadow-sm"
-                      style={{ backgroundColor: currentService.activeColor, color: '#FFFFFF' }}
-                    >
-                      <CurrentIcon className="w-5 h-5 text-white" />
-                    </div>
-
-                    <span
-                      className="font-mono text-[11px] font-bold tracking-wider uppercase mb-0.5"
-                      style={{ color: currentService.activeColor }}
-                    >
-                      {currentService.code}
-                    </span>
-
-                    <h4 className="text-xs font-bold text-[#0F2144] line-clamp-2 px-1 font-serif leading-tight">
-                      {currentService.shortName}
-                    </h4>
-
-                    <span className="text-[10px] text-slate-500 mt-1 font-medium group-hover:text-[#0F2144] flex items-center gap-0.5">
-                      Bấm xem hồ sơ &rarr;
-                    </span>
-                  </div>
-
+              {/* Trung tâm lỗ bánh Donut (Center Hub tương tác) */}
+              <div
+                onClick={() => handleSliceClick(currentService)}
+                className="absolute w-[184px] h-[184px] rounded-full bg-[#FAF9F6] border-2 border-slate-200/90 shadow-inner flex flex-col items-center justify-center p-3 text-center cursor-pointer hover:bg-white hover:border-slate-300 transition-all group"
+                title="Nhấp để xem hồ sơ lĩnh vực"
+              >
+                <div
+                  className="w-10 h-10 rounded-full flex items-center justify-center mb-1.5 transition-transform group-hover:scale-110 shadow-sm"
+                  style={{ backgroundColor: currentService.activeColor, color: '#FFFFFF' }}
+                >
+                  <CurrentIcon className="w-5 h-5 text-white" />
                 </div>
 
-                <p className="text-xs text-slate-500 mt-3 font-medium text-center">
-                  💡 Chạm hoặc rê chuột vào 6 mảnh màu để chọn lĩnh vực hành nghề
-                </p>
-              </div>
+                <span
+                  className="font-mono text-[11px] font-bold tracking-wider uppercase mb-0.5"
+                  style={{ color: currentService.activeColor }}
+                >
+                  {currentService.code}
+                </span>
 
-              {/* Cột Phải: Bảng thông tin chi tiết của mảnh đang được chọn */}
-              <div className="lg:col-span-6 text-left">
-                <div className="bg-[#FAF9F6] rounded-2xl p-7 sm:p-9 border border-slate-200 shadow-sm relative overflow-hidden transition-all duration-300">
-                  
-                  {/* Dải màu nhận diện trên đầu card */}
-                  <div
-                    className="absolute top-0 left-0 right-0 h-1.5 transition-colors duration-300"
-                    style={{ backgroundColor: currentService.activeColor }}
-                  />
+                <h4 className="text-xs font-bold text-[#0F2144] line-clamp-2 px-1 font-serif leading-tight">
+                  {currentService.shortName}
+                </h4>
 
-                  {/* Header thẻ chi tiết */}
-                  <div className="flex items-start justify-between gap-4 mb-4">
-                    <div>
-                      <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded text-xs font-mono font-bold uppercase mb-2 border"
-                        style={{
-                          backgroundColor: `${currentService.activeColor}15`,
-                          borderColor: `${currentService.activeColor}40`,
-                          color: currentService.activeColor,
-                        }}
-                      >
-                        <span className="w-2 h-2 rounded-full" style={{ backgroundColor: currentService.activeColor }}></span>
-                        <span>Mã lĩnh vực: {currentService.code}</span>
-                      </div>
-
-                      <h3 className="text-xl sm:text-2xl font-bold text-[#0F2144] font-serif leading-snug">
-                        {currentService.title}
-                      </h3>
-                    </div>
-
-                    <div
-                      className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm"
-                      style={{ backgroundColor: currentService.activeColor, color: '#FFFFFF' }}
-                    >
-                      <CurrentIcon className="w-6 h-6 text-white" />
-                    </div>
-                  </div>
-
-                  {/* Mô tả tóm tắt */}
-                  <p className="text-sm text-slate-600 leading-relaxed mb-6">
-                    {currentService.shortDesc}
-                  </p>
-
-                  {/* Căn cứ pháp lý */}
-                  <div className="p-3.5 rounded-lg bg-white border border-slate-200/80 mb-6 text-xs text-slate-700">
-                    <span className="font-bold text-[#0F2144] block mb-1">Căn cứ pháp lý áp dụng:</span>
-                    <span className="text-slate-600">{currentService.details.basis}</span>
-                  </div>
-
-                  {/* Phạm vi bảo vệ & giải quyết */}
-                  <div className="space-y-2 mb-6">
-                    <span className="text-xs font-bold font-mono uppercase tracking-wider text-slate-500 block">
-                      Phạm vi giải quyết trọng tâm:
-                    </span>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-700">
-                      {currentService.details.scope.slice(0, 4).map((item, idx) => (
-                        <div key={idx} className="flex items-start gap-2 p-2 rounded bg-white/70 border border-slate-200/60">
-                          <span className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style={{ backgroundColor: currentService.activeColor }} />
-                          <span className="leading-snug">{item}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Nút hành động xem hồ sơ */}
-                  <div className="pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3">
-                    <span className="text-xs text-slate-500">
-                      Kết quả: <strong>{currentService.details.deliverables.split(',')[0]}...</strong>
-                    </span>
-
-                    <button
-                      onClick={() => onSelectService(currentService)}
-                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded text-xs font-semibold text-white shadow-sm hover:opacity-90 active:scale-95 transition-all"
-                      style={{ backgroundColor: currentService.activeColor }}
-                    >
-                      <span>Xem toàn bộ quy trình 4 bước</span>
-                      <span>&rarr;</span>
-                    </button>
-                  </div>
-
-                </div>
+                <span className="text-[10px] text-slate-500 mt-1 font-medium group-hover:text-[#0F2144] flex items-center gap-0.5">
+                  Nhấp xem hồ sơ &rarr;
+                </span>
               </div>
 
             </div>
 
-            {/* Dải 6 thanh chip chọn nhanh bên dưới bánh Donut */}
-            <div className="pt-2 border-t border-slate-200">
-              <p className="text-xs font-mono font-semibold text-slate-500 uppercase tracking-wider mb-3 text-left">
-                Chuyển nhanh giữa 6 lĩnh vực:
-              </p>
+            <p className="text-xs text-slate-500 mt-4 font-medium text-center">
+              💡 Chạm vào từng mảnh bánh donut để xem tóm tắt hồ sơ &amp; chuyển sang trang chi tiết
+            </p>
+
+            {/* Dải 6 chip chọn nhanh bên dưới bánh Donut */}
+            <div className="w-full max-w-4xl mt-10 pt-6 border-t border-slate-200">
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
                 {PRACTICE_AREAS.map((item, i) => {
-                  const isSelected = activeIndex === i;
+                  const isHovered = hoveredIndex === i;
                   return (
                     <button
                       key={item.id}
-                      onClick={() => {
-                        setSelectedIndex(i);
-                        setHoveredIndex(null);
-                      }}
+                      onClick={() => handleSliceClick(item)}
+                      onMouseEnter={() => setHoveredIndex(i)}
+                      onMouseLeave={() => setHoveredIndex(null)}
                       className={`px-3 py-2.5 rounded-lg border text-left transition-all flex items-center gap-2 ${
-                        isSelected
+                        isHovered
                           ? 'bg-white shadow-sm scale-[1.02]'
                           : 'bg-[#FAF9F6] hover:bg-white text-slate-600 border-slate-200'
                       }`}
                       style={{
-                        borderColor: isSelected ? item.activeColor : '#E2E8F0',
+                        borderColor: isHovered ? item.activeColor : '#E2E8F0',
                       }}
                     >
                       <span
                         className="w-2.5 h-2.5 rounded-full flex-shrink-0"
-                        style={{ backgroundColor: isSelected ? item.activeColor : item.color }}
+                        style={{ backgroundColor: isHovered ? item.activeColor : item.color }}
                       />
                       <div className="truncate">
-                        <span className="text-[10px] font-mono font-bold block" style={{ color: isSelected ? item.activeColor : '#64748B' }}>
+                        <span className="text-[10px] font-mono font-bold block" style={{ color: isHovered ? item.activeColor : '#64748B' }}>
                           {item.code}
                         </span>
                         <span className="text-xs font-medium text-slate-800 truncate block">
@@ -534,11 +446,11 @@ export default function Services({ onSelectService }) {
                   key={service.id}
                   role="button"
                   tabIndex={0}
-                  onClick={() => onSelectService(service)}
+                  onClick={() => handleSliceClick(service)}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                       e.preventDefault();
-                      onSelectService(service);
+                      handleSliceClick(service);
                     }
                   }}
                   className="bg-white p-7 sm:p-8 hover:bg-[#FAF9F6] transition-colors cursor-pointer text-left flex flex-col justify-between group"
@@ -567,6 +479,105 @@ export default function Services({ onSelectService }) {
                 </div>
               );
             })}
+          </div>
+        )}
+
+        {/* ================= MODAL HIỂN THỊ THẺ TÓM TẮT KHI NHẤP VÀO 1 MẢNH ================= */}
+        {selectedServiceForModal && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in"
+            onClick={() => setSelectedServiceForModal(null)}
+          >
+            <div
+              className="relative bg-white rounded-2xl max-w-2xl w-full p-6 sm:p-9 border border-slate-200 shadow-2xl text-left overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Dải màu đỉnh thẻ */}
+              <div
+                className="absolute top-0 left-0 right-0 h-1.5"
+                style={{ backgroundColor: selectedServiceForModal.activeColor }}
+              />
+
+              {/* Nút đóng modal */}
+              <button
+                onClick={() => setSelectedServiceForModal(null)}
+                className="absolute top-4 right-4 p-2 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+                aria-label="Đóng"
+              >
+                <CloseIcon className="w-5 h-5" />
+              </button>
+
+              {/* Header thẻ chi tiết */}
+              <div className="flex items-start justify-between gap-4 mb-4 pr-6">
+                <div>
+                  <div
+                    className="inline-flex items-center gap-2 px-2.5 py-1 rounded text-xs font-mono font-bold uppercase mb-2 border"
+                    style={{
+                      backgroundColor: `${selectedServiceForModal.activeColor}15`,
+                      borderColor: `${selectedServiceForModal.activeColor}40`,
+                      color: selectedServiceForModal.activeColor,
+                    }}
+                  >
+                    <span className="w-2 h-2 rounded-full" style={{ backgroundColor: selectedServiceForModal.activeColor }}></span>
+                    <span>MÃ LĨNH VỰC: {selectedServiceForModal.code}</span>
+                  </div>
+
+                  <h3 className="text-xl sm:text-2xl font-bold text-[#0F2144] font-serif leading-snug">
+                    {selectedServiceForModal.title}
+                  </h3>
+                </div>
+
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm"
+                  style={{ backgroundColor: selectedServiceForModal.activeColor, color: '#FFFFFF' }}
+                >
+                  {React.createElement(selectedServiceForModal.icon, { className: 'w-6 h-6 text-white' })}
+                </div>
+              </div>
+
+              {/* Mô tả tóm tắt */}
+              <p className="text-sm text-slate-600 leading-relaxed mb-6">
+                {selectedServiceForModal.shortDesc}
+              </p>
+
+              {/* Căn cứ pháp lý */}
+              <div className="p-3.5 rounded-lg bg-[#FAF9F6] border border-slate-200/80 mb-6 text-xs text-slate-700">
+                <span className="font-bold text-[#0F2144] block mb-1">Căn cứ pháp lý áp dụng:</span>
+                <span className="text-slate-600">{selectedServiceForModal.details.basis}</span>
+              </div>
+
+              {/* Phạm vi giải quyết trọng tâm (4 ô) */}
+              <div className="space-y-2 mb-6">
+                <span className="text-xs font-bold font-mono uppercase tracking-wider text-slate-500 block">
+                  PHẠM VI GIẢI QUYẾT TRỌNG TÂM:
+                </span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-slate-700">
+                  {selectedServiceForModal.details.scope.slice(0, 4).map((item, idx) => (
+                    <div key={idx} className="flex items-start gap-2 p-2.5 rounded-lg bg-[#FAF9F6] border border-slate-200/70">
+                      <span className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style={{ backgroundColor: selectedServiceForModal.activeColor }} />
+                      <span className="leading-snug">{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Nút hành động mở trang riêng */}
+              <div className="pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <span className="text-xs text-slate-500 truncate max-w-[240px]">
+                  Kết quả: <strong>{selectedServiceForModal.details.deliverables.split(',')[0]}...</strong>
+                </span>
+
+                <button
+                  onClick={() => handleOpenDetailPage(selectedServiceForModal.id)}
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg text-xs font-semibold text-white shadow-md hover:opacity-90 active:scale-95 transition-all"
+                  style={{ backgroundColor: selectedServiceForModal.activeColor }}
+                >
+                  <span>Xem toàn bộ quy trình 4 bước ở trang riêng</span>
+                  <span>&rarr;</span>
+                </button>
+              </div>
+
+            </div>
           </div>
         )}
 

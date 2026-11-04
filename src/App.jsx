@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Accolades from './components/Accolades';
@@ -6,20 +6,41 @@ import Services from './components/Services';
 import LawyerBio from './components/LawyerBio';
 import Testimonials from './components/Testimonials';
 import Footer from './components/Footer';
-import DetailModal from './components/DetailModal';
 import FloatingContact from './components/FloatingContact';
+import ServiceDetailPage from './components/ServiceDetailPage';
 
 export default function App() {
-  const [selectedService, setSelectedService] = useState(null);
+  const [currentRoute, setCurrentRoute] = useState(window.location.hash);
 
-  // Khi thân chủ chọn dịch vụ trong modal để chuyển sang thông tin liên hệ
-  const handleSelectServiceForConsult = () => {
-    const contactEl = document.getElementById('lien-he');
-    if (contactEl) {
-      contactEl.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+  useEffect(() => {
+    const handleHashChange = () => {
+      setCurrentRoute(window.location.hash);
+    };
 
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
+  // Kiểm tra nếu route là dạng #/linh-vuc/:id hoặc #/dich-vu/:id
+  const serviceMatch = currentRoute.match(/^#(?:(?:\/linh-vuc\/)|\/dich-vu\/)([\w-]+)/);
+  const activeServiceId = serviceMatch ? serviceMatch[1] : null;
+
+  // Nếu đang ở trang chi tiết chuyên môn
+  if (activeServiceId) {
+    return (
+      <ServiceDetailPage
+        serviceId={activeServiceId}
+        onBack={() => {
+          window.location.hash = '';
+        }}
+        onSelectService={(id) => {
+          window.location.hash = `#/linh-vuc/${id}`;
+        }}
+      />
+    );
+  }
+
+  // Trang chủ mặc định
   return (
     <div className="min-h-screen bg-white text-slate-900 flex flex-col font-sans selection:bg-slate-200 selection:text-slate-900">
       {/* 1. Header & Navigation Bar */}
@@ -33,8 +54,12 @@ export default function App() {
         {/* 3. Accolades & International Recognition */}
         <Accolades />
 
-        {/* 4. Lĩnh Vực Hành Nghề Cốt Lõi */}
-        <Services onSelectService={(service) => setSelectedService(service)} />
+        {/* 4. Lĩnh Vực Hành Nghề Cốt Lõi (Biểu đồ Donut tương tác) */}
+        <Services
+          onNavigateToPage={(serviceId) => {
+            window.location.hash = `#/linh-vuc/${serviceId}`;
+          }}
+        />
 
         {/* 5. Gặp Gỡ Luật Sư Điều Hành Võ Văn Hoà */}
         <LawyerBio />
@@ -43,15 +68,8 @@ export default function App() {
         <Testimonials />
       </main>
 
-      {/* 8. Chân Trang Pháp Lý */}
+      {/* 7. Chân Trang Pháp Lý Chuẩn Cravath */}
       <Footer />
-
-      {/* Pop-up Modal Chi Tiết Dịch Vụ */}
-      <DetailModal
-        service={selectedService}
-        onClose={() => setSelectedService(null)}
-        onSelectServiceForConsult={handleSelectServiceForConsult}
-      />
 
       {/* Nút Liên Hệ Khẩn Cấp 24/7 */}
       <FloatingContact />
