@@ -86,15 +86,15 @@ export default function Testimonials() {
             </span>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 sm:gap-14">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
             {testData.clientNotes.map((note, idx) => (
-              <div key={idx} className="space-y-4">
-                <blockquote className="text-sm sm:text-base text-slate-700 italic leading-relaxed border-l-2 border-[#0F2144]/40 pl-5">
+              <div key={idx} className="space-y-3.5 flex flex-col justify-between">
+                <blockquote className="text-xs sm:text-sm text-slate-700 italic leading-relaxed border-l-2 border-[#0F2144]/40 pl-4 py-0.5">
                   &ldquo;{note.statement}&rdquo;
                 </blockquote>
-                <div className="text-xs pl-5">
-                  <p className="font-bold text-[#0F2144] text-sm">{note.clientName}</p>
-                  <p className="text-slate-500 mt-0.5">{note.clientRole}</p>
+                <div className="text-xs pl-4 pt-1 border-t border-slate-200/50">
+                  <p className="font-bold text-[#0F2144] text-xs sm:text-sm">{note.clientName}</p>
+                  <p className="text-slate-500 mt-0.5 text-[11px] leading-snug">{note.clientRole}</p>
                 </div>
               </div>
             ))}

@@ -239,12 +239,32 @@ export const TRANSLATIONS = {
         {
           statement: 'Sự am hiểu sâu sắc các quy tắc trọng tài của VIAC và tác phong chuẩn bị hồ sơ tỉ mỉ của Luật sư Võ Văn Hoà đã giúp doanh nghiệp chúng tôi bảo toàn được khoản công nợ lớn trong giai đoạn kinh doanh khó khăn.',
           clientName: 'Nguyễn Minh Tuấn',
-          clientRole: 'Giám đốc Điều hành Công ty Cổ phần Thép và Kim loại',
+          clientRole: 'Giám đốc Điều hành & Thành viên HĐQT, Công ty Cổ phần Thép và Kim loại',
         },
         {
           statement: 'Chúng tôi đánh giá cao sự trung thực của hãng luật ngay từ khâu đánh giá ban đầu. Luật sư không đưa ra những lời hứa hão huyền mà luôn vạch ra các rủi ro cụ thể cùng phương án dự phòng chi tiết.',
           clientName: 'Trần Thị Mai Lan',
-          clientRole: 'Đại diện Ban Điều hành Doanh nghiệp Bán lẻ',
+          clientRole: 'Phó Tổng Giám đốc Đầu tư, Tập đoàn Bán lẻ & Tiêu dùng',
+        },
+        {
+          statement: 'Trong thương vụ thu xếp khoản tín dụng hợp vốn quốc tế hơn 35 triệu USD, ý kiến pháp lý (Legal Opinion) chuẩn xác và năng lực đàm phán hợp đồng song ngữ của Luật sư Hoà là nhân tố then chốt giúp giao dịch hoàn tất đúng hạn.',
+          clientName: 'Michael Lê (Lê Hoàng Nam)',
+          clientRole: 'Giám đốc Khối Khách hàng Doanh nghiệp Lớn, Định chế Ngân hàng Quốc tế',
+        },
+        {
+          statement: 'Hòa & Cộng sự đã hỗ trợ chúng tôi tháo gỡ thành công vướng mắc pháp lý đất đai và rà soát bộ hợp đồng tổng thầu EPC cho dự án khu công nghiệp 120 ha. Tư duy pháp lý gắn liền với thực tiễn thương mại của luật sư là điều hiếm thấy.',
+          clientName: 'Đặng Quang Khải',
+          clientRole: 'Tổng Giám đốc, Công ty Cổ phần Phát triển Hạ tầng & Bất động sản Công nghiệp',
+        },
+        {
+          statement: 'Khi phát sinh tranh chấp hợp đồng liên doanh với đối tác quốc tế, chiến lược viện dẫn Công ước New York và quy tắc trọng tài SIAC của Luật sư Võ Văn Hoà đã bảo vệ trọn vẹn phần vốn góp của chúng tôi tại Việt Nam.',
+          clientName: 'David Tan',
+          clientRole: 'Giám đốc Điều hành Khu vực Đông Nam Á, Quỹ Đầu tư Trực tiếp Nước ngoài (Singapore)',
+        },
+        {
+          statement: 'Là công ty công nghệ có tốc độ tăng trưởng nhanh, dịch vụ cố vấn pháp chế thường xuyên của hãng luật giúp ban điều hành hoàn toàn an tâm về an toàn dữ liệu, hợp đồng đối tác và tuân thủ các quy định tài chính mới.',
+          clientName: 'Hoàng Bích Ngọc',
+          clientRole: 'Giám đốc Tuân thủ & Pháp chế (Chief Legal Officer), Tập đoàn Công nghệ Tài chính',
         },
       ],
     },
@@ -523,12 +543,32 @@ export const TRANSLATIONS = {
         {
           statement: 'Attorney Vo Van Hoa’s profound mastery of VIAC arbitration procedures and meticulous evidence curation enabled our company to salvage a substantial commercial debt during a critical financial juncture.',
           clientName: 'Nguyen Minh Tuan',
-          clientRole: 'Chief Executive Officer, Steel & Metals Corporation',
+          clientRole: 'Chief Executive Officer & Board Member, Industrial Steel & Metals JSC',
         },
         {
           statement: 'We deeply respect the firm’s candor from the preliminary assessment. The attorney never made hollow promises, instead charting out precise risks with comprehensive contingency options.',
           clientName: 'Tran Thi Mai Lan',
-          clientRole: 'Board of Management Representative, Retail Enterprise',
+          clientRole: 'Vice President of Investment, Retail & Consumer Group',
+        },
+        {
+          statement: 'In structuring our USD 35M+ cross-border syndicated credit facility, Attorney Hoa’s rigorous legal opinion and bilingual negotiation prowess were decisive in closing the transaction strictly on schedule.',
+          clientName: 'Michael Le (Le Hoang Nam)',
+          clientRole: 'Head of Corporate Banking, International Financial Institution',
+        },
+        {
+          statement: 'Hoa & Associates successfully unblocked complex land tenure bottlenecks and vetted our turnkey EPC contract suite for a 120-hectare industrial park. The partner’s commercial acumen paired with black-letter legal rigor is exceptional.',
+          clientName: 'Dang Quang Khai',
+          clientRole: 'General Director, Industrial Infrastructure & Real Estate Development JSC',
+        },
+        {
+          statement: 'When a critical cross-border joint venture dispute erupted, Attorney Vo Van Hoa’s strategic command of the New York Convention and SIAC arbitration rules safeguarded 100% of our equity investment in Vietnam.',
+          clientName: 'David Tan',
+          clientRole: 'Southeast Asia Managing Director, Private Equity Investment Fund (Singapore)',
+        },
+        {
+          statement: 'As a high-growth technology company, the firm’s retained general counsel service provides our executive leadership with absolute confidence in data compliance, vendor contracts, and emerging financial regulations.',
+          clientName: 'Hoang Bich Ngoc',
+          clientRole: 'Chief Legal Officer, Fintech & Digital Services Group',
         },
       ],
     },
