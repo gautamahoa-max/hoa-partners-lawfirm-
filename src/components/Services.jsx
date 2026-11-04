@@ -4,19 +4,18 @@ import { GavelIcon, BriefcaseIcon, FileTextIcon, LandmarkIcon, ShieldCheckIcon, 
 export const PRACTICE_AREAS = [
   {
     id: 'arbitration',
+    num: '01',
     title: 'Trọng tài Thương mại Quốc tế',
     shortName: 'Trọng tài Quốc tế',
     sliceLines: ['Trọng tài', 'Quốc tế'],
     shortDesc: 'Đại diện thân chủ trong các vụ kiện trọng tài phức tạp tại Trung tâm Trọng tài Quốc tế Việt Nam (VIAC), SIAC (Singapore) và ICC.',
     icon: GavelIcon,
-    color: '#0F2648',
-    gradStart: '#0F2648',
-    gradEnd: '#1E477A',
-    activeGradStart: '#1B4783',
-    activeGradEnd: '#2563EB',
-    activeColor: '#2563EB',
-    accentColor: '#93C5FD',
-    glowColor: 'rgba(37, 99, 235, 0.45)',
+    color: '#0F2144',
+    activeGradStart: '#0F2144',
+    activeGradEnd: '#1A335E',
+    activeColor: '#0F2144',
+    accentColor: '#C5A880',
+    glowColor: 'rgba(15, 33, 68, 0.22)',
     details: {
       basis: 'Luật Trọng tài Thương mại 2010, Quy tắc Tố tụng VIAC, Quy tắc SIAC và Công ước New York 1958.',
       scope: [
@@ -36,19 +35,18 @@ export const PRACTICE_AREAS = [
   },
   {
     id: 'litigation',
+    num: '02',
     title: 'Tranh tụng Tòa án các cấp',
     shortName: 'Tranh tụng Tòa án',
     sliceLines: ['Tranh tụng', 'Tòa án'],
     shortDesc: 'Đại diện bảo vệ quyền lợi hợp pháp của thân chủ tại Tòa án nhân dân sơ thẩm, phúc thẩm và giám đốc thẩm trong các vụ án kinh tế, dân sự và đất đai.',
     icon: ScaleIcon,
-    color: '#55131C',
-    gradStart: '#55131C',
-    gradEnd: '#8A202E',
-    activeGradStart: '#8A202E',
-    activeGradEnd: '#DC2626',
-    activeColor: '#DC2626',
-    accentColor: '#FCA5A5',
-    glowColor: 'rgba(220, 38, 38, 0.45)',
+    color: '#0F2144',
+    activeGradStart: '#0F2144',
+    activeGradEnd: '#1A335E',
+    activeColor: '#0F2144',
+    accentColor: '#C5A880',
+    glowColor: 'rgba(15, 33, 68, 0.22)',
     details: {
       basis: 'Bộ luật Tố tụng Dân sự 2015, Bộ luật Dân sự 2015, Luật Tố tụng Hành chính 2015.',
       scope: [
@@ -68,19 +66,18 @@ export const PRACTICE_AREAS = [
   },
   {
     id: 'mna',
+    num: '03',
     title: 'Mua bán & Sáp nhập Doanh nghiệp (M&A)',
     shortName: 'Mua bán & Sáp nhập',
     sliceLines: ['Mua bán &', 'Sáp nhập'],
     shortDesc: 'Thẩm định pháp lý (Legal Due Diligence), cấu trúc thương vụ, đàm phán hợp đồng mua bán cổ phần (SPA) và xin chấp thuận tập trung kinh tế.',
     icon: BriefcaseIcon,
-    color: '#633310',
-    gradStart: '#633310',
-    gradEnd: '#9C551F',
-    activeGradStart: '#9C551F',
-    activeGradEnd: '#D97706',
-    activeColor: '#D97706',
-    accentColor: '#FCD34D',
-    glowColor: 'rgba(217, 119, 6, 0.45)',
+    color: '#0F2144',
+    activeGradStart: '#0F2144',
+    activeGradEnd: '#1A335E',
+    activeColor: '#0F2144',
+    accentColor: '#C5A880',
+    glowColor: 'rgba(15, 33, 68, 0.22)',
     details: {
       basis: 'Luật Doanh nghiệp 2020, Luật Đầu tư 2020, Luật Cạnh tranh 2018.',
       scope: [
@@ -100,19 +97,18 @@ export const PRACTICE_AREAS = [
   },
   {
     id: 'banking',
+    num: '04',
     title: 'Ngân hàng, Tài chính & Thị trường Vốn',
     shortName: 'Ngân hàng & Tài chính',
     sliceLines: ['Ngân hàng', '& Tài chính'],
     shortDesc: 'Tư vấn pháp lý cho các định chế tài chính, ngân hàng trong các giao dịch tín dụng hợp vốn, phát hành trái phiếu và tài trợ dự án.',
     icon: LandmarkIcon,
-    color: '#0A3B39',
-    gradStart: '#0A3B39',
-    gradEnd: '#176B67',
-    activeGradStart: '#176B67',
-    activeGradEnd: '#0D9488',
-    activeColor: '#0D9488',
-    accentColor: '#5EEAD4',
-    glowColor: 'rgba(13, 148, 136, 0.45)',
+    color: '#0F2144',
+    activeGradStart: '#0F2144',
+    activeGradEnd: '#1A335E',
+    activeColor: '#0F2144',
+    accentColor: '#C5A880',
+    glowColor: 'rgba(15, 33, 68, 0.22)',
     details: {
       basis: 'Luật Các tổ chức tín dụng 2024, Luật Chứng khoán 2019, các thông tư của Ngân hàng Nhà nước.',
       scope: [
@@ -132,19 +128,18 @@ export const PRACTICE_AREAS = [
   },
   {
     id: 'real-estate',
+    num: '05',
     title: 'Bất động sản, Xây dựng & Dự án',
     shortName: 'Bất động sản & Dự án',
     sliceLines: ['Bất động sản', '& Dự án'],
     shortDesc: 'Tư vấn thủ tục chấp thuận chủ trương đầu tư dự án khu đô thị, khu công nghiệp, hợp đồng xây dựng EPC và giải quyết tranh chấp quyền sử dụng đất.',
     icon: FileTextIcon,
-    color: '#201C53',
-    gradStart: '#201C53',
-    gradEnd: '#403B8C',
-    activeGradStart: '#403B8C',
-    activeGradEnd: '#6366F1',
-    activeColor: '#6366F1',
-    accentColor: '#C7D2FE',
-    glowColor: 'rgba(99, 102, 241, 0.45)',
+    color: '#0F2144',
+    activeGradStart: '#0F2144',
+    activeGradEnd: '#1A335E',
+    activeColor: '#0F2144',
+    accentColor: '#C5A880',
+    glowColor: 'rgba(15, 33, 68, 0.22)',
     details: {
       basis: 'Luật Đất đai 2024, Luật Nhà ở 2023, Luật Kinh doanh Bất động sản 2023, Luật Xây dựng.',
       scope: [
@@ -164,19 +159,18 @@ export const PRACTICE_AREAS = [
   },
   {
     id: 'corporate',
+    num: '06',
     title: 'Pháp chế Doanh nghiệp thường xuyên',
     shortName: 'Pháp chế Doanh nghiệp',
     sliceLines: ['Pháp chế', 'Doanh nghiệp'],
     shortDesc: 'Cố vấn pháp luật nội bộ trọn gói cho doanh nghiệp: rà soát hợp đồng hàng ngày, quy chế lao động, bảo vệ dữ liệu và giải quyết bất đồng nội bộ.',
     icon: ShieldCheckIcon,
-    color: '#093326',
-    gradStart: '#093326',
-    gradEnd: '#175E47',
-    activeGradStart: '#175E47',
-    activeGradEnd: '#10B981',
-    activeColor: '#10B981',
-    accentColor: '#6EE7B7',
-    glowColor: 'rgba(16, 185, 129, 0.45)',
+    color: '#0F2144',
+    activeGradStart: '#0F2144',
+    activeGradEnd: '#1A335E',
+    activeColor: '#0F2144',
+    accentColor: '#C5A880',
+    glowColor: 'rgba(15, 33, 68, 0.22)',
     details: {
       basis: 'Luật Doanh nghiệp 2020, Bộ luật Lao động 2019, Nghị định bảo vệ dữ liệu cá nhân (Nghị định 13/2023/NĐ-CP).',
       scope: [
@@ -237,7 +231,6 @@ export default function Services({ onNavigateToPage }) {
   const baseOuterRadius = 172;
 
   const handleSliceClick = (item) => {
-    // Chỉ hiện ra phần thông tin tóm tắt khi nhấp vào 1 mảnh (dạng popup/modal)
     setSelectedServiceForModal(item);
   };
 
@@ -249,7 +242,7 @@ export default function Services({ onNavigateToPage }) {
   };
 
   return (
-    <section id="linh-vuc" className="py-20 sm:py-24 bg-white border-b border-slate-200">
+    <section id="linh-vuc" className="py-20 sm:py-24 bg-white border-b border-slate-200/80">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header danh mục chuyên môn tối giản, trang trọng */}
@@ -261,64 +254,58 @@ export default function Services({ onNavigateToPage }) {
             Các lĩnh vực tư vấn và tranh tụng cốt lõi
           </h2>
           <p className="mt-3.5 text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl mx-auto">
-            Mỗi lĩnh vực được phụ trách chuyên sâu bởi đội ngũ Hòa &amp; Cộng sự, cam kết bảo vệ tối đa quyền lợi hợp pháp và giá trị thương vụ cho thân chủ.
+            Mỗi lĩnh vực được phụ trách chuyên sâu bởi đội ngũ luật sư Hòa &amp; Cộng sự, cam kết bảo vệ tối đa quyền lợi hợp pháp và giá trị thương vụ cho thân chủ.
           </p>
         </div>
 
         {/* ================= BIỂU ĐỒ VÒNG TRÒN TƯƠNG TÁC CAO CẤP ================= */}
         <div className="flex flex-col items-center">
           
-          {/* Vòng tròn tương tác 6 phân khúc chuẩn Precision Dial */}
+          {/* Vòng tròn tương tác 6 phân khúc chuẩn Precision Dial (Monochrome Luxury) */}
           <div className="relative w-full max-w-[440px] aspect-square flex items-center justify-center my-2">
             
             <svg
               viewBox="0 0 400 400"
-              className="w-full h-full overflow-visible drop-shadow-md select-none"
+              className="w-full h-full overflow-visible drop-shadow-sm select-none"
             >
               <defs>
-                {PRACTICE_AREAS.map((item, i) => (
-                  <React.Fragment key={`defs-${i}`}>
-                    <linearGradient id={`slice-grad-${i}`} x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor={item.gradStart} />
-                      <stop offset="100%" stopColor={item.gradEnd} />
-                    </linearGradient>
-                    <linearGradient id={`slice-grad-active-${i}`} x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor={item.activeGradStart} />
-                      <stop offset="100%" stopColor={item.activeGradEnd} />
-                    </linearGradient>
-                    <filter id={`donut-glow-${i}`} x="-30%" y="-30%" width="160%" height="160%">
-                      <feDropShadow dx="0" dy="8" stdDeviation="10" floodColor={item.glowColor} />
-                    </filter>
-                  </React.Fragment>
-                ))}
+                {/* Gradient xanh sẫm hoàng gia sang trọng cho phân khúc active */}
+                <linearGradient id="luxury-navy-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#0F2144" />
+                  <stop offset="100%" stopColor="#1B3568" />
+                </linearGradient>
+
+                {/* Đổ bóng mềm mại, êm ái */}
+                <filter id="luxury-soft-shadow" x="-30%" y="-30%" width="160%" height="160%">
+                  <feDropShadow dx="0" dy="8" stdDeviation="12" floodColor="rgba(15, 33, 68, 0.22)" />
+                </filter>
               </defs>
 
-              {/* Vòng viền định vị chuẩn xác phong cách chế tác cao cấp */}
-              <circle cx={cx} cy={cy} r={baseOuterRadius + 6} fill="none" stroke="#E2E8F0" strokeWidth="1" opacity="0.6" />
-              <circle cx={cx} cy={cy} r={baseInnerRadius - 6} fill="none" stroke="#E2E8F0" strokeWidth="1" opacity="0.6" />
+              {/* Vòng bezel định vị thanh mảnh phong cách đồng hồ Thụy Sỹ */}
+              <circle cx={cx} cy={cy} r={baseOuterRadius + 10} fill="none" stroke="#E2E8F0" strokeWidth="1" strokeDasharray="2 4" opacity="0.8" />
+              <circle cx={cx} cy={cy} r={baseOuterRadius + 4} fill="none" stroke="#E2E8F0" strokeWidth="0.8" opacity="0.6" />
+              <circle cx={cx} cy={cy} r={baseInnerRadius - 5} fill="none" stroke="#E2E8F0" strokeWidth="0.8" opacity="0.6" />
 
-              {/* 6 mảnh ghép phân khúc vòm */}
+              {/* 6 mảnh ghép phân khúc vòm kiến trúc tối giản */}
               {PRACTICE_AREAS.map((item, i) => {
                 const isSliceActive = hoveredIndex === i;
-                const hasActive = hoveredIndex !== null;
 
-                // Góc bắt đầu và kết thúc với khe hở mảnh 2.2 độ
+                // Góc bắt đầu và kết thúc với khe hở thanh mảnh 1.5 độ
                 const startAngle = i * 60 + 1.2;
                 const endAngle = (i + 1) * 60 - 1.2;
                 const midAngle = i * 60 + 30;
 
-                // Khi active: mở rộng bán kính và đẩy tâm ra ngoài
-                const rOuter = isSliceActive ? baseOuterRadius + 12 : baseOuterRadius;
-                const rInner = isSliceActive ? baseInnerRadius - 3 : baseInnerRadius;
+                // Khi active: mở rộng bán kính và đẩy nhẹ tâm ra ngoài
+                const rOuter = isSliceActive ? baseOuterRadius + 11 : baseOuterRadius;
+                const rInner = isSliceActive ? baseInnerRadius - 2 : baseInnerRadius;
 
-                const offsetDistance = isSliceActive ? 10 : 0;
+                const offsetDistance = isSliceActive ? 9 : 0;
                 const offsetAngleRad = ((midAngle - 90) * Math.PI) / 180.0;
                 const tx = Math.cos(offsetAngleRad) * offsetDistance;
                 const ty = Math.sin(offsetAngleRad) * offsetDistance;
 
                 const labelRadius = (rInner + rOuter) / 2;
                 const labelPos = polarToCartesian(cx, cy, labelRadius, midAngle);
-                const tickPos = polarToCartesian(cx, cy, baseOuterRadius + 6, midAngle);
 
                 const slicePath = describeDonutSlice(cx, cy, rInner, rOuter, startAngle, endAngle);
 
@@ -332,89 +319,91 @@ export default function Services({ onNavigateToPage }) {
                     onMouseLeave={() => setHoveredIndex(null)}
                     onTouchStart={() => setHoveredIndex(i)}
                   >
-                    {/* Đường vòm mảnh ghép với gradient chuyển sắc sâu thẳm */}
+                    {/* Bề mặt mảnh ghép: Nền sứ cao cấp khi nghỉ, chuyển Navy Imperial khi active */}
                     <path
                       d={slicePath}
-                      fill={isSliceActive ? `url(#slice-grad-active-${i})` : `url(#slice-grad-${i})`}
-                      filter={isSliceActive ? `url(#donut-glow-${i})` : 'none'}
-                      opacity={isSliceActive ? 1 : hasActive ? 0.48 : 0.94}
-                      stroke="#FFFFFF"
-                      strokeWidth={isSliceActive ? '2.5' : '1.5'}
+                      fill={isSliceActive ? 'url(#luxury-navy-grad)' : '#F8FAFC'}
+                      filter={isSliceActive ? 'url(#luxury-soft-shadow)' : 'none'}
+                      stroke={isSliceActive ? '#0F2144' : '#E2E8F0'}
+                      strokeWidth={isSliceActive ? '1.5' : '1'}
                       className="transition-all duration-300 ease-out"
                     />
 
-                    {/* Điểm nhấn viền ngoài khi active */}
-                    {isSliceActive && (
-                      <circle
-                        cx={tickPos.x - tx}
-                        cy={tickPos.y - ty}
-                        r={3.5}
-                        fill={item.activeColor}
-                        className="animate-pulse"
-                      />
-                    )}
-
                     {/* Nội dung nhãn chuyên môn trên mảnh ghép */}
                     <g transform={`translate(${labelPos.x.toFixed(2)}, ${labelPos.y.toFixed(2)})`} className="pointer-events-none select-none">
-                      {/* Hạt chỉ thị tinh xảo */}
-                      <circle
-                        cx={0}
-                        cy={-14}
-                        r={isSliceActive ? 3.5 : 2.5}
-                        fill={isSliceActive ? item.accentColor : 'rgba(255, 255, 255, 0.75)'}
-                        className="transition-all duration-300"
-                      />
+                      
+                      {/* Số thứ tự phân khúc tinh giản (01 - 06) */}
                       <text
                         textAnchor="middle"
-                        y={-1}
-                        fill="#FFFFFF"
-                        fontSize={isSliceActive ? '11.5' : '10.5'}
+                        y={-14}
+                        fill={isSliceActive ? '#C5A880' : '#94A3B8'}
+                        fontSize="9"
                         fontWeight="700"
-                        letterSpacing="0.25px"
-                        className="transition-all duration-300 font-sans drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
+                        letterSpacing="1px"
+                        className="transition-colors duration-300 font-mono"
+                      >
+                        {item.num}
+                      </text>
+
+                      {/* Tiêu đề dòng 1 */}
+                      <text
+                        textAnchor="middle"
+                        y={0}
+                        fill={isSliceActive ? '#FFFFFF' : '#0F2144'}
+                        fontSize={isSliceActive ? '11' : '10'}
+                        fontWeight={isSliceActive ? '700' : '600'}
+                        letterSpacing="0.2px"
+                        className="transition-all duration-300 font-sans"
                       >
                         {item.sliceLines[0]}
                       </text>
+
+                      {/* Tiêu đề dòng 2 */}
                       <text
                         textAnchor="middle"
-                        y={13}
-                        fill={isSliceActive ? '#FFFFFF' : 'rgba(255, 255, 255, 0.92)'}
-                        fontSize={isSliceActive ? '10.5' : '9.5'}
-                        fontWeight="600"
-                        letterSpacing="0.25px"
-                        className="transition-all duration-300 font-sans drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
+                        y={14}
+                        fill={isSliceActive ? '#E2E8F0' : '#475569'}
+                        fontSize={isSliceActive ? '10' : '9.5'}
+                        fontWeight={isSliceActive ? '600' : '500'}
+                        letterSpacing="0.2px"
+                        className="transition-all duration-300 font-sans"
                       >
                         {item.sliceLines[1]}
                       </text>
+
+                      {/* Điểm nhấn Champagne Gold tinh xảo khi active */}
+                      {isSliceActive && (
+                        <circle
+                          cx={0}
+                          cy={24}
+                          r={2}
+                          fill="#C5A880"
+                          className="animate-pulse"
+                        />
+                      )}
                     </g>
                   </g>
                 );
               })}
             </svg>
 
-            {/* Trung tâm vòng tròn: Thiết kế Chronometer sang trọng, đa tầng */}
+            {/* Trung tâm vòng tròn: Thiết kế Chronometer tối giản, không màu mè */}
             <div
               onClick={() => handleSliceClick(currentService)}
-              className="absolute w-[182px] h-[182px] rounded-full bg-white border border-slate-200 shadow-[0_16px_40px_-10px_rgba(15,33,68,0.12)] p-4 flex flex-col items-center justify-center text-center cursor-pointer hover:shadow-[0_22px_50px_-10px_rgba(15,33,68,0.22)] hover:border-slate-300 transition-all duration-300 group"
+              className="absolute w-[184px] h-[184px] rounded-full bg-white border border-slate-200/90 shadow-[0_12px_32px_-8px_rgba(15,33,68,0.08)] p-4 flex flex-col items-center justify-center text-center cursor-pointer hover:border-slate-300 transition-all duration-300 group"
               title="Nhấp để xem hồ sơ lĩnh vực"
             >
               {/* Viền hairline trang nhã bên trong */}
               <div className="absolute inset-2 rounded-full border border-slate-100 pointer-events-none" />
 
-              {/* Huy hiệu biểu tượng chuyên môn */}
-              <div
-                className="relative z-10 w-11 h-11 rounded-full flex items-center justify-center shadow-md transition-transform duration-300 group-hover:scale-110 mb-1"
-                style={{
-                  background: `linear-gradient(135deg, ${currentService.activeGradStart}, ${currentService.activeGradEnd})`,
-                  color: '#FFFFFF',
-                }}
-              >
-                <CurrentIcon className="w-5 h-5 text-white" />
+              {/* Huy hiệu biểu tượng chuyên môn tối giản */}
+              <div className="relative z-10 w-9 h-9 rounded-full bg-[#0F2144]/5 flex items-center justify-center text-[#0F2144] mb-1.5 transition-transform duration-300 group-hover:scale-105">
+                <CurrentIcon className="w-4 h-4 text-[#0F2144]" />
               </div>
 
-              {/* Nhãn thể loại */}
-              <span className="relative z-10 text-[9px] font-bold tracking-[0.2em] uppercase text-slate-400">
-                TRỤ CỘT CHUYÊN MÔN
+              {/* Chỉ số thứ tự & Nhãn thể loại */}
+              <span className="relative z-10 text-[9px] font-bold tracking-[0.2em] uppercase text-slate-400 font-mono">
+                {currentService.num} &bull; TRỤ CỘT CHUYÊN MÔN
               </span>
 
               {/* Tiêu đề lĩnh vực */}
@@ -422,10 +411,10 @@ export default function Services({ onNavigateToPage }) {
                 {currentService.shortName}
               </h4>
 
-              {/* Nút gợi ý hành động tinh gọn */}
-              <div className="relative z-10 mt-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-semibold tracking-wide bg-slate-50 text-slate-700 border border-slate-200/80 group-hover:bg-[#0F2144] group-hover:text-white group-hover:border-[#0F2144] transition-all duration-300 shadow-sm">
-                <span>Xem hồ sơ</span>
-                <span className="transition-transform group-hover:translate-x-0.5">&rarr;</span>
+              {/* Nút hành động tinh giản tối đa */}
+              <div className="relative z-10 mt-2 inline-flex items-center gap-1.5 text-[11px] font-semibold text-[#0F2144] group-hover:text-blue-900 transition-colors">
+                <span className="group-hover:underline underline-offset-4">Xem hồ sơ</span>
+                <span className="text-amber-700 font-bold transition-transform group-hover:translate-x-0.5">&rarr;</span>
               </div>
             </div>
 
@@ -443,11 +432,8 @@ export default function Services({ onNavigateToPage }) {
               className="relative bg-white rounded-2xl max-w-2xl w-full p-6 sm:p-9 border border-slate-200 shadow-2xl text-left overflow-hidden"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Dải màu đỉnh thẻ */}
-              <div
-                className="absolute top-0 left-0 right-0 h-1.5"
-                style={{ backgroundColor: selectedServiceForModal.activeColor }}
-              />
+              {/* Dải viền đỉnh thẻ xanh navy sang trọng */}
+              <div className="absolute top-0 left-0 right-0 h-1 bg-[#0F2144]" />
 
               {/* Nút đóng modal */}
               <button
@@ -461,16 +447,9 @@ export default function Services({ onNavigateToPage }) {
               {/* Header thẻ chi tiết */}
               <div className="flex items-start justify-between gap-4 mb-4 pr-6">
                 <div>
-                  <div
-                    className="inline-flex items-center gap-2 px-2.5 py-1 rounded text-xs font-semibold uppercase mb-2 border tracking-wider"
-                    style={{
-                      backgroundColor: `${selectedServiceForModal.activeColor}15`,
-                      borderColor: `${selectedServiceForModal.activeColor}40`,
-                      color: selectedServiceForModal.activeColor,
-                    }}
-                  >
-                    <span className="w-2 h-2 rounded-full" style={{ backgroundColor: selectedServiceForModal.activeColor }}></span>
-                    <span>Lĩnh vực tư vấn &amp; Tranh tụng</span>
+                  <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded text-[11px] font-semibold uppercase mb-2 border border-slate-200 bg-slate-50 text-slate-700 tracking-wider">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#0F2144]"></span>
+                    <span>Lĩnh vực tư vấn &amp; Tranh tụng &bull; {selectedServiceForModal.num}</span>
                   </div>
 
                   <h3 className="text-xl sm:text-2xl font-bold text-[#0F2144] tracking-tight leading-snug">
@@ -478,11 +457,8 @@ export default function Services({ onNavigateToPage }) {
                   </h3>
                 </div>
 
-                <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm"
-                  style={{ backgroundColor: selectedServiceForModal.activeColor, color: '#FFFFFF' }}
-                >
-                  {React.createElement(selectedServiceForModal.icon, { className: 'w-6 h-6 text-white' })}
+                <div className="w-11 h-11 rounded-xl bg-[#0F2144] flex items-center justify-center flex-shrink-0 text-white shadow-sm">
+                  {React.createElement(selectedServiceForModal.icon, { className: 'w-5 h-5 text-white' })}
                 </div>
               </div>
 
@@ -505,7 +481,7 @@ export default function Services({ onNavigateToPage }) {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-slate-700">
                   {selectedServiceForModal.details.scope.slice(0, 4).map((item, idx) => (
                     <div key={idx} className="flex items-start gap-2 p-2.5 rounded-lg bg-[#FAF9F6] border border-slate-200/70">
-                      <span className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style={{ backgroundColor: selectedServiceForModal.activeColor }} />
+                      <span className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0 bg-[#0F2144]" />
                       <span className="leading-snug">{item}</span>
                     </div>
                   ))}
@@ -520,8 +496,7 @@ export default function Services({ onNavigateToPage }) {
 
                 <button
                   onClick={() => handleOpenDetailPage(selectedServiceForModal.id)}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg text-xs font-semibold text-white shadow-md hover:opacity-90 active:scale-95 transition-all"
-                  style={{ backgroundColor: selectedServiceForModal.activeColor }}
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded text-xs font-semibold text-white bg-[#0F2144] hover:bg-[#162C5B] active:scale-95 transition-all shadow-sm"
                 >
                   <span>Xem toàn bộ quy trình 4 bước ở trang riêng</span>
                   <span>&rarr;</span>
