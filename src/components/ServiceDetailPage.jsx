@@ -50,9 +50,9 @@ export default function ServiceDetailPage({ serviceId, onBack, onSelectService }
         <section className="bg-[#FAF9F6] border-b border-slate-200 py-14 sm:py-20 text-left">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            {/* Tag mã lĩnh vực */}
+            {/* Tag chuyên môn */}
             <div
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded text-xs font-mono font-bold uppercase mb-4 border"
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded text-xs font-semibold uppercase mb-4 border tracking-wider"
               style={{
                 backgroundColor: `${service.activeColor}15`,
                 borderColor: `${service.activeColor}40`,
@@ -60,7 +60,7 @@ export default function ServiceDetailPage({ serviceId, onBack, onSelectService }
               }}
             >
               <span className="w-2 h-2 rounded-full" style={{ backgroundColor: service.activeColor }}></span>
-              <span>Hồ sơ chuyên môn: {service.code}</span>
+              <span>Hồ sơ năng lực chuyên sâu</span>
             </div>
 
             <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
@@ -222,12 +222,13 @@ export default function ServiceDetailPage({ serviceId, onBack, onSelectService }
                   <button
                     key={s.id}
                     onClick={() => onSelectService(s.id)}
-                    className="p-3 rounded-lg border border-slate-200 bg-[#FAF9F6] hover:bg-white text-left transition-all"
+                    className="p-3 rounded-lg border border-slate-200 bg-[#FAF9F6] hover:bg-white text-left transition-all flex items-center gap-2.5"
                   >
-                    <span className="text-[10px] font-mono font-bold block mb-0.5" style={{ color: s.activeColor }}>
-                      {s.code}
-                    </span>
-                    <span className="text-xs font-medium text-slate-800 line-clamp-1 block">
+                    <span
+                      className="w-2.5 h-2.5 rounded-full flex-shrink-0"
+                      style={{ backgroundColor: s.activeColor }}
+                    />
+                    <span className="text-xs font-semibold text-slate-800 line-clamp-1 block">
                       {s.shortName}
                     </span>
                   </button>
