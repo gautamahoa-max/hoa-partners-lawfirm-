@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { LanguageProvider } from './context/LanguageContext';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Services from './components/Services';
@@ -8,7 +9,7 @@ import Footer from './components/Footer';
 import FloatingContact from './components/FloatingContact';
 import ServiceDetailPage from './components/ServiceDetailPage';
 
-export default function App() {
+function MainContent() {
   const [currentRoute, setCurrentRoute] = useState(window.location.hash);
 
   useEffect(() => {
@@ -57,18 +58,26 @@ export default function App() {
           }}
         />
 
-        {/* 5. Gặp Gỡ Luật Sư Điều Hành Võ Văn Hoà */}
+        {/* 4. Gặp Gỡ Luật Sư Điều Hành Võ Văn Hoà */}
         <LawyerBio />
 
-        {/* 6. Hồ Sơ Tiêu Biểu & Vụ Việc Thực Tế */}
+        {/* 5. Hồ Sơ Tiêu Biểu & Vụ Việc Thực Tế */}
         <Testimonials />
       </main>
 
-      {/* 7. Chân Trang Pháp Lý Chuẩn Cravath */}
+      {/* 6. Chân Trang Pháp Lý Chuẩn Cravath */}
       <Footer />
 
       {/* Nút Liên Hệ Khẩn Cấp 24/7 */}
       <FloatingContact />
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <LanguageProvider>
+      <MainContent />
+    </LanguageProvider>
   );
 }

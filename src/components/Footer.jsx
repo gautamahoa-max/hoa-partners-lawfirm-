@@ -1,12 +1,17 @@
 import React from 'react';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const { t } = useLanguage();
+  const footer = t.footer;
 
   const scrollTo = (id) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
+
+  const copyrightText = footer.copyright.replace('{year}', currentYear);
 
   return (
     <footer id="lien-he" className="bg-white text-slate-900 pt-16 pb-12 border-t-4 border-[#0F2144] scroll-mt-10">
@@ -18,10 +23,10 @@ export default function Footer() {
           {/* Cột trái: Tên hãng luật sang trọng kiểu Cravath */}
           <div>
             <h2 className="text-2xl sm:text-[1.75rem] font-bold text-[#0F2144] tracking-tight">
-              HÒA &amp; CỘNG SỰ
+              {footer.firmTitle}
             </h2>
             <p className="text-[11px] font-semibold uppercase tracking-[0.15em] text-slate-500 mt-2">
-              HOA &amp; ASSOCIATES LAW FIRM &bull; LUẬT SƯ VÕ VĂN HOÀ
+              {footer.firmSubtitle}
             </p>
           </div>
 
@@ -32,7 +37,7 @@ export default function Footer() {
                 href="tel:0988886447"
                 className="hover:underline underline-offset-4 transition-all block"
               >
-                LIÊN HỆ: 098.888.6447
+                {footer.call}
               </a>
             </div>
 
@@ -41,7 +46,7 @@ export default function Footer() {
                 onClick={() => scrollTo('linh-vuc')}
                 className="hover:underline underline-offset-4 transition-all text-left block"
               >
-                LĨNH VỰC HÀNH NGHỀ
+                {footer.practice}
               </button>
             </div>
 
@@ -59,7 +64,7 @@ export default function Footer() {
                 onClick={() => scrollTo('ho-so')}
                 className="hover:underline underline-offset-4 transition-all text-left block"
               >
-                HỒ SƠ TIÊU BIỂU
+                {footer.dossier}
               </button>
             </div>
 
@@ -68,13 +73,13 @@ export default function Footer() {
                 onClick={() => scrollTo('ve-chung-toi')}
                 className="hover:underline underline-offset-4 transition-all text-left block"
               >
-                VỀ CHÚNG TÔI
+                {footer.about}
               </button>
             </div>
 
             <div>
               <span className="text-slate-500 block">
-                HÀ NỘI &bull; TP.HCM &bull; SINGAPORE
+                {footer.locations}
               </span>
             </div>
           </div>
@@ -87,7 +92,7 @@ export default function Footer() {
         {/* Dòng ghi chú bản quyền và thông cáo pháp lý dưới cùng kiểu Cravath */}
         <div className="text-[11px] text-slate-500 font-medium text-left">
           <p>
-            Thông tin hành nghề luật sư. &copy; {currentYear} Công ty Luật TNHH Hòa &amp; Cộng sự.
+            {copyrightText}
           </p>
         </div>
 

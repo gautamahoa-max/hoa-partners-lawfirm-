@@ -1,17 +1,11 @@
 import React, { useState } from 'react';
 import { ScaleIcon, PhoneIcon } from './Icons';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [lang, setLang] = useState('vi');
-
-  const navLinks = [
-    { name: 'Giới thiệu', href: '#ve-chung-toi' },
-    { name: 'Lĩnh vực hành nghề', href: '#linh-vuc' },
-    { name: 'Luật sư điều hành', href: '#luat-su' },
-    { name: 'Hồ sơ tiêu biểu', href: '#ho-so' },
-    { name: 'Liên hệ', href: '#lien-he' },
-  ];
+  const { lang, setLang, t } = useLanguage();
+  const navContent = t.navbar;
 
   const handleNavClick = (href) => {
     setMobileMenuOpen(false);
@@ -27,28 +21,30 @@ export default function Navbar() {
       <div className="hidden lg:block bg-[#0F2144] text-slate-300 text-xs py-2 px-6">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center space-x-6 text-slate-300">
-            <span>Hà Nội &bull; TP. Hồ Chí Minh &bull; Singapore</span>
+            <span>{navContent.locations}</span>
             <span className="text-slate-600">|</span>
-            <span>Hãng luật tranh tụng &amp; tư vấn doanh nghiệp</span>
+            <span>{navContent.tagline}</span>
           </div>
 
           <div className="flex items-center space-x-5">
             <a href="tel:0988886447" className="flex items-center gap-1.5 text-slate-200 hover:text-white transition-colors">
               <PhoneIcon className="w-3.5 h-3.5 text-amber-400" />
-              <span>Hotline: 098.888.6447</span>
+              <span>{navContent.hotline}</span>
             </a>
             <span className="text-slate-600">|</span>
             <div className="flex items-center gap-2 text-xs font-semibold">
               <button
                 onClick={() => setLang('vi')}
-                className={`${lang === 'vi' ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-white'}`}
+                className={`transition-colors ${lang === 'vi' ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-white'}`}
+                title="Tiếng Việt"
               >
                 VI
               </button>
               <span className="text-slate-600">/</span>
               <button
                 onClick={() => setLang('en')}
-                className={`${lang === 'en' ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-white'}`}
+                className={`transition-colors ${lang === 'en' ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-white'}`}
+                title="English"
               >
                 EN
               </button>
@@ -68,17 +64,17 @@ export default function Navbar() {
             </div>
             <div>
               <span className="text-xl sm:text-2xl font-bold tracking-tight text-[#0F2144] block leading-normal">
-                HÒA &amp; CỘNG SỰ
+                {navContent.firmName}
               </span>
               <span className="text-[10px] uppercase font-semibold tracking-wider text-slate-500 mt-0.5 block">
-                HOA &amp; ASSOCIATES LAW FIRM
+                {navContent.firmSub}
               </span>
             </div>
           </a>
 
           {/* Desktop Nav Links */}
           <nav className="hidden lg:flex items-center space-x-1 xl:space-x-2">
-            {navLinks.map((link) => (
+            {navContent.nav.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
@@ -93,13 +89,29 @@ export default function Navbar() {
             ))}
           </nav>
 
-          {/* CTA Button */}
+          {/* CTA Button & Language switcher for mobile */}
           <div className="flex items-center gap-3">
+            <div className="lg:hidden flex items-center gap-1.5 text-xs font-semibold px-2 py-1 bg-slate-100 rounded">
+              <button
+                onClick={() => setLang('vi')}
+                className={lang === 'vi' ? 'text-[#0F2144] font-bold' : 'text-slate-400'}
+              >
+                VI
+              </button>
+              <span className="text-slate-300">/</span>
+              <button
+                onClick={() => setLang('en')}
+                className={lang === 'en' ? 'text-[#0F2144] font-bold' : 'text-slate-400'}
+              >
+                EN
+              </button>
+            </div>
+
             <button
               onClick={() => handleNavClick('#lien-he')}
               className="hidden sm:inline-flex items-center justify-center px-4 py-2 rounded text-sm font-semibold bg-[#0F2144] text-white hover:bg-[#142859] active:translate-y-[1px] transition-all"
             >
-              Liên hệ tư vấn
+              {navContent.cta}
             </button>
 
             <button
@@ -124,7 +136,7 @@ export default function Navbar() {
       {mobileMenuOpen && (
         <div className="lg:hidden border-t border-slate-200 bg-white px-4 pt-3 pb-6 shadow-lg">
           <div className="space-y-1">
-            {navLinks.map((link) => (
+            {navContent.nav.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
@@ -143,7 +155,7 @@ export default function Navbar() {
               onClick={() => handleNavClick('#lien-he')}
               className="w-full text-center py-3 px-4 rounded text-sm font-semibold bg-[#0F2144] text-white"
             >
-              Liên hệ tư vấn với luật sư
+              {navContent.mobileCta}
             </button>
           </div>
         </div>
