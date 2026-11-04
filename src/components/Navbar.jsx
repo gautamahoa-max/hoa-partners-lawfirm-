@@ -9,7 +9,7 @@ export default function Navbar() {
     { name: 'Giới thiệu', href: '#ve-chung-toi' },
     { name: 'Lĩnh vực hành nghề', href: '#linh-vuc' },
     { name: 'Luật sư điều hành', href: '#luat-su' },
-    { name: 'Án lệ tiêu biểu', href: '#an-le' },
+    { name: 'Hồ sơ tiêu biểu', href: '#ho-so' },
     { name: 'Liên hệ', href: '#lien-he' },
   ];
 

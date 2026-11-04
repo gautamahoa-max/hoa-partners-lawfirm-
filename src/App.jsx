@@ -40,7 +40,7 @@ export default function App() {
         {/* 5. Gặp Gỡ Luật Sư Điều Hành Võ Văn Hoà */}
         <LawyerBio />
 
-        {/* 6. Án Lệ & Vụ Việc Tiêu Biểu */}
+        {/* 6. Hồ Sơ Tiêu Biểu & Vụ Việc Thực Tế */}
         <Testimonials />
 
         {/* 7. Phiếu Tiếp Nhận Hồ Sơ & Thông Tin Liên Hệ */}

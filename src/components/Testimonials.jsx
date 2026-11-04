@@ -36,15 +36,15 @@ export default function Testimonials() {
   ];
 
   return (
-    <section id="an-le" className="py-20 bg-[#FAF9F6] border-b border-slate-200">
+    <section id="ho-so" className="py-20 bg-[#FAF9F6] border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="max-w-3xl mb-14 text-left">
           <p className="text-xs font-mono font-semibold text-slate-500 mb-2 uppercase tracking-wider">
-            Án lệ thực tiễn
+            Hồ sơ thực tiễn
           </p>
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0F2144] tracking-normal leading-[1.45] sm:leading-[1.4] font-serif">
-            Hồ sơ vụ việc và Án lệ tiêu biểu
+            Hồ sơ tiêu biểu &amp; Vụ việc thực tế
           </h2>
           <p className="mt-3 text-base text-slate-600 leading-relaxed">
             Các tranh chấp thực tế và thương vụ đã được luật sư đại diện giải quyết thành công qua con đường đàm phán, trọng tài và tòa án.
