@@ -56,15 +56,15 @@ export default function ContactSection() {
             <div className="space-y-4 pt-2">
               <div className="p-4 rounded-lg bg-[#FAF9F6] border border-slate-200">
                 <p className="text-xs text-slate-500 font-medium">Đường dây nóng hỗ trợ tố tụng 24/7</p>
-                <a href="tel:0912345678" className="text-lg font-bold text-[#0F2144] hover:text-[#142859] transition-colors block mt-0.5">
-                  0912.345.678
+                <a href="tel:0988886447" className="text-lg font-bold text-[#0F2144] hover:text-[#142859] transition-colors block mt-0.5">
+                  098.888.6447
                 </a>
               </div>
 
               <div className="p-4 rounded-lg bg-[#FAF9F6] border border-slate-200">
                 <p className="text-xs text-slate-500 font-medium">Hòm thư tiếp nhận tài liệu vụ việc</p>
-                <a href="mailto:contact@hoapartners.vn" className="text-sm font-semibold text-[#0F2144] hover:text-[#142859] transition-colors block mt-0.5">
-                  contact@hoapartners.vn
+                <a href="mailto:Gautamahoa@gmail.com" className="text-sm font-semibold text-[#0F2144] hover:text-[#142859] transition-colors block mt-0.5">
+                  Gautamahoa@gmail.com
                 </a>
               </div>
 
@@ -161,7 +161,7 @@ export default function ContactSection() {
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                         onInvalid={(e) => e.target.setCustomValidity('Vui lòng nhập số điện thoại để luật sư liên hệ.')}
                         onInput={(e) => e.target.setCustomValidity('')}
-                        placeholder="0912 345 678"
+                        placeholder="098.888.6447"
                         className="w-full px-3.5 py-2.5 rounded border border-slate-300 text-sm bg-white focus:outline-none focus:border-[#0F2144] transition-colors"
                       />
                     </div>

@@ -11,7 +11,7 @@ export default function FloatingContact() {
     <div className="fixed bottom-5 right-5 z-40 flex flex-col items-end gap-3">
       {/* Nút Gọi Hotline khẩn cấp */}
       <a
-        href="tel:0912345678"
+        href="tel:0988886447"
         className="group flex items-center gap-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 px-4 py-3 rounded-full shadow-xl shadow-amber-500/25 transition-all transform hover:scale-105"
         title="Gọi hotline luật sư 24/7"
       >
@@ -21,13 +21,13 @@ export default function FloatingContact() {
         </span>
         <PhoneIcon className="w-5 h-5 text-slate-950" />
         <span className="hidden sm:inline text-xs font-extrabold tracking-wide">
-          Hotline: 0912.345.678
+          Hotline: 098.888.6447
         </span>
       </a>
 
       {/* Nút Chat Zalo */}
       <a
-        href="https://zalo.me/0912345678"
+        href="https://zalo.me/0988886447"
         target="_blank"
         rel="noopener noreferrer"
         className="group flex items-center justify-center w-12 h-12 bg-blue-600 hover:bg-blue-500 text-white rounded-full shadow-lg shadow-blue-600/30 transition-all transform hover:scale-105"

@@ -93,11 +93,11 @@ export default function Footer() {
               <div className="pt-2 text-xs text-slate-300 space-y-1">
                 <p className="flex items-center gap-1.5">
                   <PhoneIcon className="w-3.5 h-3.5 text-amber-400" />
-                  Đường dây nóng: <strong>0912.345.678</strong>
+                  Đường dây nóng: <strong>098.888.6447</strong>
                 </p>
                 <p className="flex items-center gap-1.5">
                   <MailIcon className="w-3.5 h-3.5 text-amber-400" />
-                  Hòm thư: <strong>contact@hoapartners.vn</strong>
+                  Hòm thư: <strong>Gautamahoa@gmail.com</strong>
                 </p>
               </div>
             </div>

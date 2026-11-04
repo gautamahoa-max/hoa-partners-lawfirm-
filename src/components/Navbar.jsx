@@ -33,9 +33,9 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center space-x-5">
-            <a href="tel:0912345678" className="flex items-center gap-1.5 text-slate-200 hover:text-white transition-colors">
+            <a href="tel:0988886447" className="flex items-center gap-1.5 text-slate-200 hover:text-white transition-colors">
               <PhoneIcon className="w-3.5 h-3.5 text-amber-400" />
-              <span>Hotline: 0912.345.678</span>
+              <span>Hotline: 098.888.6447</span>
             </a>
             <span className="text-slate-600">|</span>
             <div className="flex items-center gap-2 text-xs font-mono">
