@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScaleIcon, CheckCircleIcon } from './Icons';
+import { PhoneIcon } from './Icons';
 
 export default function Hero() {
   const scrollTo = (id) => {
@@ -8,90 +8,89 @@ export default function Hero() {
   };
 
   return (
-    <section className="bg-[#FAF9F6] pt-16 pb-20 md:pt-24 md:pb-28 border-b border-slate-200/80">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          
-          {/* Cột trái: Tuyên ngôn pháp lý tối giản */}
-          <div className="lg:col-span-7 space-y-7 text-left">
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-              Văn phòng Luật sư &bull; Đoàn Luật sư Việt Nam
-            </p>
-
-            <h1 
-              className="text-2xl sm:text-3xl lg:text-[2.65rem] font-bold text-[#0F2144] tracking-tight leading-[1.35] sm:leading-[1.3]"
-            >
-              Bảo vệ quyền lợi hợp pháp bằng sự chuẩn mực của pháp luật và chiến lược tranh tụng kiên định.
-            </h1>
-
-            <p className="text-base sm:text-lg text-slate-600 max-w-2xl leading-relaxed">
-              Hòa &amp; Cộng sự tập trung vào các lĩnh vực pháp lý trọng yếu: Trọng tài thương mại quốc tế (VIAC, SIAC), Tranh tụng Tòa án các cấp, Mua bán &amp; Sáp nhập (M&amp;A) và Cố vấn pháp chế thường xuyên cho doanh nghiệp.
-            </p>
-
-            {/* Các cam kết cốt lõi */}
-            <div className="pt-3 border-t border-slate-200 space-y-3 max-w-xl text-xs sm:text-sm text-slate-700">
-              <div className="flex items-start gap-3">
-                <CheckCircleIcon className="w-4 h-4 text-[#C5221F] flex-shrink-0 mt-0.5" />
-                <span>Bảo mật tuyệt đối thông tin thân chủ theo Luật Luật sư và Quy tắc đạo đức nghề nghiệp.</span>
-              </div>
-              <div className="flex items-start gap-3">
-                <CheckCircleIcon className="w-4 h-4 text-[#C5221F] flex-shrink-0 mt-0.5" />
-                <span>Minh bạch thù lao, đánh giá xác suất thắng kiện trung thực trước khi ký kết dịch vụ.</span>
-              </div>
-              <div className="flex items-start gap-3">
-                <CheckCircleIcon className="w-4 h-4 text-[#C5221F] flex-shrink-0 mt-0.5" />
-                <span>Đồng hành từ giai đoạn hòa giải, tố tụng cho tới khi thi hành xong phán quyết.</span>
-              </div>
-            </div>
-
-            {/* Nút hành động duy nhất */}
-            <div className="pt-2">
-              <button
-                onClick={() => scrollTo('lien-he')}
-                className="inline-flex items-center justify-center px-6 py-3.5 rounded text-sm font-semibold bg-[#0F2144] text-white hover:bg-[#142859] active:translate-y-[1px] transition-all"
-              >
-                Đặt lịch hẹn tư vấn với luật sư
-              </button>
-            </div>
-          </div>
-
-          {/* Cột phải: Hồ sơ tiếp nhận tóm tắt */}
-          <div className="lg:col-span-5">
-            <div className="bg-white rounded-xl p-8 border border-slate-200/90 text-left space-y-6">
-              
-              <div className="flex items-center justify-between pb-4 border-b border-slate-100">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded bg-[#0F2144] text-amber-400 flex items-center justify-center">
-                    <ScaleIcon className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h2 className="text-base font-bold text-[#0F2144] tracking-tight leading-normal">
-                      Hòa &amp; Cộng sự
-                    </h2>
-                    <p className="text-xs text-slate-500">Hãng luật điều hành</p>
-                  </div>
-                </div>
-                <span className="text-xs font-medium text-slate-600 bg-slate-100 px-2.5 py-1 rounded">
-                  Hà Nội &bull; TP.HCM &bull; Singapore
-                </span>
-              </div>
-
-              {/* Tuyên ngôn của Luật sư Sáng lập */}
-              <div className="space-y-2">
-                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                  Tôn chỉ nghề nghiệp
-                </p>
-                <blockquote className="text-sm text-slate-700 italic border-l-2 border-[#0F2144] pl-3.5 py-1 leading-relaxed">
-                  &ldquo;Nghề Luật sư đòi hỏi sự tỉnh táo trước pháp luật, sự cẩn trọng trước từng tài liệu và lòng kiên định vì quyền lợi hợp pháp của thân chủ.&rdquo;
-                </blockquote>
-                <p className="text-xs text-slate-600 font-medium pt-1">
-                  — Luật sư Võ Văn Hoà, Giám đốc điều hành
-                </p>
-              </div>
-            </div>
-          </div>
-
+    <section className="bg-[#FAF9F6] pt-20 pb-24 md:pt-28 md:pb-32 border-b border-slate-200/80 text-left">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Eyebrow trang trọng */}
+        <div className="flex flex-wrap items-center gap-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-6">
+          <span>Đoàn Luật sư Việt Nam</span>
+          <span className="text-slate-300">&bull;</span>
+          <span>Công ty Luật TNHH Hòa &amp; Cộng sự</span>
+          <span className="text-slate-300">&bull;</span>
+          <span className="text-slate-700">Hà Nội &bull; TP.HCM &bull; Singapore</span>
         </div>
+
+        {/* Tuyên ngôn lớn đĩnh đạc */}
+        <h1 className="text-3xl sm:text-4xl lg:text-[3.25rem] font-bold text-[#0F2144] tracking-tight leading-[1.25] sm:leading-[1.2] max-w-5xl">
+          Bảo vệ quyền lợi hợp pháp bằng sự chuẩn mực của pháp luật và chiến lược tranh tụng kiên định.
+        </h1>
+
+        {/* Đoạn mô tả mở rộng thanh lịch */}
+        <p className="mt-6 text-base sm:text-lg text-slate-600 max-w-3xl leading-relaxed font-normal">
+          Hãng luật chuyên sâu trong lĩnh vực Trọng tài thương mại quốc tế (VIAC, SIAC), Tranh tụng Tòa án các cấp, Mua bán &amp; Sáp nhập (M&amp;A) và Cố vấn pháp chế chiến lược cho các tổ chức kinh tế và nhà đầu tư.
+        </p>
+
+        {/* Đường kẻ chỉ hairline tinh xảo */}
+        <div className="border-t border-slate-200/80 my-10" />
+
+        {/* 3 Nguyên tắc hành nghề cốt lõi dàn ngang (Không đóng khung thẻ) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+          <div>
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-widest block mb-1.5">
+              01 &bull; BẢO MẬT TUYỆT ĐỐI
+            </span>
+            <h3 className="text-sm font-bold text-[#0F2144] mb-1">
+              Đạo đức nghề luật chuẩn mực
+            </h3>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Bảo mật toàn diện mọi tài liệu và thông tin vụ việc theo quy định tại Điều 25 Luật Luật sư.
+            </p>
+          </div>
+
+          <div>
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-widest block mb-1.5">
+              02 &bull; MINH BẠCH THÙ LAO
+            </span>
+            <h3 className="text-sm font-bold text-[#0F2144] mb-1">
+              Đánh giá xác suất trung thực
+            </h3>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Phân tích thẳng thắn cơ hội và rủi ro trước khi ký hợp đồng dịch vụ, cam kết không phát sinh chi phí ẩn.
+            </p>
+          </div>
+
+          <div>
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-widest block mb-1.5">
+              03 &bull; ĐỒNG HÀNH TOÀN DIỆN
+            </span>
+            <h3 className="text-sm font-bold text-[#0F2144] mb-1">
+              Chiến lược tố tụng kiên quyết
+            </h3>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Đại diện xuyên suốt từ tiền tố tụng, đàm phán hòa giải, tranh luận tại tòa cho tới thi hành xong phán quyết.
+            </p>
+          </div>
+        </div>
+
+        {/* Nút hành động chính */}
+        <div className="mt-10 pt-2 flex flex-wrap items-center gap-4">
+          <button
+            onClick={() => scrollTo('lien-he')}
+            className="inline-flex items-center justify-center px-7 py-3.5 rounded text-xs font-semibold bg-[#0F2144] text-white hover:bg-[#142859] active:translate-y-[1px] transition-all shadow-sm"
+          >
+            <span>Đặt lịch hẹn tư vấn với luật sư</span>
+            <span className="ml-2">&rarr;</span>
+          </button>
+
+          <a
+            href="tel:0988886447"
+            className="inline-flex items-center gap-2 px-5 py-3.5 rounded text-xs font-semibold text-[#0F2144] bg-white border border-slate-200/90 hover:border-slate-300 transition-colors"
+          >
+            <PhoneIcon className="w-3.5 h-3.5 text-emerald-600" />
+            <span>Hotline 24/7: 098.888.6447</span>
+          </a>
+        </div>
+
       </div>
     </section>
   );
