@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
-import { GavelIcon, BriefcaseIcon, FileTextIcon, LandmarkIcon, ShieldCheckIcon, ScaleIcon, CloseIcon, CheckCircleIcon } from './Icons';
+import { GavelIcon, BriefcaseIcon, FileTextIcon, LandmarkIcon, ShieldCheckIcon, ScaleIcon, CloseIcon, CheckCircleIcon, HeartHandshakeIcon } from './Icons';
 import { useLanguage } from '../context/LanguageContext';
 import { TRANSLATIONS } from '../i18n/translations';
 
 export const ICON_MAP = {
-  arbitration: GavelIcon,
   litigation: ScaleIcon,
+  'real-estate': LandmarkIcon,
+  inheritance: FileTextIcon,
+  contract: BriefcaseIcon,
+  family: HeartHandshakeIcon,
+  tort: ShieldCheckIcon,
+  // backwards compatibility
+  arbitration: GavelIcon,
   mna: BriefcaseIcon,
   banking: LandmarkIcon,
-  'real-estate': FileTextIcon,
   corporate: ShieldCheckIcon,
 };
 
