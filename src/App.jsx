@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import Accolades from './components/Accolades';
 import Services from './components/Services';
 import LawyerBio from './components/LawyerBio';
 import Testimonials from './components/Testimonials';
@@ -51,10 +50,7 @@ export default function App() {
         {/* 2. Hero Proclamation */}
         <Hero />
 
-        {/* 3. Accolades & International Recognition */}
-        <Accolades />
-
-        {/* 4. Lĩnh Vực Hành Nghề Cốt Lõi (Biểu đồ Donut tương tác) */}
+        {/* 3. Lĩnh Vực Hành Nghề Cốt Lõi (Biểu đồ Donut tương tác) */}
         <Services
           onNavigateToPage={(serviceId) => {
             window.location.hash = `#/linh-vuc/${serviceId}`;
