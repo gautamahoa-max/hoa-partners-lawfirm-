@@ -45,6 +45,7 @@ export const TRANSLATIONS = {
       modalScope: 'PHẠM VI GIẢI QUYẾT TRỌNG TÂM:',
       modalDeliverable: 'Kết quả:',
       modalAction: 'Xem toàn bộ quy trình 4 bước ở trang riêng',
+      modalClose: 'Đóng lại',
       items: [
         {
           id: 'litigation',
@@ -349,6 +350,7 @@ export const TRANSLATIONS = {
       modalScope: 'CORE REPRESENTATION SCOPE:',
       modalDeliverable: 'Deliverable:',
       modalAction: 'View 4-Stage Workflow on Dedicated Page',
+      modalClose: 'Close',
       items: [
         {
           id: 'litigation',
