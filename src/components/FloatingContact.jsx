@@ -1,28 +1,47 @@
-import React from 'react';
-import { PhoneIcon, ZaloIcon, ScaleIcon } from './Icons';
+import React, { useState, useEffect } from 'react';
+import { PhoneIcon, ZaloIcon } from './Icons';
 
 export default function FloatingContact() {
-  const scrollToContact = () => {
-    const el = document.getElementById('lien-he');
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  };
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + window.innerHeight;
+      const totalHeight = document.documentElement.scrollHeight;
+      const contactEl = document.getElementById('lien-he');
+
+      if (contactEl) {
+        const rect = contactEl.getBoundingClientRect();
+        // Hiện ra khi kéo gần tới phần liên hệ (cách 350px) hoặc đã vào phần chân trang
+        setIsVisible(rect.top <= window.innerHeight + 350);
+      } else {
+        // Dự phòng khi chưa mount DOM id: khi cuộn qua 70% chiều dài trang hoặc cách đáy dưới 1000px
+        setIsVisible(totalHeight - scrollPosition < 1000 || (scrollPosition / totalHeight) > 0.7);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
-    <div className="fixed bottom-5 right-5 z-40 flex flex-col items-end gap-3">
-      {/* Nút Gọi Hotline khẩn cấp */}
+    <div
+      className={`fixed bottom-6 right-6 z-40 flex flex-col items-center gap-3 transition-all duration-300 ease-in-out ${
+        isVisible
+          ? 'opacity-100 translate-y-0 pointer-events-auto'
+          : 'opacity-0 translate-y-8 pointer-events-none'
+      }`}
+    >
+      {/* Nút Gọi Hotline (hình tròn tương tự Zalo, không có text dài) */}
       <a
         href="tel:0988886447"
-        className="group flex items-center gap-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 px-4 py-3 rounded-full shadow-xl shadow-amber-500/25 transition-all transform hover:scale-105"
-        title="Gọi hotline luật sư 24/7"
+        className="group flex items-center justify-center w-12 h-12 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full shadow-lg shadow-emerald-600/30 transition-all transform hover:scale-110 active:scale-95"
+        title="Gọi Hotline: 098.888.6447"
+        aria-label="Gọi Hotline 098.888.6447"
       >
-        <span className="relative flex h-3 w-3">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-slate-900 opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-3 w-3 bg-slate-950"></span>
-        </span>
-        <PhoneIcon className="w-5 h-5 text-slate-950" />
-        <span className="hidden sm:inline text-xs font-extrabold tracking-wide">
-          Hotline: 098.888.6447
-        </span>
+        <PhoneIcon className="w-5 h-5 text-white" />
       </a>
 
       {/* Nút Chat Zalo */}
@@ -30,20 +49,12 @@ export default function FloatingContact() {
         href="https://zalo.me/0988886447"
         target="_blank"
         rel="noopener noreferrer"
-        className="group flex items-center justify-center w-12 h-12 bg-blue-600 hover:bg-blue-500 text-white rounded-full shadow-lg shadow-blue-600/30 transition-all transform hover:scale-105"
-        title="Chat Zalo với luật sư"
+        className="group flex items-center justify-center w-12 h-12 bg-[#0068FF] hover:bg-blue-600 text-white rounded-full shadow-lg shadow-blue-500/30 transition-all transform hover:scale-110 active:scale-95"
+        title="Chat Zalo với luật sư (098.888.6447)"
+        aria-label="Chat Zalo với luật sư"
       >
-        <ZaloIcon className="w-6 h-6" />
+        <ZaloIcon className="w-6 h-6 text-white" />
       </a>
-
-      {/* Nút Đặt lịch hẹn */}
-      <button
-        onClick={scrollToContact}
-        className="group flex items-center justify-center w-12 h-12 bg-slate-900 hover:bg-slate-800 text-amber-400 rounded-full shadow-lg shadow-slate-900/30 transition-all transform hover:scale-105"
-        title="Đặt lịch tư vấn"
-      >
-        <ScaleIcon className="w-6 h-6" />
-      </button>
     </div>
   );
 }
