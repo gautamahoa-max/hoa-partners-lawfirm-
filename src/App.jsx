@@ -13,17 +13,8 @@ import FloatingContact from './components/FloatingContact';
 export default function App() {
   const [selectedService, setSelectedService] = useState(null);
 
-  // Khi thân chủ chọn dịch vụ trong modal để chuyển sang form liên hệ
-  const handleSelectServiceForConsult = (service) => {
-    window.dispatchEvent(
-      new CustomEvent('app-prefill-lead', {
-        detail: {
-          serviceType: service.title,
-          note: `Khách hàng quan tâm dịch vụ: ${service.title}.\nCăn cứ pháp lý: ${service.details?.basis}`,
-        },
-      })
-    );
-
+  // Khi thân chủ chọn dịch vụ trong modal để chuyển sang thông tin liên hệ
+  const handleSelectServiceForConsult = () => {
     const contactEl = document.getElementById('lien-he');
     if (contactEl) {
       contactEl.scrollIntoView({ behavior: 'smooth' });

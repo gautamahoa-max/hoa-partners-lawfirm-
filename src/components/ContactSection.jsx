@@ -1,236 +1,177 @@
-import React, { useState, useEffect } from 'react';
-import { PhoneIcon, MailIcon, ClockIcon, CheckCircleIcon, ShieldCheckIcon } from './Icons';
+import React from 'react';
+import { PhoneIcon, MailIcon, ClockIcon, ShieldCheckIcon, ZaloIcon } from './Icons';
 
 export default function ContactSection() {
-  const [formData, setFormData] = useState({
-    fullName: '',
-    phone: '',
-    email: '',
-    service: 'Trọng tài Thương mại Quốc tế',
-    note: '',
-  });
-
-  const [isSubmitted, setIsSubmitted] = useState(false);
-
-  useEffect(() => {
-    const handlePrefill = (e) => {
-      if (!e.detail) return;
-      const { serviceType, note } = e.detail;
-
-      setFormData((prev) => ({
-        ...prev,
-        service: serviceType || prev.service,
-        note: note ? `${note}\n\nYêu cầu hỗ trợ thêm: ` : prev.note,
-      }));
-    };
-
-    window.addEventListener('app-prefill-lead', handlePrefill);
-    return () => window.removeEventListener('app-prefill-lead', handlePrefill);
-  }, []);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setIsSubmitted(true);
-  };
-
   return (
     <section id="lien-he" className="py-20 bg-white border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+        {/* Tiêu đề mục liên hệ */}
+        <div className="max-w-3xl mb-12 text-left">
+          <p className="text-xs font-mono font-semibold text-slate-500 mb-2 uppercase tracking-wider">
+            Thông tin liên hệ &bull; Mạng lưới văn phòng
+          </p>
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0F2144] tracking-normal leading-[1.45] sm:leading-[1.4] font-serif">
+            Tiếp nhận hồ sơ và Tư vấn trực tiếp
+          </h2>
+          <p className="mt-3 text-base text-slate-600 leading-relaxed">
+            Quý thân chủ và đối tác có thể trao đổi trực tiếp với Luật sư Võ Văn Hoà hoặc chuyển phát hồ sơ vụ việc tới các văn phòng của Hòa &amp; Cộng sự qua các kênh chính thức dưới đây.
+          </p>
+        </div>
+
+        {/* 2 Khối liên hệ trực tiếp nổi bật: Đường dây nóng & Hòm thư */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12 text-left">
           
-          {/* Cột Trái: Trụ sở văn phòng & Đường dây nóng */}
-          <div className="lg:col-span-5 space-y-6 text-left">
+          {/* Card 1: Đường dây nóng */}
+          <div className="bg-[#FAF9F6] rounded-xl p-7 sm:p-8 border border-slate-200/90 flex flex-col justify-between">
             <div>
-              <p className="text-xs font-mono font-semibold text-slate-500 mb-2 uppercase tracking-wider">
-                Thông tin liên hệ
-              </p>
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0F2144] tracking-normal leading-[1.45] sm:leading-[1.4] font-serif">
-                Tiếp nhận hồ sơ và Tư vấn trực tiếp
-              </h2>
-              <p className="mt-3 text-base text-slate-600 leading-relaxed">
-                Quý khách có thể gửi tóm tắt hồ sơ vụ việc hoặc liên hệ trực tiếp với văn phòng luật sư theo các kênh dưới đây.
+              <div className="flex items-center gap-2.5 text-xs font-mono font-semibold uppercase tracking-wider text-slate-500 mb-3">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>Đường dây nóng hỗ trợ tố tụng 24/7</span>
+              </div>
+
+              <a
+                href="tel:0988886447"
+                className="text-2xl sm:text-3xl font-bold text-[#0F2144] hover:text-[#142859] font-mono tracking-tight transition-colors block mb-3"
+              >
+                098.888.6447
+              </a>
+
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mb-6">
+                Tiếp nhận hỗ trợ khẩn cấp đối với các vụ việc tạm giữ, áp dụng biện pháp khẩn cấp tạm thời, tranh chấp hợp đồng kinh tế quy mô lớn tại Tòa án và Hội đồng Trọng tài (VIAC, SIAC).
               </p>
             </div>
 
-            <div className="space-y-4 pt-2">
-              <div className="p-4 rounded-lg bg-[#FAF9F6] border border-slate-200">
-                <p className="text-xs text-slate-500 font-medium">Đường dây nóng hỗ trợ tố tụng 24/7</p>
-                <a href="tel:0988886447" className="text-lg font-bold text-[#0F2144] hover:text-[#142859] transition-colors block mt-0.5">
-                  098.888.6447
-                </a>
-              </div>
+            <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-slate-200">
+              <a
+                href="tel:0988886447"
+                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded bg-[#0F2144] text-white hover:bg-[#142859] text-xs font-semibold transition-colors"
+              >
+                <PhoneIcon className="w-4 h-4 text-amber-400" />
+                <span>Gọi trực tiếp</span>
+              </a>
 
-              <div className="p-4 rounded-lg bg-[#FAF9F6] border border-slate-200">
-                <p className="text-xs text-slate-500 font-medium">Hòm thư tiếp nhận tài liệu vụ việc</p>
-                <a href="mailto:Gautamahoa@gmail.com" className="text-sm font-semibold text-[#0F2144] hover:text-[#142859] transition-colors block mt-0.5">
-                  Gautamahoa@gmail.com
-                </a>
-              </div>
-
-              <div className="p-4 rounded-lg bg-[#FAF9F6] border border-slate-200 text-xs text-slate-700 space-y-2.5">
-                <div>
-                  <p className="font-bold text-[#0F2144]">Trụ sở Hà Nội:</p>
-                  <p className="text-slate-600 mt-0.5">Tòa tháp Diamond Flower, Phường Nhân Chính, Quận Thanh Xuân, Hà Nội</p>
-                </div>
-                <div className="pt-2 border-t border-slate-200">
-                  <p className="font-bold text-[#0F2144]">Văn phòng TP. Hồ Chí Minh:</p>
-                  <p className="text-slate-600 mt-0.5">Tòa nhà Landmark 81, Phường 22, Quận Bình Thạnh, TP. Hồ Chí Minh</p>
-                </div>
-                <div className="pt-2 border-t border-slate-200">
-                  <p className="font-bold text-[#0F2144]">Văn phòng đại diện Singapore:</p>
-                  <p className="text-slate-600 mt-0.5">Marina Bay Financial Centre, Singapore</p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2 text-xs text-slate-500 pt-1">
-                <ClockIcon className="w-4 h-4 text-slate-400 flex-shrink-0" />
-                <span>Giờ làm việc: Thứ Hai đến Thứ Bảy (08:00 - 18:00). Các vụ việc tạm giữ hoặc áp dụng biện pháp khẩn cấp tạm thời được hỗ trợ 24/7.</span>
-              </div>
+              <a
+                href="https://zalo.me/0988886447"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded bg-[#0068FF] text-white hover:bg-blue-600 text-xs font-semibold transition-colors"
+              >
+                <ZaloIcon className="w-4 h-4" />
+                <span>Nhắn tin qua Zalo</span>
+              </a>
             </div>
           </div>
 
-          {/* Cột Phải: Biểu mẫu tiếp nhận vụ việc */}
-          <div className="lg:col-span-7">
-            <div className="bg-[#FAF9F6] rounded-xl p-6 sm:p-10 border border-slate-200 text-left">
-              
-              {isSubmitted ? (
-                <div className="py-10 text-center space-y-4">
-                  <div className="w-12 h-12 rounded-full bg-emerald-100 text-emerald-700 mx-auto flex items-center justify-center">
-                    <CheckCircleIcon className="w-6 h-6" />
-                  </div>
-                  <h3 className="text-xl font-bold text-[#0F2144] font-serif">
-                    Đã ghi nhận yêu cầu tư vấn
-                  </h3>
-                  <p className="text-slate-600 text-xs sm:text-sm max-w-md mx-auto leading-relaxed">
-                    Cảm ơn Quý khách <strong>{formData.fullName}</strong>. Luật sư chuyên trách của Hòa &amp; Cộng sự sẽ liên hệ lại qua số điện thoại <strong>{formData.phone}</strong> trong vòng 30 phút làm việc để trực tiếp trao đổi về hồ sơ.
-                  </p>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setIsSubmitted(false);
-                      setFormData({
-                        fullName: '',
-                        phone: '',
-                        email: '',
-                        service: 'Trọng tài Thương mại Quốc tế',
-                        note: '',
-                      });
-                    }}
-                    className="mt-4 px-5 py-2 rounded text-xs font-semibold bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition-colors"
-                  >
-                    Gửi yêu cầu vụ việc khác
-                  </button>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="border-b border-slate-200 pb-3">
-                    <h3 className="text-lg font-bold text-[#0F2144] font-serif">
-                      Phiếu yêu cầu tư vấn pháp lý
-                    </h3>
-                    <p className="text-xs text-slate-500 mt-0.5">
-                      Mọi thông tin được bảo mật theo quy định tại Điều 25 Luật Luật sư 2006.
-                    </p>
-                  </div>
+          {/* Card 2: Hòm thư tiếp nhận */}
+          <div className="bg-[#FAF9F6] rounded-xl p-7 sm:p-8 border border-slate-200/90 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-2.5 text-xs font-mono font-semibold uppercase tracking-wider text-slate-500 mb-3">
+                <MailIcon className="w-4 h-4 text-slate-500" />
+                <span>Hòm thư tiếp nhận tài liệu vụ việc</span>
+              </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1">
-                        Họ và tên <span className="text-rose-500">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        value={formData.fullName}
-                        onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                        onInvalid={(e) => e.target.setCustomValidity('Vui lòng nhập họ và tên của bạn.')}
-                        onInput={(e) => e.target.setCustomValidity('')}
-                        placeholder="Nguyễn Văn An"
-                        className="w-full px-3.5 py-2.5 rounded border border-slate-300 text-sm bg-white focus:outline-none focus:border-[#0F2144] transition-colors"
-                      />
-                    </div>
+              <a
+                href="mailto:Gautamahoa@gmail.com"
+                className="text-xl sm:text-2xl font-bold text-[#0F2144] hover:text-[#142859] tracking-tight transition-colors block mb-3 break-all"
+              >
+                Gautamahoa@gmail.com
+              </a>
 
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1">
-                        Số điện thoại liên hệ <span className="text-rose-500">*</span>
-                      </label>
-                      <input
-                        type="tel"
-                        required
-                        value={formData.phone}
-                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        onInvalid={(e) => e.target.setCustomValidity('Vui lòng nhập số điện thoại để luật sư liên hệ.')}
-                        onInput={(e) => e.target.setCustomValidity('')}
-                        placeholder="098.888.6447"
-                        className="w-full px-3.5 py-2.5 rounded border border-slate-300 text-sm bg-white focus:outline-none focus:border-[#0F2144] transition-colors"
-                      />
-                    </div>
-                  </div>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mb-6">
+                Tiếp nhận tài liệu hợp đồng, hồ sơ chứng cứ vụ kiện và yêu cầu phát hành Thư ý kiến pháp lý (Legal Opinion). Luật sư điều hành trực tiếp bảo mật và phản hồi trong 24 giờ làm việc.
+              </p>
+            </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1">
-                        Địa chỉ thư điện tử (email)
-                      </label>
-                      <input
-                        type="email"
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        placeholder="an.nguyen@doanhnghiep.com"
-                        className="w-full px-3.5 py-2.5 rounded border border-slate-300 text-sm bg-white focus:outline-none focus:border-[#0F2144] transition-colors"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1">
-                        Lĩnh vực quan tâm
-                      </label>
-                      <select
-                        value={formData.service}
-                        onChange={(e) => setFormData({ ...formData, service: e.target.value })}
-                        className="w-full px-3.5 py-2.5 rounded border border-slate-300 text-sm bg-white focus:outline-none focus:border-[#0F2144] transition-colors"
-                      >
-                        <option value="Trọng tài Thương mại Quốc tế">Trọng tài Thương mại Quốc tế (VIAC, SIAC)</option>
-                        <option value="Tranh tụng Tòa án các cấp">Tranh tụng Tòa án các cấp</option>
-                        <option value="Mua bán & Sáp nhập (M&A)">Mua bán &amp; Sáp nhập (M&amp;A)</option>
-                        <option value="Ngân hàng & Thị trường vốn">Ngân hàng &amp; Thị trường vốn</option>
-                        <option value="Bất động sản & Xây dựng">Bất động sản &amp; Xây dựng</option>
-                        <option value="Pháp chế Doanh nghiệp thường xuyên">Pháp chế Doanh nghiệp thường xuyên</option>
-                        <option value="Lĩnh vực pháp luật khác">Lĩnh vực pháp luật khác</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
-                      Tóm tắt nội dung vụ việc và tài liệu hiện có
-                    </label>
-                    <textarea
-                      rows={4}
-                      value={formData.note}
-                      onChange={(e) => setFormData({ ...formData, note: e.target.value })}
-                      placeholder="Mô tả tóm tắt diễn biến vụ việc hoặc các vướng mắc pháp lý cần tham vấn..."
-                      className="w-full px-3.5 py-2.5 rounded border border-slate-300 text-sm bg-white focus:outline-none focus:border-[#0F2144] transition-colors"
-                    />
-                  </div>
-
-                  <div className="flex items-center gap-2 text-xs text-slate-500 pt-1">
-                    <ShieldCheckIcon className="w-4 h-4 text-slate-500 flex-shrink-0" />
-                    <span>Cam kết bảo mật toàn diện thông tin thân chủ theo Luật Luật sư.</span>
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="w-full py-3.5 px-6 rounded text-sm font-semibold bg-[#0F2144] text-white hover:bg-[#142859] active:translate-y-[1px] transition-all"
-                  >
-                    Gửi yêu cầu tới luật sư phụ trách
-                  </button>
-                </form>
-              )}
-
+            <div className="flex items-center gap-3 pt-4 border-t border-slate-200">
+              <a
+                href="mailto:Gautamahoa@gmail.com"
+                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded bg-white border border-slate-300 text-slate-800 hover:bg-slate-50 text-xs font-semibold transition-colors"
+              >
+                <MailIcon className="w-4 h-4 text-slate-600" />
+                <span>Gửi thư điện tử</span>
+              </a>
+              <span className="text-xs text-slate-500">Phản hồi trong 24 giờ</span>
             </div>
           </div>
 
+        </div>
+
+        {/* Mạng lưới 3 Văn phòng đại diện */}
+        <div className="mb-10 text-left">
+          <p className="text-xs font-mono font-semibold text-slate-500 uppercase tracking-wider mb-5">
+            Hệ thống trụ sở &amp; Văn phòng đại diện
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            {/* Văn phòng Hà Nội */}
+            <div className="bg-[#FAF9F6] p-6 rounded-lg border border-slate-200 text-left space-y-3">
+              <div className="pb-3 border-b border-slate-200">
+                <span className="text-[11px] font-mono font-bold text-[#C5221F] uppercase">Trụ sở chính</span>
+                <h3 className="text-lg font-bold text-[#0F2144] font-serif mt-0.5">
+                  Văn phòng Hà Nội
+                </h3>
+              </div>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Tòa tháp Diamond Flower, Phường Nhân Chính, Quận Thanh Xuân, Hà Nội
+              </p>
+              <div className="pt-2 text-xs text-slate-500 space-y-1">
+                <p><strong>Lĩnh vực:</strong> Tranh tụng Tòa án, Trọng tài VIAC &amp; Pháp chế</p>
+                <p><strong>Hotline:</strong> 098.888.6447</p>
+              </div>
+            </div>
+
+            {/* Văn phòng TP. Hồ Chí Minh */}
+            <div className="bg-[#FAF9F6] p-6 rounded-lg border border-slate-200 text-left space-y-3">
+              <div className="pb-3 border-b border-slate-200">
+                <span className="text-[11px] font-mono font-bold text-slate-500 uppercase">Chi nhánh miền Nam</span>
+                <h3 className="text-lg font-bold text-[#0F2144] font-serif mt-0.5">
+                  Văn phòng TP. Hồ Chí Minh
+                </h3>
+              </div>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Tòa nhà Landmark 81, Phường 22, Quận Bình Thạnh, TP. Hồ Chí Minh
+              </p>
+              <div className="pt-2 text-xs text-slate-500 space-y-1">
+                <p><strong>Lĩnh vực:</strong> M&amp;A, Ngân hàng, Bất động sản &amp; Dự án</p>
+                <p><strong>Hotline:</strong> 098.888.6447</p>
+              </div>
+            </div>
+
+            {/* Văn phòng Singapore */}
+            <div className="bg-[#FAF9F6] p-6 rounded-lg border border-slate-200 text-left space-y-3">
+              <div className="pb-3 border-b border-slate-200">
+                <span className="text-[11px] font-mono font-bold text-slate-500 uppercase">Đại diện quốc tế</span>
+                <h3 className="text-lg font-bold text-[#0F2144] font-serif mt-0.5">
+                  Văn phòng Singapore
+                </h3>
+              </div>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Marina Bay Financial Centre, Marina Boulevard, Singapore
+              </p>
+              <div className="pt-2 text-xs text-slate-500 space-y-1">
+                <p><strong>Lĩnh vực:</strong> Trọng tài quốc tế (SIAC, ICC) &amp; Đầu tư</p>
+                <p><strong>Email:</strong> Gautamahoa@gmail.com</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        {/* Cam kết bảo mật & Thời gian làm việc */}
+        <div className="p-6 rounded-xl bg-[#FAF9F6] border border-slate-200 text-left flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="flex items-start gap-3 max-w-2xl">
+            <ShieldCheckIcon className="w-5 h-5 text-emerald-700 flex-shrink-0 mt-0.5" />
+            <p className="text-xs text-slate-700 leading-relaxed">
+              <strong>Cam kết bảo mật tuyệt đối:</strong> Toàn bộ thông tin, tài liệu và tình tiết vụ việc của thân chủ được giữ kín theo quy định tại Điều 25 Luật Luật sư 2006 và Quy tắc Đạo đức và ứng xử nghề nghiệp Luật sư Việt Nam.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2 text-xs text-slate-600 flex-shrink-0">
+            <ClockIcon className="w-4 h-4 text-slate-500" />
+            <span>Thứ 2 &ndash; Thứ 7: 08:00 &ndash; 18:00 (Hỗ trợ khẩn cấp 24/7)</span>
+          </div>
         </div>
 
       </div>
