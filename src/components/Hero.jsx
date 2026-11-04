@@ -89,23 +89,6 @@ export default function Hero() {
                   — Luật sư Võ Văn Hoà, Giám đốc điều hành
                 </p>
               </div>
-
-              {/* Thông số hoạt động */}
-              <div className="pt-4 border-t border-slate-100 space-y-3 text-xs text-slate-700">
-                <div className="flex justify-between items-center py-1 border-b border-slate-100">
-                  <span className="text-slate-500">Cơ quan tài phán:</span>
-                  <span className="font-semibold text-slate-900">Tòa án các cấp &amp; VIAC / SIAC</span>
-                </div>
-                <div className="flex justify-between items-center py-1 border-b border-slate-100">
-                  <span className="text-slate-500">Tiếp nhận hồ sơ:</span>
-                  <span className="font-semibold text-slate-900">Trực tiếp hoặc bảo mật từ xa</span>
-                </div>
-                <div className="flex justify-between items-center py-1">
-                  <span className="text-slate-500">Phản hồi khẩn cấp:</span>
-                  <span className="font-semibold text-slate-900">24/7 đối với vụ việc tố tụng</span>
-                </div>
-              </div>
-
             </div>
           </div>
 
