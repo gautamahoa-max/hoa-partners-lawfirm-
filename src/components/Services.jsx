@@ -87,29 +87,13 @@ export default function Services({ onNavigateToPage }) {
     };
   }, [selectedServiceForModal]);
 
-  const activeIndex = hoveredIndex !== null ? hoveredIndex : 0;
-  const currentService = practiceAreas[activeIndex] || practiceAreas[0];
-  const CurrentIcon = currentService.icon;
-
   const cx = 200;
   const cy = 200;
   const baseInnerRadius = 104;
   const baseOuterRadius = 172;
 
-  const handleSliceClick = (item, index) => {
-    const isTouch = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
-    if (isTouch) {
-      if (hoveredIndex === index) {
-        // Nhấp lần thứ hai vào mảnh đang chọn -> mở popup tóm tắt
-        setSelectedServiceForModal(item);
-      } else {
-        // Nhấp lần đầu trên màn hình cảm ứng -> hiển thị thông tin ở tâm vòng tròn
-        setHoveredIndex(index);
-      }
-    } else {
-      // Trên desktop chuột -> mở popup tóm tắt ngay
-      setSelectedServiceForModal(item);
-    }
+  const handleSliceClick = (item) => {
+    setSelectedServiceForModal(item);
   };
 
   const handleOpenDetailPage = (serviceId) => {
@@ -261,38 +245,6 @@ export default function Services({ onNavigateToPage }) {
                 );
               })}
             </svg>
-
-            {/* Trung tâm vòng tròn: Thiết kế Chronometer tối giản */}
-            <div
-              onClick={() => handleSliceClick(currentService)}
-              className="absolute w-[184px] h-[184px] rounded-full bg-white border border-slate-200/90 shadow-[0_12px_32px_-8px_rgba(15,33,68,0.08)] p-4 flex flex-col items-center justify-center text-center cursor-pointer hover:border-slate-300 transition-all duration-300 group"
-              title="Nhấp để xem hồ sơ lĩnh vực"
-            >
-              {/* Viền hairline trang nhã bên trong */}
-              <div className="absolute inset-2 rounded-full border border-slate-100 pointer-events-none" />
-
-              {/* Huy hiệu biểu tượng chuyên môn tối giản */}
-              <div className="relative z-10 w-9 h-9 rounded-full bg-[#0F2144]/5 flex items-center justify-center text-[#0F2144] mb-1.5 transition-transform duration-300 group-hover:scale-105">
-                <CurrentIcon className="w-4 h-4 text-[#0F2144]" />
-              </div>
-
-              {/* Chỉ số thứ tự & Nhãn thể loại */}
-              <span className="relative z-10 text-[9px] font-bold tracking-[0.2em] uppercase text-slate-400 font-mono">
-                {currentService.num} &bull; {servicesText.hubTag}
-              </span>
-
-              {/* Tiêu đề lĩnh vực */}
-              <h4 className="relative z-10 text-xs sm:text-[13px] font-bold text-[#0F2144] tracking-tight leading-snug px-2 line-clamp-2 mt-0.5">
-                {currentService.shortName}
-              </h4>
-
-              {/* Nút hành động tinh giản tối đa */}
-              <div className="relative z-10 mt-2 inline-flex items-center gap-1.5 text-[11px] font-semibold text-[#0F2144] group-hover:text-blue-900 transition-colors">
-                <span className="group-hover:underline underline-offset-4">{servicesText.hubAction}</span>
-                <span className="text-amber-700 font-bold transition-transform group-hover:translate-x-0.5">&rarr;</span>
-              </div>
-            </div>
-
           </div>
 
         </div>
