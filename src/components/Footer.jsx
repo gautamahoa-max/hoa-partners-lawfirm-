@@ -88,6 +88,17 @@ export default function Footer() {
             </div>
 
             <div>
+              <button
+                onClick={() => {
+                  window.location.hash = '#/kien-thuc-phap-luat';
+                }}
+                className="hover:underline underline-offset-4 transition-all text-left block"
+              >
+                {footer.knowledge || (lang === 'vi' ? 'KIẾN THỨC PHÁP LUẬT' : 'LEGAL KNOWLEDGE')}
+              </button>
+            </div>
+
+            <div>
               <span className="text-slate-500 block">
                 {footer.locations}
               </span>

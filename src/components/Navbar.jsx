@@ -99,7 +99,7 @@ export default function Navbar() {
           </a>
 
           {/* Desktop Nav Links */}
-          <nav className="hidden lg:flex items-center space-x-1 xl:space-x-2">
+          <nav className="hidden lg:flex items-center space-x-0.5 xl:space-x-1.5">
             {navContent.nav.map((link) => (
               <a
                 key={link.name}
@@ -108,7 +108,7 @@ export default function Navbar() {
                   e.preventDefault();
                   handleNavClick(link.href);
                 }}
-                className="px-3.5 py-2 text-sm font-medium text-slate-700 hover:text-[#0F2144] hover:bg-slate-50 rounded transition-colors"
+                className="px-2.5 xl:px-3.5 py-2 text-xs xl:text-sm font-medium text-slate-700 hover:text-[#0F2144] hover:bg-slate-50 rounded transition-colors whitespace-nowrap"
               >
                 {link.name}
               </a>

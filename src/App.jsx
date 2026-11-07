@@ -9,6 +9,7 @@ import FloatingContact from './components/FloatingContact';
 import ServiceDetailPage from './components/ServiceDetailPage';
 import LawyerBioPage from './components/LawyerBioPage';
 import ContactPage from './components/ContactPage';
+import LegalKnowledgePage from './components/LegalKnowledgePage';
 
 function MainContent() {
   const [currentRoute, setCurrentRoute] = useState(window.location.hash);
@@ -40,6 +41,18 @@ function MainContent() {
   if (isContactRoute) {
     return (
       <ContactPage
+        onBack={() => {
+          window.location.hash = '';
+        }}
+      />
+    );
+  }
+
+  // Kiểm tra nếu route là trang kiến thức pháp luật (#/kien-thuc-phap-luat, #/kien-thuc hoặc #/legal-knowledge)
+  const isKnowledgeRoute = /^#(?:(?:\/)?(?:kien-thuc-phap-luat|kien-thuc|legal-knowledge))(?:\/)?$/.test(currentRoute);
+  if (isKnowledgeRoute) {
+    return (
+      <LegalKnowledgePage
         onBack={() => {
           window.location.hash = '';
         }}
