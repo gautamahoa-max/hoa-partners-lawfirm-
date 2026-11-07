@@ -13,7 +13,6 @@ import ContactPage from './components/ContactPage';
 function MainContent() {
   const [currentRoute, setCurrentRoute] = useState(window.location.hash);
   const { t, lang } = useLanguage();
-  const bio = t.lawyerBio;
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -79,45 +78,9 @@ function MainContent() {
         <Hero />
 
         {/* 3. Lĩnh Vực Hành Nghề Cốt Lõi (Biểu đồ Donut tương tác) */}
-        <Services
-          onNavigateToPage={(serviceId) => {
-            window.location.hash = `#/linh-vuc/${serviceId}`;
-          }}
-        />
+        <Services />
 
-        {/* 4. Giới Thiệu & Hồ Sơ Luật Sư Điều Hành (Dẫn sang trang riêng) */}
-        <section id="gioi-thieu" className="py-12 sm:py-16 bg-[#FAF9F6] border-b border-slate-200/80 text-left">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-              <div className="space-y-2 max-w-2xl">
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest font-mono block">
-                  {bio.badge}
-                </span>
-                <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#0F2144]">
-                  {bio.name}
-                </h3>
-                <p className="text-xs font-semibold text-slate-500">
-                  {bio.degree}
-                </p>
-                <p className="text-xs sm:text-sm text-slate-600 italic border-l-2 border-[#0F2144] pl-3 py-0.5 mt-2">
-                  {bio.quote}
-                </p>
-              </div>
-
-              <div className="flex-shrink-0">
-                <a
-                  href="#/luat-su"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded text-xs font-semibold bg-[#0F2144] text-white hover:bg-[#142859] active:translate-y-[1px] transition-all shadow-sm"
-                >
-                  <span>{lang === 'vi' ? 'Xem hồ sơ chi tiết & Tôn chỉ hành nghề' : 'View Full Profile & Principles'}</span>
-                  <span>&rarr;</span>
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 5. Hồ Sơ Tiêu Biểu & Vụ Việc Thực Tế */}
+        {/* 4. Hồ Sơ Tiêu Biểu & Danh sách vụ án từng tham dự */}
         <Testimonials />
       </main>
 
