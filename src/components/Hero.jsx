@@ -1,5 +1,4 @@
 import React from 'react';
-import { PhoneIcon } from './Icons';
 import { useLanguage } from '../context/LanguageContext';
 
 export default function Hero() {
@@ -87,14 +86,6 @@ export default function Hero() {
             <span>{hero.ctaSchedule}</span>
             <span className="ml-2">&rarr;</span>
           </button>
-
-          <a
-            href="tel:0988886447"
-            className="inline-flex items-center gap-2 px-5 py-3.5 rounded text-xs font-semibold text-[#0F2144] bg-white border border-slate-200/90 hover:border-slate-300 transition-colors"
-          >
-            <PhoneIcon className="w-3.5 h-3.5 text-emerald-600" />
-            <span>{hero.ctaHotline}</span>
-          </a>
         </div>
 
       </div>
