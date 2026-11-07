@@ -12,7 +12,6 @@ import {
 import Navbar from './Navbar';
 import Footer from './Footer';
 import FloatingContact from './FloatingContact';
-import LegalCalculator from './LegalCalculator';
 import { useLanguage } from '../context/LanguageContext';
 
 export default function LegalKnowledgePage({ onBack }) {
@@ -186,21 +185,6 @@ export default function LegalKnowledgePage({ onBack }) {
               })}
             </div>
           )}
-
-          {/* Công cụ tra cứu Án Phí Trực Tuyến */}
-          <section className="mb-16">
-            <div className="mb-6">
-              <h2 className="text-xl sm:text-2xl font-bold text-[#0F2144] tracking-tight">
-                {knowledge.calculatorHeading}
-              </h2>
-              <p className="text-xs sm:text-sm text-slate-600 mt-1">
-                {knowledge.calculatorSub}
-              </p>
-            </div>
-            <div className="bg-white rounded-2xl border border-slate-200/80 shadow-[0_2px_12px_rgba(15,33,68,0.04)] overflow-hidden">
-              <LegalCalculator />
-            </div>
-          </section>
 
           {/* Giải đáp câu hỏi pháp lý thường gặp (FAQ) */}
           <section className="mb-16">
