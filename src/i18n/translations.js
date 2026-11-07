@@ -303,9 +303,9 @@ export const TRANSLATIONS = {
     },
     contactPage: {
       back: 'Quay lại trang chủ',
-      badge: 'TIẾP NHẬN YÊU CẦU PHÁP LÝ • BẢO MẬT 24/7',
-      title: 'Đặt lịch hẹn & Gửi yêu cầu tư vấn với Luật sư Võ Văn Hoà',
-      subtitle: 'Quý khách vui lòng cung cấp thông tin sơ lược về vụ việc. Luật sư sẽ trực tiếp thẩm định sơ bộ hồ sơ và phản hồi phương án xử lý trong vòng 24 giờ làm việc.',
+      badge: '',
+      title: 'ĐẶT LỊCH HẸN VỚI LUẬT SƯ',
+      subtitle: '',
       form: {
         legend: 'THÔNG TIN VỤ VIỆC & THÂN CHỦ',
         nameLabel: 'Họ và tên của Quý khách',
@@ -670,9 +670,9 @@ export const TRANSLATIONS = {
     },
     contactPage: {
       back: 'Back to Home',
-      badge: 'LEGAL CONSULTATION REQUEST • STRICT CONFIDENTIALITY',
-      title: 'Schedule a Consultation with Managing Partner Vo Van Hoa',
-      subtitle: 'Please provide key details regarding your legal dispute. The Managing Partner will examine your case and provide procedural guidance within 24 working hours.',
+      badge: '',
+      title: 'SCHEDULE AN APPOINTMENT WITH LAWYER',
+      subtitle: '',
       form: {
         legend: 'CASE DETAILS & CLIENT INFORMATION',
         nameLabel: 'Your Full Name',

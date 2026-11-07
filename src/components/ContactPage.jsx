@@ -124,20 +124,12 @@ export default function ContactPage({ onBack }) {
       {/* Main Content */}
       <main className="flex-grow">
         
-        {/* Hero Header tinh gọn */}
-        <section className="bg-[#FAF9F6] border-b border-slate-200 py-12 sm:py-16 text-center">
+        {/* Header tinh gọn */}
+        <section className="bg-[#FAF9F6] border-b border-slate-200 py-10 sm:py-14 text-center">
           <div className="max-w-2xl mx-auto px-4 sm:px-6">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded text-xs font-semibold uppercase mb-4 border tracking-wider bg-[#0F2144]/5 border-[#0F2144]/20 text-[#0F2144]">
-              <span className="w-2 h-2 rounded-full bg-[#0F2144]"></span>
-              <span>{contact.badge}</span>
-            </div>
-
-            <h1 className="text-2xl sm:text-4xl font-bold text-[#0F2144] tracking-tight leading-tight">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0F2144] tracking-tight">
               {contact.title}
             </h1>
-            <p className="mt-3 text-xs sm:text-sm text-slate-600 leading-relaxed max-w-xl mx-auto">
-              {contact.subtitle}
-            </p>
           </div>
         </section>
 
