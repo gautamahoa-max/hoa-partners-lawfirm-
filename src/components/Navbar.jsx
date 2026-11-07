@@ -10,6 +10,10 @@ export default function Navbar() {
   const handleNavClick = (href) => {
     setMobileMenuOpen(false);
     if (href.startsWith('#/')) {
+      if (window.location.hash === href) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
       window.location.hash = href;
       return;
     }
@@ -20,7 +24,7 @@ export default function Navbar() {
         if (target) {
           target.scrollIntoView({ behavior: 'smooth' });
         }
-      }, 60);
+      }, 80);
       return;
     }
     const target = document.querySelector(href);
@@ -72,7 +76,15 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-20">
           
           {/* Logo Wordmark tối giản, đĩnh đạc */}
-          <a href="#" className="flex items-center gap-3.5 text-left group">
+          <a
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              window.location.hash = '';
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className="flex items-center gap-3.5 text-left group"
+          >
             <div className="w-10 h-10 rounded bg-[#0F2144] flex items-center justify-center text-amber-400">
               <ScaleIcon className="w-5 h-5" />
             </div>

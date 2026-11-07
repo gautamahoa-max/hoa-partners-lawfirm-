@@ -5,6 +5,7 @@ import {
   ShieldCheckIcon, 
   ScaleIcon 
 } from './Icons';
+import Navbar from './Navbar';
 import Footer from './Footer';
 import FloatingContact from './FloatingContact';
 import { useLanguage } from '../context/LanguageContext';
@@ -76,50 +77,8 @@ export default function ContactPage({ onBack }) {
   return (
     <div className="min-h-screen bg-white text-slate-900 flex flex-col font-sans selection:bg-slate-200 selection:text-slate-900">
       
-      {/* Top Bar điều hướng trang con */}
-      <header className="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-md border-b border-slate-200">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <button
-            onClick={onBack}
-            className="inline-flex items-center gap-2 text-xs font-semibold text-[#0F2144] hover:text-blue-700 transition-colors"
-          >
-            <span>&larr;</span>
-            <span>{contact.back}</span>
-          </button>
-
-          <a href="#" onClick={onBack} className="text-center group">
-            <span className="text-lg font-bold text-[#0F2144] tracking-tight block">
-              {t.navbar.firmName}
-            </span>
-          </a>
-
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-1.5 text-xs font-semibold">
-              <button
-                onClick={() => setLang('vi')}
-                className={lang === 'vi' ? 'text-[#0F2144] font-bold' : 'text-slate-400 hover:text-slate-700'}
-              >
-                VI
-              </button>
-              <span className="text-slate-300">/</span>
-              <button
-                onClick={() => setLang('en')}
-                className={lang === 'en' ? 'text-[#0F2144] font-bold' : 'text-slate-400 hover:text-slate-700'}
-              >
-                EN
-              </button>
-            </div>
-
-            <a
-              href="tel:0988886447"
-              className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-[#0F2144] hover:underline"
-            >
-              <PhoneIcon className="w-3.5 h-3.5 text-emerald-600" />
-              <span>098.888.6447</span>
-            </a>
-          </div>
-        </div>
-      </header>
+      {/* 1. Header & Navigation Bar chuẩn như ảnh 2 */}
+      <Navbar />
 
       {/* Main Content */}
       <main className="flex-grow">
