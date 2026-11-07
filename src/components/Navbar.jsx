@@ -115,7 +115,7 @@ export default function Navbar() {
             ))}
           </nav>
 
-          {/* CTA Button & Language switcher for mobile */}
+          {/* Language switcher for mobile & Hamburger Menu */}
           <div className="flex items-center gap-3">
             <div className="lg:hidden flex items-center gap-1.5 text-xs font-semibold px-2 py-1 bg-slate-100 rounded">
               <button
@@ -132,13 +132,6 @@ export default function Navbar() {
                 EN
               </button>
             </div>
-
-            <button
-              onClick={() => handleNavClick('#/lien-he')}
-              className="hidden sm:inline-flex items-center justify-center px-4 py-2 rounded text-sm font-semibold bg-[#0F2144] text-white hover:bg-[#142859] active:translate-y-[1px] transition-all"
-            >
-              {navContent.cta}
-            </button>
 
             <button
               type="button"
@@ -175,14 +168,6 @@ export default function Navbar() {
                 {link.name}
               </a>
             ))}
-          </div>
-          <div className="mt-4 pt-4 border-t border-slate-100">
-            <button
-              onClick={() => handleNavClick('#/lien-he')}
-              className="w-full text-center py-3 px-4 rounded text-sm font-semibold bg-[#0F2144] text-white"
-            >
-              {navContent.mobileCta}
-            </button>
           </div>
         </div>
       )}
