@@ -202,6 +202,12 @@ export default function ServiceDetailPage({ serviceId, onBack, onSelectService }
 
               <div className="flex flex-wrap items-center gap-3 flex-shrink-0">
                 <a
+                  href="#/lien-he"
+                  className="inline-flex items-center gap-2 px-5 py-3 rounded bg-white text-[#0F2144] border border-[#0F2144]/30 hover:bg-slate-50 font-semibold text-xs transition-colors"
+                >
+                  <span>{lang === 'vi' ? 'Đặt lịch tư vấn' : 'Consultation Form'}</span>
+                </a>
+                <a
                   href="tel:0988886447"
                   className="inline-flex items-center gap-2 px-5 py-3 rounded bg-amber-400 text-slate-950 hover:bg-amber-300 font-semibold text-xs transition-colors"
                 >

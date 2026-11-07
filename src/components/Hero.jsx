@@ -79,7 +79,9 @@ export default function Hero() {
         {/* Nút hành động chính */}
         <div className="mt-10 pt-2 flex flex-wrap items-center gap-4">
           <button
-            onClick={() => scrollTo('lien-he')}
+            onClick={() => {
+              window.location.hash = '#/lien-he';
+            }}
             className="inline-flex items-center justify-center px-7 py-3.5 rounded text-xs font-semibold bg-[#0F2144] text-white hover:bg-[#142859] active:translate-y-[1px] transition-all shadow-sm"
           >
             <span>{hero.ctaSchedule}</span>

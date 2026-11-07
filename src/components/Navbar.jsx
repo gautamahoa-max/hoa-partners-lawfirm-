@@ -122,7 +122,7 @@ export default function Navbar() {
             </div>
 
             <button
-              onClick={() => handleNavClick('#lien-he')}
+              onClick={() => handleNavClick('#/lien-he')}
               className="hidden sm:inline-flex items-center justify-center px-4 py-2 rounded text-sm font-semibold bg-[#0F2144] text-white hover:bg-[#142859] active:translate-y-[1px] transition-all"
             >
               {navContent.cta}
@@ -166,7 +166,7 @@ export default function Navbar() {
           </div>
           <div className="mt-4 pt-4 border-t border-slate-100">
             <button
-              onClick={() => handleNavClick('#lien-he')}
+              onClick={() => handleNavClick('#/lien-he')}
               className="w-full text-center py-3 px-4 rounded text-sm font-semibold bg-[#0F2144] text-white"
             >
               {navContent.mobileCta}

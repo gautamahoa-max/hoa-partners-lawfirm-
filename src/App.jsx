@@ -8,6 +8,7 @@ import Footer from './components/Footer';
 import FloatingContact from './components/FloatingContact';
 import ServiceDetailPage from './components/ServiceDetailPage';
 import LawyerBioPage from './components/LawyerBioPage';
+import ContactPage from './components/ContactPage';
 
 function MainContent() {
   const [currentRoute, setCurrentRoute] = useState(window.location.hash);
@@ -28,6 +29,18 @@ function MainContent() {
   if (isLawyerRoute) {
     return (
       <LawyerBioPage
+        onBack={() => {
+          window.location.hash = '';
+        }}
+      />
+    );
+  }
+
+  // Kiểm tra nếu route là trang liên hệ riêng (#/lien-he hoặc #/contact)
+  const isContactRoute = /^#(?:(?:\/)?(?:lien-he|contact))(?:\/)?$/.test(currentRoute);
+  if (isContactRoute) {
+    return (
+      <ContactPage
         onBack={() => {
           window.location.hash = '';
         }}

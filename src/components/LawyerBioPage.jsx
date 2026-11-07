@@ -240,6 +240,12 @@ export default function LawyerBioPage({ onBack }) {
                 <ZaloIcon className="w-4 h-4 text-[#0068FF]" />
                 <span>{detail.zaloBtn}</span>
               </a>
+              <a
+                href="#/lien-he"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded text-xs font-semibold text-[#0F2144] bg-white border border-[#0F2144]/30 hover:bg-slate-50 transition-all shadow-sm"
+              >
+                <span>{lang === 'vi' ? 'Điền Form Đặt Lịch Hẹn' : 'Submit Consultation Form'} &rarr;</span>
+              </a>
               <button
                 onClick={onBack}
                 className="inline-flex items-center justify-center px-6 py-3 rounded text-xs font-semibold text-slate-600 hover:text-[#0F2144] transition-colors"
