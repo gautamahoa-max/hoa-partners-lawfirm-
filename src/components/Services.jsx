@@ -17,12 +17,126 @@ export const ICON_MAP = {
   corporate: ShieldCheckIcon,
 };
 
+// Bảng màu sắc tương ứng cho từng lĩnh vực chuyên môn
+export const PRACTICE_COLOR_MAP = {
+  litigation: {
+    color: '#1E3A8A', // Xanh dương đậm / Tranh tụng Tòa án
+    activeColor: '#2563EB', // Sapphire Blue
+    glowColor: 'rgba(37, 99, 235, 0.45)',
+    gradStart: '#1E3A8A',
+    gradEnd: '#1D4ED8',
+    activeGradStart: '#2563EB',
+    activeGradEnd: '#3B82F6',
+    numberColor: '#BFDBFE',
+    accentColor: '#93C5FD',
+  },
+  'real-estate': {
+    color: '#166534', // Xanh lá cây / Đất đai & Bất động sản
+    activeColor: '#059669', // Emerald Green
+    glowColor: 'rgba(5, 150, 105, 0.45)',
+    gradStart: '#14532D',
+    gradEnd: '#166534',
+    activeGradStart: '#047857',
+    activeGradEnd: '#10B981',
+    numberColor: '#BBF7D0',
+    accentColor: '#86EFAC',
+  },
+  inheritance: {
+    color: '#92400E', // Vàng hổ phách / Thừa kế & Di sản
+    activeColor: '#D97706', // Vibrant Amber Gold
+    glowColor: 'rgba(217, 119, 6, 0.45)',
+    gradStart: '#78350F',
+    gradEnd: '#92400E',
+    activeGradStart: '#B45309',
+    activeGradEnd: '#F59E0B',
+    numberColor: '#FDE68A',
+    accentColor: '#FCD34D',
+  },
+  contract: {
+    color: '#3730A3', // Tím than Indigo / Hợp đồng Dân sự
+    activeColor: '#4F46E5', // Vibrant Indigo
+    glowColor: 'rgba(79, 70, 229, 0.45)',
+    gradStart: '#312E81',
+    gradEnd: '#3730A3',
+    activeGradStart: '#4338CA',
+    activeGradEnd: '#6366F1',
+    numberColor: '#C7D2FE',
+    accentColor: '#A5B4FC',
+  },
+  family: {
+    color: '#9F1239', // Đỏ hồng Ruby / Hôn nhân & Gia đình
+    activeColor: '#E11D48', // Vibrant Rose Ruby
+    glowColor: 'rgba(225, 29, 72, 0.45)',
+    gradStart: '#881337',
+    gradEnd: '#9F1239',
+    activeGradStart: '#BE123C',
+    activeGradEnd: '#F43F5E',
+    numberColor: '#FECDD3',
+    accentColor: '#FDA4AF',
+  },
+  tort: {
+    color: '#115E59', // Xanh mòng két Teal / Bồi thường Dân sự
+    activeColor: '#0D9488', // Vibrant Teal Aqua
+    glowColor: 'rgba(13, 148, 136, 0.45)',
+    gradStart: '#134E4A',
+    gradEnd: '#115E59',
+    activeGradStart: '#0F766E',
+    activeGradEnd: '#14B8A6',
+    numberColor: '#A5F3FC',
+    accentColor: '#5EEAD4',
+  },
+  // Fallbacks backwards compatibility
+  arbitration: {
+    color: '#1E3A8A',
+    activeColor: '#2563EB',
+    glowColor: 'rgba(37, 99, 235, 0.45)',
+    gradStart: '#1E3A8A',
+    gradEnd: '#1D4ED8',
+    activeGradStart: '#2563EB',
+    activeGradEnd: '#3B82F6',
+    numberColor: '#BFDBFE',
+    accentColor: '#93C5FD',
+  },
+  mna: {
+    color: '#92400E',
+    activeColor: '#D97706',
+    glowColor: 'rgba(217, 119, 6, 0.45)',
+    gradStart: '#78350F',
+    gradEnd: '#92400E',
+    activeGradStart: '#B45309',
+    activeGradEnd: '#F59E0B',
+    numberColor: '#FDE68A',
+    accentColor: '#FCD34D',
+  },
+  banking: {
+    color: '#115E59',
+    activeColor: '#0D9488',
+    glowColor: 'rgba(13, 148, 136, 0.45)',
+    gradStart: '#134E4A',
+    gradEnd: '#115E59',
+    activeGradStart: '#0F766E',
+    activeGradEnd: '#14B8A6',
+    numberColor: '#A5F3FC',
+    accentColor: '#5EEAD4',
+  },
+  corporate: {
+    color: '#166534',
+    activeColor: '#059669',
+    glowColor: 'rgba(5, 150, 105, 0.45)',
+    gradStart: '#14532D',
+    gradEnd: '#166534',
+    activeGradStart: '#047857',
+    activeGradEnd: '#10B981',
+    numberColor: '#BBF7D0',
+    accentColor: '#86EFAC',
+  },
+};
+
 // Mảng mặc định cho backwards-compatibility
 export const PRACTICE_AREAS = TRANSLATIONS.vi.services.items.map((item) => ({
   ...item,
   icon: ICON_MAP[item.id] || ScaleIcon,
-  activeColor: '#0F2144',
-  accentColor: '#C5A880',
+  ...(PRACTICE_COLOR_MAP[item.id] || PRACTICE_COLOR_MAP.litigation),
 }));
 
 // Hàm chuyển đổi tọa độ cực sang Descartes
@@ -59,8 +173,7 @@ export default function Services({ onNavigateToPage }) {
   const practiceAreas = servicesText.items.map((item) => ({
     ...item,
     icon: ICON_MAP[item.id] || ScaleIcon,
-    activeColor: '#0F2144',
-    accentColor: '#C5A880',
+    ...(PRACTICE_COLOR_MAP[item.id] || PRACTICE_COLOR_MAP.litigation),
   }));
 
   const [hoveredIndex, setHoveredIndex] = useState(null);
@@ -132,14 +245,26 @@ export default function Services({ onNavigateToPage }) {
               onMouseLeave={() => setHoveredIndex(null)}
             >
               <defs>
-                <linearGradient id="luxury-navy-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#0F2144" />
-                  <stop offset="100%" stopColor="#1B3568" />
-                </linearGradient>
+                {practiceAreas.map((item) => (
+                  <React.Fragment key={item.id}>
+                    {/* Gradient trạng thái nghỉ */}
+                    <linearGradient id={`slice-grad-${item.id}`} x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor={item.gradStart} />
+                      <stop offset="100%" stopColor={item.gradEnd} />
+                    </linearGradient>
 
-                <filter id="luxury-soft-shadow" x="-30%" y="-30%" width="160%" height="160%">
-                  <feDropShadow dx="0" dy="8" stdDeviation="12" floodColor="rgba(15, 33, 68, 0.22)" />
-                </filter>
+                    {/* Gradient rực rỡ khi hover/active */}
+                    <linearGradient id={`slice-grad-active-${item.id}`} x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor={item.activeGradStart} />
+                      <stop offset="100%" stopColor={item.activeGradEnd} />
+                    </linearGradient>
+
+                    {/* Bộ lọc bóng đổ theo màu sắc đặc trưng */}
+                    <filter id={`slice-glow-${item.id}`} x="-30%" y="-30%" width="160%" height="160%">
+                      <feDropShadow dx="0" dy="8" stdDeviation="12" floodColor={item.glowColor} />
+                    </filter>
+                  </React.Fragment>
+                ))}
               </defs>
 
               {/* Vòng bezel định vị thanh mảnh phong cách đồng hồ Thụy Sỹ */}
@@ -179,14 +304,14 @@ export default function Services({ onNavigateToPage }) {
                       className="pointer-events-none select-none transition-transform duration-300 ease-out"
                       transform={`translate(${tx.toFixed(2)}, ${ty.toFixed(2)})`}
                     >
-                      {/* Bề mặt mảnh ghép: Nền sứ cao cấp khi nghỉ, chuyển Navy Imperial khi active */}
+                      {/* Bề mặt mảnh ghép: Nền màu đặc trưng tương ứng từng lĩnh vực */}
                       <path
                         d={slicePath}
-                        fill={isSliceActive ? 'url(#luxury-navy-grad)' : '#F8FAFC'}
-                        filter={isSliceActive ? 'url(#luxury-soft-shadow)' : 'none'}
-                        stroke={isSliceActive ? '#0F2144' : '#E2E8F0'}
-                        strokeWidth={isSliceActive ? '1.5' : '1'}
-                        className="transition-colors duration-300 ease-out"
+                        fill={isSliceActive ? `url(#slice-grad-active-${item.id})` : `url(#slice-grad-${item.id})`}
+                        filter={isSliceActive ? `url(#slice-glow-${item.id})` : 'none'}
+                        stroke="#FFFFFF"
+                        strokeWidth={isSliceActive ? '2.5' : '2'}
+                        className="transition-all duration-300 ease-out"
                       />
 
                       {/* Nội dung nhãn chuyên môn trên mảnh ghép */}
@@ -195,9 +320,9 @@ export default function Services({ onNavigateToPage }) {
                         <text
                           textAnchor="middle"
                           y={-14}
-                          fill={isSliceActive ? '#C5A880' : '#94A3B8'}
-                          fontSize="9"
-                          fontWeight="700"
+                          fill={isSliceActive ? '#FFFFFF' : item.numberColor}
+                          fontSize="9.5"
+                          fontWeight="800"
                           letterSpacing="1px"
                           className="transition-colors duration-300 font-mono"
                         >
@@ -208,9 +333,9 @@ export default function Services({ onNavigateToPage }) {
                         <text
                           textAnchor="middle"
                           y={0}
-                          fill={isSliceActive ? '#FFFFFF' : '#0F2144'}
-                          fontSize={isSliceActive ? '11' : '10'}
-                          fontWeight={isSliceActive ? '700' : '600'}
+                          fill="#FFFFFF"
+                          fontSize={isSliceActive ? '11' : '10.5'}
+                          fontWeight="700"
                           letterSpacing="0.2px"
                           className="transition-all duration-300 font-sans"
                         >
@@ -221,9 +346,9 @@ export default function Services({ onNavigateToPage }) {
                         <text
                           textAnchor="middle"
                           y={14}
-                          fill={isSliceActive ? '#E2E8F0' : '#475569'}
+                          fill="rgba(255, 255, 255, 0.94)"
                           fontSize={isSliceActive ? '10' : '9.5'}
-                          fontWeight={isSliceActive ? '600' : '500'}
+                          fontWeight="600"
                           letterSpacing="0.2px"
                           className="transition-all duration-300 font-sans"
                         >
@@ -236,7 +361,7 @@ export default function Services({ onNavigateToPage }) {
                             cx={0}
                             cy={24}
                             r={2}
-                            fill="#C5A880"
+                            fill="#FFFFFF"
                             className="animate-pulse"
                           />
                         )}
@@ -278,14 +403,27 @@ export default function Services({ onNavigateToPage }) {
               className="relative bg-white rounded-2xl max-w-2xl w-full max-h-[88vh] flex flex-col p-5 sm:p-8 border border-slate-200 shadow-2xl text-left cursor-default my-auto overflow-hidden"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Dải viền đỉnh thẻ xanh navy sang trọng */}
-              <div className="absolute top-0 left-0 right-0 h-1 bg-[#0F2144]" />
+              {/* Dải viền đỉnh thẻ mang màu sắc tương ứng của lĩnh vực */}
+              <div
+                className="absolute top-0 left-0 right-0 h-1.5 transition-colors"
+                style={{ backgroundColor: selectedServiceForModal.activeColor || '#0F2144' }}
+              />
 
               {/* Header thẻ chi tiết (Cố định ở trên) */}
               <div className="flex items-start justify-between gap-4 mb-3 pr-10 flex-shrink-0">
                 <div>
-                  <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded text-[11px] font-semibold uppercase mb-1.5 border border-slate-200 bg-slate-50 text-slate-700 tracking-wider">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#0F2144]"></span>
+                  <div
+                    className="inline-flex items-center gap-2 px-2.5 py-1 rounded text-[11px] font-semibold uppercase mb-1.5 border tracking-wider transition-colors"
+                    style={{
+                      backgroundColor: `${selectedServiceForModal.activeColor || '#0F2144'}15`,
+                      borderColor: `${selectedServiceForModal.activeColor || '#0F2144'}35`,
+                      color: selectedServiceForModal.activeColor || '#0F2144',
+                    }}
+                  >
+                    <span
+                      className="w-1.5 h-1.5 rounded-full"
+                      style={{ backgroundColor: selectedServiceForModal.activeColor || '#0F2144' }}
+                    />
                     <span>{servicesText.modalTag} &bull; {selectedServiceForModal.num}</span>
                   </div>
 
@@ -294,7 +432,10 @@ export default function Services({ onNavigateToPage }) {
                   </h3>
                 </div>
 
-                <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-[#0F2144] flex items-center justify-center flex-shrink-0 text-white shadow-sm">
+                <div
+                  className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center flex-shrink-0 text-white shadow-sm transition-colors"
+                  style={{ backgroundColor: selectedServiceForModal.color || '#0F2144' }}
+                >
                   {React.createElement(selectedServiceForModal.icon, { className: 'w-5 h-5 text-white' })}
                 </div>
               </div>
@@ -331,7 +472,10 @@ export default function Services({ onNavigateToPage }) {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-700">
                     {selectedServiceForModal.scope.slice(0, 4).map((item, idx) => (
                       <div key={idx} className="flex items-start gap-2 p-2.5 rounded-lg bg-[#FAF9F6] border border-slate-200/70">
-                        <span className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0 bg-[#0F2144]" />
+                        <span
+                          className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0 transition-colors"
+                          style={{ backgroundColor: selectedServiceForModal.activeColor || '#0F2144' }}
+                        />
                         <span className="leading-snug">{item}</span>
                       </div>
                     ))}
@@ -358,7 +502,8 @@ export default function Services({ onNavigateToPage }) {
                 <button
                   type="button"
                   onClick={() => handleOpenDetailPage(selectedServiceForModal.id)}
-                  className="w-full sm:w-auto order-1 sm:order-2 inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg text-xs font-semibold text-white bg-[#0F2144] hover:bg-[#162C5B] active:scale-95 transition-all shadow-sm"
+                  className="w-full sm:w-auto order-1 sm:order-2 inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg text-xs font-semibold text-white active:scale-95 transition-all shadow-sm hover:opacity-95"
+                  style={{ backgroundColor: selectedServiceForModal.color || '#0F2144' }}
                 >
                   <span>{servicesText.modalAction}</span>
                   <span>&rarr;</span>

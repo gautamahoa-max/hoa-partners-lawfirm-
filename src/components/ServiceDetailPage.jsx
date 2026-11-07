@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { PhoneIcon, CheckCircleIcon, ShieldCheckIcon, ZaloIcon } from './Icons';
-import { ICON_MAP } from './Services';
+import { ICON_MAP, PRACTICE_COLOR_MAP } from './Services';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import { useLanguage } from '../context/LanguageContext';
@@ -12,6 +12,7 @@ export default function ServiceDetailPage({ serviceId, onBack, onSelectService }
 
   const service = items.find((s) => s.id === serviceId) || items[0];
   const Icon = ICON_MAP[service.id] || CheckCircleIcon;
+  const serviceColor = PRACTICE_COLOR_MAP[service.id] || PRACTICE_COLOR_MAP.litigation;
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -30,9 +31,16 @@ export default function ServiceDetailPage({ serviceId, onBack, onSelectService }
         <section className="bg-[#FAF9F6] border-b border-slate-200 py-14 sm:py-20 text-left">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            {/* Tag chuyên môn */}
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded text-xs font-semibold uppercase mb-4 border tracking-wider bg-[#0F2144]/5 border-[#0F2144]/20 text-[#0F2144]">
-              <span className="w-2 h-2 rounded-full bg-[#0F2144]"></span>
+            {/* Tag chuyên môn mang màu tương ứng */}
+            <div
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded text-xs font-semibold uppercase mb-4 border tracking-wider transition-colors"
+              style={{
+                backgroundColor: `${serviceColor.activeColor}15`,
+                borderColor: `${serviceColor.activeColor}35`,
+                color: serviceColor.activeColor,
+              }}
+            >
+              <span className="w-2 h-2 rounded-full" style={{ backgroundColor: serviceColor.activeColor }}></span>
               <span>{detail.tag} &bull; {service.num}</span>
             </div>
 
@@ -46,7 +54,10 @@ export default function ServiceDetailPage({ serviceId, onBack, onSelectService }
                 </p>
               </div>
 
-              <div className="w-16 h-16 rounded-2xl bg-[#0F2144] text-white flex items-center justify-center flex-shrink-0 shadow-md">
+              <div
+                className="w-16 h-16 rounded-2xl text-white flex items-center justify-center flex-shrink-0 shadow-md transition-colors"
+                style={{ backgroundColor: serviceColor.color }}
+              >
                 <Icon className="w-8 h-8 text-white" />
               </div>
             </div>
