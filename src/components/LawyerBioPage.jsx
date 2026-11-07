@@ -173,48 +173,6 @@ export default function LawyerBioPage({ onBack }) {
           </div>
         </section>
 
-        {/* Khung Liên Hệ Tham Vấn 24/7 */}
-        <section className="py-14 sm:py-16 bg-[#FAF9F6] border-b border-slate-200 text-center">
-          <div className="max-w-3xl mx-auto px-4 sm:px-6">
-            <h3 className="text-xl sm:text-2xl font-bold text-[#0F2144] mb-3">
-              {detail.consultCardTitle}
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-600 max-w-xl mx-auto mb-8 leading-relaxed">
-              {detail.consultCardDesc}
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <a
-                href="tel:0988886447"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded text-xs font-semibold text-white bg-[#0F2144] hover:bg-[#162C5B] transition-all shadow-sm"
-              >
-                <PhoneIcon className="w-4 h-4 text-amber-400" />
-                <span>{detail.callBtn}</span>
-              </a>
-              <a
-                href="https://zalo.me/0988886447"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded text-xs font-semibold text-[#0F2144] bg-white border border-slate-200 hover:bg-slate-50 transition-all shadow-sm"
-              >
-                <ZaloIcon className="w-4 h-4 text-[#0068FF]" />
-                <span>{detail.zaloBtn}</span>
-              </a>
-              <a
-                href="#/lien-he"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded text-xs font-semibold text-[#0F2144] bg-white border border-[#0F2144]/30 hover:bg-slate-50 transition-all shadow-sm"
-              >
-                <span>{lang === 'vi' ? 'Điền Form Đặt Lịch Hẹn' : 'Submit Consultation Form'} &rarr;</span>
-              </a>
-              <button
-                onClick={onBack}
-                className="inline-flex items-center justify-center px-6 py-3 rounded text-xs font-semibold text-slate-600 hover:text-[#0F2144] transition-colors"
-              >
-                &larr; {detail.back}
-              </button>
-            </div>
-          </div>
-        </section>
-
       </main>
 
       {/* Footer & Floating Contact */}
