@@ -129,6 +129,7 @@ export default function Services({ onNavigateToPage }) {
             <svg
               viewBox="0 0 400 400"
               className="w-full h-full overflow-visible drop-shadow-sm select-none"
+              onMouseLeave={() => setHoveredIndex(null)}
             >
               <defs>
                 <linearGradient id="luxury-navy-grad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -150,97 +151,108 @@ export default function Services({ onNavigateToPage }) {
               {practiceAreas.map((item, i) => {
                 const isSliceActive = hoveredIndex === i;
 
-                // Góc bắt đầu và kết thúc với khe hở thanh mảnh 1.5 độ
+                // Góc bắt đầu và kết thúc với khe hở thanh mảnh 1.2 độ
                 const startAngle = i * 60 + 1.2;
                 const endAngle = (i + 1) * 60 - 1.2;
                 const midAngle = i * 60 + 30;
 
-                // Khi active: mở rộng bán kính và đẩy nhẹ tâm ra ngoài
-                const rOuter = isSliceActive ? baseOuterRadius + 11 : baseOuterRadius;
-                const rInner = isSliceActive ? baseInnerRadius - 2 : baseInnerRadius;
-
-                const offsetDistance = isSliceActive ? 9 : 0;
+                // Độ dịch chuyển nhẹ ra ngoài khi active (7px)
+                const offsetDistance = isSliceActive ? 7 : 0;
                 const offsetAngleRad = ((midAngle - 90) * Math.PI) / 180.0;
                 const tx = Math.cos(offsetAngleRad) * offsetDistance;
                 const ty = Math.sin(offsetAngleRad) * offsetDistance;
 
-                const labelRadius = (rInner + rOuter) / 2;
+                // Vị trí nhãn cố định tương đối với mảnh ghép
+                const labelRadius = (baseInnerRadius + baseOuterRadius) / 2;
                 const labelPos = polarToCartesian(cx, cy, labelRadius, midAngle);
 
-                const slicePath = describeDonutSlice(cx, cy, rInner, rOuter, startAngle, endAngle);
+                // Đường vẽ mảnh ghép visual với bán kính cố định
+                const slicePath = describeDonutSlice(cx, cy, baseInnerRadius, baseOuterRadius, startAngle, endAngle);
+
+                // Vùng nhận tương tác chuột tĩnh (Hit Area) - bao trọn cả khi di chuyển, không bao giờ xê dịch -> triệt tiêu hoàn toàn hiện tượng rung/nhấp nháy ở mép
+                const hitPath = describeDonutSlice(cx, cy, baseInnerRadius - 6, baseOuterRadius + 14, i * 60, (i + 1) * 60);
 
                 return (
-                  <g
-                    key={item.id}
-                    className="cursor-pointer transition-all duration-300 ease-out"
-                    transform={`translate(${tx.toFixed(2)}, ${ty.toFixed(2)})`}
-                    onClick={() => handleSliceClick(item, i)}
-                    onMouseEnter={() => setHoveredIndex(i)}
-                    onMouseLeave={() => setHoveredIndex(null)}
-                  >
-                    {/* Bề mặt mảnh ghép: Nền sứ cao cấp khi nghỉ, chuyển Navy Imperial khi active */}
-                    <path
-                      d={slicePath}
-                      fill={isSliceActive ? 'url(#luxury-navy-grad)' : '#F8FAFC'}
-                      filter={isSliceActive ? 'url(#luxury-soft-shadow)' : 'none'}
-                      stroke={isSliceActive ? '#0F2144' : '#E2E8F0'}
-                      strokeWidth={isSliceActive ? '1.5' : '1'}
-                      className="transition-all duration-300 ease-out"
-                    />
+                  <g key={item.id} className="relative">
+                    {/* Lớp hiển thị trực quan (visual) - pointer-events-none để không bao giờ bị văng chuột khi chuyển động */}
+                    <g
+                      className="pointer-events-none select-none transition-transform duration-300 ease-out"
+                      transform={`translate(${tx.toFixed(2)}, ${ty.toFixed(2)})`}
+                    >
+                      {/* Bề mặt mảnh ghép: Nền sứ cao cấp khi nghỉ, chuyển Navy Imperial khi active */}
+                      <path
+                        d={slicePath}
+                        fill={isSliceActive ? 'url(#luxury-navy-grad)' : '#F8FAFC'}
+                        filter={isSliceActive ? 'url(#luxury-soft-shadow)' : 'none'}
+                        stroke={isSliceActive ? '#0F2144' : '#E2E8F0'}
+                        strokeWidth={isSliceActive ? '1.5' : '1'}
+                        className="transition-colors duration-300 ease-out"
+                      />
 
-                    {/* Nội dung nhãn chuyên môn trên mảnh ghép */}
-                    <g transform={`translate(${labelPos.x.toFixed(2)}, ${labelPos.y.toFixed(2)})`} className="pointer-events-none select-none">
-                      
-                      {/* Số thứ tự phân khúc tinh giản (01 - 06) */}
-                      <text
-                        textAnchor="middle"
-                        y={-14}
-                        fill={isSliceActive ? '#C5A880' : '#94A3B8'}
-                        fontSize="9"
-                        fontWeight="700"
-                        letterSpacing="1px"
-                        className="transition-colors duration-300 font-mono"
-                      >
-                        {item.num}
-                      </text>
+                      {/* Nội dung nhãn chuyên môn trên mảnh ghép */}
+                      <g transform={`translate(${labelPos.x.toFixed(2)}, ${labelPos.y.toFixed(2)})`}>
+                        {/* Số thứ tự phân khúc tinh giản (01 - 06) */}
+                        <text
+                          textAnchor="middle"
+                          y={-14}
+                          fill={isSliceActive ? '#C5A880' : '#94A3B8'}
+                          fontSize="9"
+                          fontWeight="700"
+                          letterSpacing="1px"
+                          className="transition-colors duration-300 font-mono"
+                        >
+                          {item.num}
+                        </text>
 
-                      {/* Tiêu đề dòng 1 */}
-                      <text
-                        textAnchor="middle"
-                        y={0}
-                        fill={isSliceActive ? '#FFFFFF' : '#0F2144'}
-                        fontSize={isSliceActive ? '11' : '10'}
-                        fontWeight={isSliceActive ? '700' : '600'}
-                        letterSpacing="0.2px"
-                        className="transition-all duration-300 font-sans"
-                      >
-                        {item.sliceLines[0]}
-                      </text>
+                        {/* Tiêu đề dòng 1 */}
+                        <text
+                          textAnchor="middle"
+                          y={0}
+                          fill={isSliceActive ? '#FFFFFF' : '#0F2144'}
+                          fontSize={isSliceActive ? '11' : '10'}
+                          fontWeight={isSliceActive ? '700' : '600'}
+                          letterSpacing="0.2px"
+                          className="transition-all duration-300 font-sans"
+                        >
+                          {item.sliceLines[0]}
+                        </text>
 
-                      {/* Tiêu đề dòng 2 */}
-                      <text
-                        textAnchor="middle"
-                        y={14}
-                        fill={isSliceActive ? '#E2E8F0' : '#475569'}
-                        fontSize={isSliceActive ? '10' : '9.5'}
-                        fontWeight={isSliceActive ? '600' : '500'}
-                        letterSpacing="0.2px"
-                        className="transition-all duration-300 font-sans"
-                      >
-                        {item.sliceLines[1]}
-                      </text>
+                        {/* Tiêu đề dòng 2 */}
+                        <text
+                          textAnchor="middle"
+                          y={14}
+                          fill={isSliceActive ? '#E2E8F0' : '#475569'}
+                          fontSize={isSliceActive ? '10' : '9.5'}
+                          fontWeight={isSliceActive ? '600' : '500'}
+                          letterSpacing="0.2px"
+                          className="transition-all duration-300 font-sans"
+                        >
+                          {item.sliceLines[1]}
+                        </text>
 
-                      {/* Điểm nhấn Champagne Gold tinh xảo khi active */}
-                      {isSliceActive && (
-                        <circle
-                          cx={0}
-                          cy={24}
-                          r={2}
-                          fill="#C5A880"
-                          className="animate-pulse"
-                        />
-                      )}
+                        {/* Điểm nhấn Champagne Gold tinh xảo khi active */}
+                        {isSliceActive && (
+                          <circle
+                            cx={0}
+                            cy={24}
+                            r={2}
+                            fill="#C5A880"
+                            className="animate-pulse"
+                          />
+                        )}
+                      </g>
                     </g>
+
+                    {/* Vùng cảm ứng chuột tĩnh (Hit Target) cố định, không di chuyển theo hover */}
+                    <path
+                      d={hitPath}
+                      fill="transparent"
+                      style={{ pointerEvents: 'all' }}
+                      className="cursor-pointer"
+                      onClick={() => handleSliceClick(item)}
+                      onMouseEnter={() => setHoveredIndex(i)}
+                      onMouseLeave={() => setHoveredIndex((prev) => (prev === i ? null : prev))}
+                    />
                   </g>
                 );
               })}
