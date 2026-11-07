@@ -7,6 +7,14 @@ export default function Footer() {
   const footer = t.footer;
 
   const scrollTo = (id) => {
+    if (window.location.hash.startsWith('#/')) {
+      window.location.hash = '';
+      setTimeout(() => {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 60);
+      return;
+    }
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
@@ -70,7 +78,9 @@ export default function Footer() {
 
             <div>
               <button
-                onClick={() => scrollTo('ve-chung-toi')}
+                onClick={() => {
+                  window.location.hash = '#/luat-su';
+                }}
                 className="hover:underline underline-offset-4 transition-all text-left block"
               >
                 {footer.about}

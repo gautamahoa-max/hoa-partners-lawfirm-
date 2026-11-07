@@ -9,6 +9,20 @@ export default function Navbar() {
 
   const handleNavClick = (href) => {
     setMobileMenuOpen(false);
+    if (href.startsWith('#/')) {
+      window.location.hash = href;
+      return;
+    }
+    if (window.location.hash.startsWith('#/')) {
+      window.location.hash = '';
+      setTimeout(() => {
+        const target = document.querySelector(href);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 60);
+      return;
+    }
     const target = document.querySelector(href);
     if (target) {
       target.scrollIntoView({ behavior: 'smooth' });
