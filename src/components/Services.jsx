@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { GavelIcon, BriefcaseIcon, FileTextIcon, LandmarkIcon, ShieldCheckIcon, ScaleIcon, CloseIcon, CheckCircleIcon, HeartHandshakeIcon } from './Icons';
 import { useLanguage } from '../context/LanguageContext';
 import { TRANSLATIONS } from '../i18n/translations';
+import CaseWorkflowTimeline from './CaseWorkflowTimeline';
 
 export const ICON_MAP = {
   litigation: ScaleIcon,
@@ -358,6 +359,11 @@ export default function Services() {
             </svg>
           </div>
 
+        </div>
+
+        {/* ================= QUY TRÌNH TIẾP NHẬN VÀ GIẢI QUYẾT VỤ VIỆC ================= */}
+        <div className="mt-20 pt-16 border-t border-slate-200/80 w-full">
+          <CaseWorkflowTimeline />
         </div>
 
       </div>

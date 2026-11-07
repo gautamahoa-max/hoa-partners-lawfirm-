@@ -180,6 +180,37 @@ export const TRANSLATIONS = {
         },
       ],
     },
+    workflow: {
+      badge: 'Quy Trình',
+      title: 'QUY TRÌNH TIẾP NHẬN VÀ GIẢI QUYẾT VỤ VIỆC',
+      steps: [
+        {
+          num: '01',
+          title: 'Tiếp nhận vụ việc',
+          desc: 'Tiếp nhận yêu cầu, hồ sơ vụ việc và tư vấn sơ bộ, thống nhất hướng giải quyết với khách hàng.',
+        },
+        {
+          num: '02',
+          title: 'Thu thập tài liệu',
+          desc: 'Với các biện pháp nghiệp vụ, tiến hành thu thập tài liệu, hồ sơ có liên quan.',
+        },
+        {
+          num: '03',
+          title: 'Nghiên cứu đánh giá',
+          desc: 'Nghiên cứu hồ sơ, phân tích quy định pháp luật, đánh giá tình hình và đề xuất phương án tốt nhất nhằm bảo vệ quyền lợi khách hàng.',
+        },
+        {
+          num: '04',
+          title: 'Triển khai thực hiện phương án',
+          desc: 'Sau khi thống nhất phương án giải quyết, với năng lực, nghiệp vụ, trách nhiệm, tận tâm thực hiện, đảm bảo tiến độ theo các phương án đã đề ra. Tuỳ thuộc tình hình thực tế, liên tục cập nhật thông tin và đề xuất điều chỉnh, thay đổi phương án giải quyết nếu vụ việc có các tình tiết mới.',
+        },
+        {
+          num: '05',
+          title: 'Kết thúc vụ việc, hướng dẫn khách hàng các thủ tục liên quan',
+          desc: 'Kết thúc vụ việc và tư vấn, hướng dẫn khách hàng tiến hành các thủ tục cần thiết có liên quan (nếu cần).',
+        },
+      ],
+    },
     lawyerBio: {
       badge: 'LUẬT SƯ ĐIỀU HÀNH • SÁNG LẬP',
       name: 'Luật sư Võ Văn Hoà',
@@ -544,6 +575,37 @@ export const TRANSLATIONS = {
             'Stage 4: Vigorously advocate loss calculation methodology and execute judgment enforcement.',
           ],
           deliverables: 'Itemized damages calculation, compelling lawsuit petition, and enforceable compensation award.',
+        },
+      ],
+    },
+    workflow: {
+      badge: 'Workflow',
+      title: 'CASE INTAKE & RESOLUTION WORKFLOW',
+      steps: [
+        {
+          num: '01',
+          title: 'Case Intake & Preliminary Assessment',
+          desc: 'Receive case dossiers, preliminary legal consultation, and agree upon initial resolution roadmap with clients.',
+        },
+        {
+          num: '02',
+          title: 'Evidence & Dossier Collection',
+          desc: 'Utilize professional legal methods to gather all relevant documents, records, and evidence.',
+        },
+        {
+          num: '03',
+          title: 'Legal Research & Evaluation',
+          desc: 'Examine dossier in detail, analyze statutory provisions and jurisprudence, evaluate probabilities, and devise the optimal plan to protect client interests.',
+        },
+        {
+          num: '04',
+          title: 'Strategic Execution & Litigation',
+          desc: 'Execute the agreed plan with dedication and professional rigor, ensuring progress. Continuously update clients and adjust strategy as new facts emerge.',
+        },
+        {
+          num: '05',
+          title: 'Case Conclusion & Post-Resolution Guidance',
+          desc: 'Conclude the case and provide thorough guidance on necessary post-judgment or enforcement procedures.',
         },
       ],
     },
