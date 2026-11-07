@@ -83,16 +83,16 @@ export default function Navbar() {
               window.location.hash = '';
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
-            className="flex items-center gap-3.5 text-left group"
+            className="flex items-center gap-2.5 sm:gap-3.5 text-left group min-w-0"
           >
-            <div className="w-10 h-10 rounded bg-[#0F2144] flex items-center justify-center text-amber-400">
-              <ScaleIcon className="w-5 h-5" />
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-[#0F2144] flex items-center justify-center text-amber-400 shrink-0 shadow-sm">
+              <ScaleIcon className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
-            <div>
-              <span className="text-xl sm:text-2xl font-bold tracking-tight text-[#0F2144] block leading-normal">
+            <div className="min-w-0">
+              <span className="text-sm sm:text-base lg:text-lg font-bold tracking-tight text-[#0F2144] block leading-snug">
                 {navContent.firmName}
               </span>
-              <span className="text-[10px] uppercase font-semibold tracking-wider text-slate-500 mt-0.5 block">
+              <span className="text-[9px] sm:text-[10px] uppercase font-semibold tracking-wider text-slate-500 mt-0.5 block truncate">
                 {navContent.firmSub}
               </span>
             </div>

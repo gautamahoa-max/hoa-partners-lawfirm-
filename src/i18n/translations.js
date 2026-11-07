@@ -4,7 +4,7 @@ export const TRANSLATIONS = {
       locations: 'TP.HCM • Đắk Lắk',
       tagline: 'Hãng luật tranh tụng & tư vấn pháp luật Dân sự',
       hotline: 'Hotline: 098.888.6447',
-      firmName: 'HÒA & CỘNG SỰ',
+      firmName: 'Công ty Luật TNHH Hoà và Cộng sự',
       firmSub: 'HOA & ASSOCIATES LAW FIRM',
       nav: [
         { name: 'Giới thiệu', href: '#/luat-su' },
@@ -300,7 +300,7 @@ export const TRANSLATIONS = {
       ],
     },
     footer: {
-      firmTitle: 'HÒA & CỘNG SỰ',
+      firmTitle: 'Công ty Luật TNHH Hoà và Cộng sự',
       firmSubtitle: 'HOA & ASSOCIATES LAW FIRM • LUẬT SƯ VÕ VĂN HOÀ',
       call: 'LIÊN HỆ: 098.888.6447',
       practice: 'LĨNH VỰC HÀNH NGHỀ',
