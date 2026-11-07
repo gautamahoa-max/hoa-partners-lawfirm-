@@ -11,9 +11,11 @@ export default function Testimonials() {
         
         {/* Header danh mục hồ sơ tinh gọn, trang nhã */}
         <div className="max-w-3xl mb-14">
-          <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-2 font-mono">
-            {testData.eyebrow}
-          </p>
+          {testData.eyebrow && (
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-2 font-mono">
+              {testData.eyebrow}
+            </p>
+          )}
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0F2144] tracking-tight leading-[1.35] sm:leading-[1.3]">
             {testData.title}
           </h2>

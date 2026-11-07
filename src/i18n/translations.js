@@ -35,7 +35,7 @@ export const TRANSLATIONS = {
       ctaHotline: 'Hotline 24/7: 098.888.6447',
     },
     services: {
-      eyebrow: 'Lĩnh vực hành nghề • 6 Trụ cột chuyên môn',
+      eyebrow: 'Lĩnh vực hành nghề',
       title: 'Các lĩnh vực tư vấn và tranh tụng Dân sự cốt lõi',
       desc: 'Mỗi lĩnh vực được phụ trách chuyên sâu bởi Luật sư Võ Văn Hoà và cộng sự, cam kết bảo vệ tối đa quyền tài sản, nhân thân và lợi ích hợp pháp cho thân chủ.',
       hubTag: 'TRỤ CỘT CHUYÊN MÔN',
@@ -203,8 +203,8 @@ export const TRANSLATIONS = {
       p3Desc: 'Luật sư chịu trách nhiệm cá nhân đối với từng vụ việc được giao, trực tiếp tham gia từ giai đoạn thương lượng, hòa giải cho tới khi thi hành xong phán quyết.',
     },
     testimonials: {
-      eyebrow: 'Danh mục hồ sơ từng tham gia',
-      title: 'Mục lục án vụ & Đại diện thực tế',
+      eyebrow: '',
+      title: 'DANH SÁCH CÁC VỤ ÁN TỪNG THAM DỰ',
       desc: 'Các vụ án dân sự trọng điểm về đất đai, thừa kế và hợp đồng đã được luật sư đại diện bảo vệ quyền lợi thành công qua hòa giải cơ sở và phán quyết của Tòa án các cấp.',
       forumLabel: 'Diễn đàn thụ lý:',
       valueLabel: 'Quy mô tranh chấp / Tài sản:',
@@ -340,7 +340,7 @@ export const TRANSLATIONS = {
       ctaHotline: 'Hotline 24/7: +84 98.888.6447',
     },
     services: {
-      eyebrow: 'Practice Areas • 6 Core Pillars',
+      eyebrow: 'Practice Areas',
       title: 'Core Civil Advisory & Dispute Resolution Practices',
       desc: 'Each practice group is personally spearheaded by Attorney Vo Van Hoa and associates, dedicated to upholding the legitimate property, personal, and legal rights of clients.',
       hubTag: 'PRACTICE PILLAR',
@@ -508,8 +508,8 @@ export const TRANSLATIONS = {
       p3Desc: 'The Managing Partner retains personal oversight of every assigned matter, participating directly from conciliation through trial and enforcement.',
     },
     testimonials: {
-      eyebrow: 'Representative Engagement Dossier',
-      title: 'Case Docket & Representative Cases',
+      eyebrow: '',
+      title: 'REPRESENTATIVE CASE DOCKET',
       desc: 'Key civil cases in land, inheritance, and contracts successfully defended by the attorney through structured mediation and conclusive judgments across People’s Courts.',
       forumLabel: 'Jurisdiction / Forum:',
       valueLabel: 'Dispute Scope / Asset Value:',
