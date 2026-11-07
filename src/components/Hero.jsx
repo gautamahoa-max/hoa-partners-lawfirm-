@@ -14,15 +14,6 @@ export default function Hero() {
     <section className="bg-[#FAF9F6] pt-20 pb-24 md:pt-28 md:pb-32 border-b border-slate-200/80 text-left">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Eyebrow trang trọng */}
-        <div className="flex flex-wrap items-center gap-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-6">
-          <span>{hero.bar}</span>
-          <span className="text-slate-300">&bull;</span>
-          <span>{hero.firm}</span>
-          <span className="text-slate-300">&bull;</span>
-          <span className="text-slate-700">{hero.locations}</span>
-        </div>
-
         {/* Tuyên ngôn lớn đĩnh đạc */}
         <h1 className="text-3xl sm:text-4xl lg:text-[3.25rem] font-bold text-[#0F2144] tracking-tight leading-[1.25] sm:leading-[1.2] max-w-5xl">
           {hero.headline}
