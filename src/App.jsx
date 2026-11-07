@@ -23,8 +23,8 @@ function MainContent() {
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
-  // Kiểm tra nếu route là trang luật sư riêng (#/luat-su hoặc #/ve-chung-toi)
-  const isLawyerRoute = /^#(?:(?:\/)?(?:luat-su|ve-chung-toi))(?:\/)?$/.test(currentRoute);
+  // Kiểm tra nếu route là trang luật sư riêng (#/luat-su, #/gioi-thieu hoặc #/ve-chung-toi)
+  const isLawyerRoute = /^#(?:(?:\/)?(?:luat-su|gioi-thieu|ve-chung-toi))(?:\/)?$/.test(currentRoute);
   if (isLawyerRoute) {
     return (
       <LawyerBioPage
@@ -72,8 +72,8 @@ function MainContent() {
           }}
         />
 
-        {/* 4. Hồ Sơ Luật Sư Điều Hành (Dẫn sang trang riêng) */}
-        <section className="py-12 sm:py-16 bg-[#FAF9F6] border-b border-slate-200/80 text-left">
+        {/* 4. Giới Thiệu & Hồ Sơ Luật Sư Điều Hành (Dẫn sang trang riêng) */}
+        <section id="gioi-thieu" className="py-12 sm:py-16 bg-[#FAF9F6] border-b border-slate-200/80 text-left">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
               <div className="space-y-2 max-w-2xl">
