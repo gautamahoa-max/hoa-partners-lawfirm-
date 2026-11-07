@@ -215,33 +215,6 @@ export default function LegalKnowledgePage({ onBack }) {
             </div>
           </section>
 
-          {/* Call to action cuối trang */}
-          <section className="bg-[#0F2144] rounded-2xl p-8 sm:p-10 text-white text-center shadow-lg">
-            <h2 className="text-xl sm:text-2xl font-bold mb-3 tracking-tight">
-              {knowledge.ctaTitle}
-            </h2>
-            <p className="text-sm sm:text-base text-slate-300 max-w-2xl mx-auto mb-7 leading-relaxed font-normal">
-              {knowledge.ctaDesc}
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5">
-              <button
-                onClick={() => {
-                  window.location.hash = '#/lien-he';
-                }}
-                className="w-full sm:w-auto px-6 py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs uppercase tracking-wider rounded-lg transition-colors shadow-sm"
-              >
-                {knowledge.ctaBtn1}
-              </button>
-              <a
-                href="tel:0988886447"
-                className="w-full sm:w-auto px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-bold text-xs uppercase tracking-wider rounded-lg transition-colors border border-white/20 inline-flex items-center justify-center gap-2"
-              >
-                <PhoneIcon className="w-3.5 h-3.5 text-amber-400" />
-                <span>{knowledge.ctaBtn2}</span>
-              </a>
-            </div>
-          </section>
-
         </div>
       </main>
 
