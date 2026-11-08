@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { PhoneIcon, CheckCircleIcon, ShieldCheckIcon, ZaloIcon, ScaleIcon } from './Icons';
+import { PhoneIcon, CheckCircleIcon, ZaloIcon, ScaleIcon } from './Icons';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import FloatingContact from './FloatingContact';
@@ -93,17 +93,6 @@ export default function LawyerBioPage({ onBack }) {
                       <span className="leading-snug">{cred}</span>
                     </div>
                   ))}
-                </div>
-
-                {/* Cam kết bảo mật & trách nhiệm */}
-                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
-                  <div className="flex items-center gap-2 text-xs font-bold text-[#0F2144] uppercase tracking-wider">
-                    <ShieldCheckIcon className="w-4 h-4 text-emerald-600" />
-                    <span>{detail.confidentiality}</span>
-                  </div>
-                  <p className="text-xs text-slate-600 leading-relaxed">
-                    {detail.confidentialityValue}
-                  </p>
                 </div>
               </div>
 
