@@ -3,7 +3,7 @@ import { useLanguage } from '../context/LanguageContext';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const footer = t.footer;
 
   const scrollTo = (id) => {
