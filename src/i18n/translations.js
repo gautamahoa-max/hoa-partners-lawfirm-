@@ -269,34 +269,28 @@ export const TRANSLATIONS = {
       ],
       clientNotes: [
         {
+          statement: 'Chúng tôi rất hài lòng với tư vấn của Luật sư Võ Văn Hoà và cộng sự về phương án xử lý tranh chấp và bảo vệ quyền sở hữu tài sản tại Việt Nam. Với sự đại diện tận tâm của luật sư, công ty chúng tôi đã tháo gỡ triệt để các căn cứ vướng mắc, bảo toàn quyền lợi và tự tin mở rộng hoạt động kinh doanh.',
+          clientName: 'Min-jun Kim',
+          clientRole: 'Khách hàng Hàn Quốc (tên và ảnh minh hoạ nhằm bảo mật danh tính khách hàng)',
+          avatar: './client-1.png',
+        },
+        {
           statement: 'Vụ tranh chấp ranh giới đất kéo dài nhiều năm khiến gia đình tôi vô cùng mệt mỏi. Nhờ Luật sư Võ Văn Hoà cẩn thận kiểm tra từng mốc đo đạc và hồ sơ địa chính lưu trữ, Tòa án đã công nhận trọn vẹn ranh giới đất hợp pháp cho gia đình.',
           clientName: 'Nguyễn Văn Hùng',
-          clientRole: 'Thân chủ vụ tranh chấp đất đai, Phường Tân Lợi, TP. Buôn Ma Thuột (Đắk Lắk)',
+          clientRole: 'Thân chủ vụ tranh chấp đất đai, Đắk Lắk (tên và ảnh minh hoạ nhằm bảo mật danh tính khách hàng)',
+          avatar: './client-3.jpg',
         },
         {
           statement: 'Trong vụ việc phân chia di sản thừa kế nhà đất của cha mẹ để lại, Luật sư Hoà không chỉ đưa ra giải pháp pháp lý vững chắc mà còn tư vấn bằng cái tâm, giúp các anh chị em giữ được hòa khí gia đình sau phiên hòa giải.',
           clientName: 'Trần Thị Thanh Vân',
-          clientRole: 'Đại diện thân chủ vụ việc thừa kế, Phường Bến Nghé, TP.HCM',
+          clientRole: 'Đại diện thân chủ vụ việc thừa kế, TP.HCM (tên và ảnh minh hoạ nhằm bảo mật danh tính khách hàng)',
+          avatar: './client-2.jpg',
         },
         {
           statement: 'Khi gặp rủi ro trong hợp đồng đặt cọc mua nhà phố với số tiền cọc lớn, sự can thiệp kịp thời và lập luận pháp lý sắc bén của luật sư đã giúp tôi lấy lại toàn bộ tiền cọc mà không phải kéo dài thời gian tố tụng.',
           clientName: 'Lê Hoàng Minh',
-          clientRole: 'Khách hàng tư vấn hợp đồng nhà đất, Phường An Phú, TP.HCM',
-        },
-        {
-          statement: 'Tôi rất trân trọng sự trung thực của Luật sư Hoà. Ngay từ buổi làm việc đầu tiên, luật sư đã chỉ rõ những điểm bất lợi và thuận lợi của hồ sơ chứ không hứa hẹn viển vông, đồng thời đồng hành kiên định đến cùng tại phiên tòa sơ thẩm và phúc thẩm.',
-          clientName: 'Phạm Quốc Cường',
-          clientRole: 'Thân chủ vụ kiện tranh chấp tài sản dân sự, Đắk Lắk',
-        },
-        {
-          statement: 'Thủ tục ly hôn và phân chia tài sản chung được hãng luật giải quyết nhanh gọn, bảo đảm tối đa quyền nuôi con và phần tài sản hợp pháp của tôi. Tác phong bảo mật thông tin đời tư của hãng luật thực sự chuyên nghiệp.',
-          clientName: 'Nguyễn Thị Thu Trang',
-          clientRole: 'Thân chủ vụ việc hôn nhân & tài sản, Phường Tân Phong, TP.HCM',
-        },
-        {
-          statement: 'Trong vụ việc đòi bồi thường thiệt hại tài sản do bên thứ ba gây ra, Luật sư Hoà đã thu thập đầy đủ chứng cứ xác đáng, buộc bên gây thiệt hại phải bồi thường thỏa đáng toàn bộ chi phí theo đúng quy định pháp luật.',
-          clientName: 'Hoàng Đình Nam',
-          clientRole: 'Thân chủ vụ án bồi thường thiệt hại dân sự, Phường Đa Kao, TP.HCM',
+          clientRole: 'Khách hàng tư vấn hợp đồng nhà đất, TP.HCM (tên và ảnh minh hoạ nhằm bảo mật danh tính khách hàng)',
+          avatar: './client-4.jpg',
         },
       ],
     },
@@ -793,34 +787,28 @@ export const TRANSLATIONS = {
       ],
       clientNotes: [
         {
+          statement: 'We are exceptionally satisfied with the strategic counsel of Attorney Vo Van Hoa and the litigation team in handling our commercial rights and dispute settlement in Vietnam. Their resolute representation secured full protection of our corporate assets.',
+          clientName: 'Min-jun Kim',
+          clientRole: 'Korean Enterprise Client (representative identity and photo used for confidentiality)',
+          avatar: './client-1.png',
+        },
+        {
           statement: 'Our protracted land boundary dispute had exhausted our family for years. Thanks to Attorney Vo Van Hoa’s meticulous inspection of cadastral archives and field markers, the Court fully affirmed our lawful land boundaries.',
           clientName: 'Nguyen Van Hung',
-          clientRole: 'Land Dispute Client, Tan Loi Ward, Buon Ma Thuot (Dak Lak)',
+          clientRole: 'Land Dispute Client, Dak Lak (representative identity and photo used for confidentiality)',
+          avatar: './client-3.jpg',
         },
         {
           statement: 'In handling our parents’ complex estate division, Attorney Hoa not only offered unyielding legal acumen but also compassionate counsel, preserving family harmony through successful court conciliation.',
           clientName: 'Tran Thi Thanh Van',
-          clientRole: 'Inheritance Matter Client, Ben Nghe Ward, HCMC',
+          clientRole: 'Inheritance Matter Client, HCMC (representative identity and photo used for confidentiality)',
+          avatar: './client-2.jpg',
         },
         {
           statement: 'Facing significant capital risk in a townhouse deposit dispute, the firm’s prompt intervention and decisive legal strategy recovered 100% of my deposit funds without protracted trial delays.',
           clientName: 'Le Hoang Minh',
-          clientRole: 'Real Estate Contract Client, An Phu Ward, HCMC',
-        },
-        {
-          statement: 'I deeply value Attorney Hoa’s professional integrity. From the first consultation, he candidly highlighted procedural strengths and vulnerabilities without false promises, steadfastly standing beside me through both trial and appeal.',
-          clientName: 'Pham Quoc Cuong',
-          clientRole: 'Civil Property Dispute Client, Dak Lak',
-        },
-        {
-          statement: 'My divorce and marital property settlement were resolved expeditiously, securing full custody and my rightful property share. The firm’s discretion regarding personal privacy was exemplary.',
-          clientName: 'Nguyen Thi Thu Trang',
-          clientRole: 'Marriage & Family Asset Client, Tan Phong Ward, HCMC',
-        },
-        {
-          statement: 'In our civil damages claim against a third party for property loss, Attorney Hoa assembled irrefutable evidence, securing a complete damages award strictly pursuant to statutory law.',
-          clientName: 'Hoang Dinh Nam',
-          clientRole: 'Civil Tort & Damages Client, Da Kao Ward, HCMC',
+          clientRole: 'Real Estate Contract Client, HCMC (representative identity and photo used for confidentiality)',
+          avatar: './client-4.jpg',
         },
       ],
     },
