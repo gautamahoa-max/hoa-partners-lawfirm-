@@ -6,7 +6,7 @@ export default function Hero() {
       <div className="w-full">
         <img
           src="./hero-ykvn-shot.jpg"
-          alt="Hòa & Cộng sự - Pioneering Litigation & Advocacy"
+          alt="Công ty Luật TNHH Hòa & Cộng sự - Điểm tựa pháp lý vững chắc tại Buôn Ma Thuột, Đắk Lắk"
           className="w-full h-auto object-cover aspect-[2048/1012] block select-none"
         />
       </div>
