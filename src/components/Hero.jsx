@@ -23,23 +23,39 @@ export default function Hero() {
         <img
           src="./hero-bg.jpg"
           alt="Ho Chi Minh City Skyline - Hoa & Partners"
-          className="w-full h-full object-cover object-right md:object-center animate-ykvn-zoom opacity-35 brightness-90 contrast-110"
+          className="w-full h-full object-cover object-right md:object-center animate-ykvn-zoom opacity-25 brightness-90 contrast-110"
         />
         {/* Mặt nạ màu Gradient Royal Navy đa tầng bảo toàn 100% độ tương phản */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#061226] via-[#061226]/95 to-[#081838]/80" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#061226] via-transparent to-[#061226]/60" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#061226] via-[#061226]/95 to-[#081838]/85" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#061226] via-transparent to-[#061226]/70" />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-16 sm:pt-24 sm:pb-20 lg:pt-28 lg:pb-24">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-16 sm:pt-14 sm:pb-20 lg:pt-16 lg:pb-24">
         
-        {/* Bố cục Bất đối xứng Asymmetric Split Grid (Taste-Design Standard) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
+        {/* KHỐI HERO SHOT CHUẨN PHONG CÁCH YKVN THEO MẪU YÊU CẦU */}
+        <div className="mb-12 sm:mb-16">
+          <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.65)] bg-[#072448] group">
+            
+            {/* Ảnh Hero Shot gốc chuẩn xác theo thiết kế YKVN với thương hiệu Hòa & Cộng sự */}
+            <img
+              src="./hero-ykvn-shot.jpg"
+              alt="Hòa & Cộng sự - Celebrating Pioneering Litigation Excellence"
+              className="w-full h-auto object-cover aspect-[2048/1012] group-hover:scale-[1.01] transition-transform duration-700 select-none"
+            />
+            
+            {/* Viền sáng hairline bóng mượt góc trên */}
+            <div className="absolute inset-0 pointer-events-none border border-white/10 rounded-2xl sm:rounded-3xl" />
+          </div>
+        </div>
+
+        {/* Bố cục Tuyên ngôn & Năng lực Bất đối xứng (Asymmetric Split Grid theo chuẩn Taste-Design) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           
           {/* Cột Trái (7 cols): Tuyên ngôn bản lĩnh, Uy tín thể chế & Nút hành động */}
           <div className="lg:col-span-7 flex flex-col justify-center">
             
             {/* Nhãn định danh với Khối hình học vàng hổ phách YKVN Accent Block */}
-            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/[0.06] border border-white/15 backdrop-blur-md mb-6 w-fit shadow-sm">
+            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/[0.06] border border-white/15 backdrop-blur-md mb-5 w-fit shadow-sm">
               <span className="w-2.5 h-2.5 rounded-sm bg-amber-400 shrink-0" />
               <span className="text-[11px] sm:text-xs font-semibold tracking-wider text-slate-200 uppercase font-mono">
                 {hero.bar || 'ĐOÀN LUẬT SƯ VIỆT NAM'} • {hero.locations || 'TP.HCM • ĐẮK LẮK'}
@@ -47,17 +63,17 @@ export default function Hero() {
             </div>
 
             {/* Tiêu đề chính đĩnh đạc (Headline) */}
-            <h1 className="text-3xl sm:text-4xl lg:text-[3.2rem] font-bold text-white tracking-tight leading-[1.25] sm:leading-[1.18] text-balance">
+            <h1 className="text-2xl sm:text-3xl lg:text-[2.6rem] font-bold text-white tracking-tight leading-[1.28] sm:leading-[1.22] text-balance">
               {hero.headline}
             </h1>
 
             {/* Đoạn mô tả mở rộng thanh lịch (Description) */}
-            <p className="mt-6 text-base sm:text-lg text-slate-300 leading-relaxed font-normal max-w-2xl text-pretty">
+            <p className="mt-5 text-sm sm:text-base lg:text-lg text-slate-300 leading-relaxed font-normal max-w-2xl text-pretty">
               {hero.desc}
             </p>
 
             {/* Cụm hành động chính (Primary CTA & Hotline liên lạc trực tiếp) */}
-            <div className="mt-8 pt-2 flex flex-wrap items-center gap-4 sm:gap-6">
+            <div className="mt-8 flex flex-wrap items-center gap-4 sm:gap-6">
               
               <button
                 onClick={() => {
@@ -94,52 +110,47 @@ export default function Hero() {
 
           </div>
 
-          {/* Cột Phải (5 cols): Khung kiến trúc đô thị & Thẻ điều hành tranh tụng (Showcase Frame) */}
+          {/* Cột Phải (5 cols): Thẻ điều hành tranh tụng & diễn đàn tài phán (Executive Practice Card) */}
           <div className="lg:col-span-5">
-            <div className="relative rounded-3xl overflow-hidden border border-white/15 bg-slate-900/60 shadow-[0_16px_50px_rgba(0,0,0,0.5)] min-h-[400px] sm:min-h-[460px] flex flex-col justify-end p-6 sm:p-8 group">
+            <div className="p-6 sm:p-7 rounded-3xl bg-white/[0.05] border border-white/15 backdrop-blur-md shadow-2xl space-y-4">
               
-              {/* Lớp nền kiến trúc TP.HCM bên trong khung */}
-              <div className="absolute inset-0 z-0 overflow-hidden">
-                <img
-                  src="./hero-bg.jpg"
-                  alt="Trụ sở hành nghề TP.HCM"
-                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 brightness-95 contrast-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#061226] via-[#061226]/50 to-transparent" />
+              <div className="flex items-center justify-between gap-2 border-b border-white/15 pb-3">
+                <span className="text-[11px] font-bold text-amber-400 uppercase tracking-widest font-mono">
+                  HÃNG LUẬT TRANH TỤNG DÂN SỰ
+                </span>
+                <span className="text-[10px] font-semibold text-slate-300 font-mono">
+                  TP.HCM • ĐẮK LẮK
+                </span>
               </div>
 
-              {/* Thẻ thông tin Điều hành & Diễn đàn Tòa án nổi bật (Executive Floating Card) */}
-              <div className="relative z-10 p-5 rounded-2xl bg-white/[0.08] border border-white/20 backdrop-blur-md shadow-lg space-y-3">
-                <div className="flex items-center justify-between gap-2 border-b border-white/15 pb-2.5">
-                  <span className="text-[10px] font-bold text-amber-400 uppercase tracking-widest font-mono">
-                    HÃNG LUẬT TRANH TỤNG DÂN SỰ
-                  </span>
-                  <span className="text-[10px] font-semibold text-slate-300 font-mono">
-                    TP.HCM • ĐẮK LẮK
-                  </span>
-                </div>
+              <div>
+                <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight">
+                  Luật sư Võ Văn Hoà (LL.M)
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-300 mt-1">
+                  Luật sư Điều hành • Đoàn Luật sư TP. Hồ Chí Minh
+                </p>
+                <p className="text-xs text-slate-400 mt-2 leading-relaxed">
+                  Hơn 15 năm kinh nghiệm thực chiến tại Tòa án nhân dân các cấp và Trung tâm Trọng tài, trực tiếp xây dựng phương án tố tụng bảo vệ tối đa quyền tài sản và nhân thân của thân chủ.
+                </p>
+              </div>
 
-                <div>
-                  <h3 className="text-base sm:text-lg font-bold text-white tracking-tight">
-                    Luật sư Võ Văn Hoà (LL.M)
-                  </h3>
-                  <p className="text-xs text-slate-300 mt-0.5">
-                    Luật sư Điều hành • Đoàn Luật sư TP. Hồ Chí Minh
-                  </p>
-                </div>
-
-                <div className="pt-1 flex flex-wrap gap-1.5">
-                  <span className="text-[11px] font-medium px-2.5 py-1 rounded bg-white/10 text-slate-200 border border-white/10">
-                    Đất đai & Bất động sản
+              <div className="pt-2 border-t border-white/10">
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-2 font-mono">
+                  LĨNH VỰC ĐẠI DIỆN TRỌNG TÂM
+                </span>
+                <div className="flex flex-wrap gap-2">
+                  <span className="text-xs font-medium px-3 py-1.5 rounded-lg bg-white/10 text-slate-200 border border-white/10">
+                    Tranh tụng Đất đai & Nhà ở
                   </span>
-                  <span className="text-[11px] font-medium px-2.5 py-1 rounded bg-white/10 text-slate-200 border border-white/10">
-                    Thừa kế di sản
+                  <span className="text-xs font-medium px-3 py-1.5 rounded-lg bg-white/10 text-slate-200 border border-white/10">
+                    Phân chia Di sản Thừa kế
                   </span>
-                  <span className="text-[11px] font-medium px-2.5 py-1 rounded bg-white/10 text-slate-200 border border-white/10">
-                    Tranh chấp hợp đồng
+                  <span className="text-xs font-medium px-3 py-1.5 rounded-lg bg-white/10 text-slate-200 border border-white/10">
+                    Hợp đồng Đặt cọc & Dân sự
                   </span>
-                  <span className="text-[11px] font-medium px-2.5 py-1 rounded bg-white/10 text-slate-200 border border-white/10">
-                    Hôn nhân & Gia đình
+                  <span className="text-xs font-medium px-3 py-1.5 rounded-lg bg-white/10 text-slate-200 border border-white/10">
+                    Hôn nhân & Phân chia Tài sản
                   </span>
                 </div>
               </div>
@@ -167,8 +178,8 @@ export default function Hero() {
                 </p>
               </div>
               <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-slate-400 font-mono">
-                <span>CĂN CỨ: ĐIỀU 25 LUẬT LUẬT SƯ</span>
-                <span className="text-amber-400 font-bold">100% TUÂN THỦ PHÁP ĐỊNH</span>
+                <span>CĂN CỨ PHÁP ĐỊNH: ĐIỀU 25 LUẬT LUẬT SƯ</span>
+                <span className="text-amber-400 font-bold">100% TUÂN THỦ PHÁP LUẬT</span>
               </div>
             </div>
 
