@@ -295,7 +295,7 @@ export default function Services() {
                           textAnchor="middle"
                           y={-14}
                           fill={isSliceActive ? '#FFFFFF' : item.numberColor}
-                          fontSize="9.5"
+                          fontSize="10"
                           fontWeight="800"
                           letterSpacing="1px"
                           className="transition-colors duration-300 font-mono"
@@ -308,7 +308,7 @@ export default function Services() {
                           textAnchor="middle"
                           y={0}
                           fill="#FFFFFF"
-                          fontSize={isSliceActive ? '11' : '10.5'}
+                          fontSize={isSliceActive ? '12' : '11'}
                           fontWeight="700"
                           letterSpacing="0.2px"
                           className="transition-all duration-300 font-sans"
@@ -320,8 +320,8 @@ export default function Services() {
                         <text
                           textAnchor="middle"
                           y={14}
-                          fill="rgba(255, 255, 255, 0.94)"
-                          fontSize={isSliceActive ? '10' : '9.5'}
+                          fill="rgba(255, 255, 255, 0.95)"
+                          fontSize={isSliceActive ? '11' : '10'}
                           fontWeight="600"
                           letterSpacing="0.2px"
                           className="transition-all duration-300 font-sans"
@@ -329,27 +329,37 @@ export default function Services() {
                           {item.sliceLines[1]}
                         </text>
 
-                        {/* Điểm nhấn Champagne Gold tinh xảo khi active */}
+                        {/* Điểm nhấn tối giản khi active */}
                         {isSliceActive && (
                           <circle
                             cx={0}
                             cy={24}
-                            r={2}
+                            r={2.5}
                             fill="#FFFFFF"
-                            className="animate-pulse"
+                            opacity="0.95"
                           />
                         )}
                       </g>
                     </g>
 
-                    {/* Vùng cảm ứng chuột tĩnh (Hit Target) cố định, không di chuyển theo hover */}
+                    {/* Vùng cảm ứng chuột tĩnh (Hit Target) có hỗ trợ trợ năng bàn phím ARIA */}
                     <path
                       d={hitPath}
                       fill="#FFFFFF"
                       fillOpacity="0.001"
                       style={{ pointerEvents: 'all' }}
-                      className="cursor-pointer"
+                      className="cursor-pointer focus:outline-none focus-visible:stroke-amber-400 focus-visible:stroke-2"
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`${item.name} (${item.num})`}
+                      aria-pressed={isSliceActive}
                       onClick={() => handleSliceClick(i)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          handleSliceClick(i);
+                        }
+                      }}
                       onMouseEnter={() => setHoveredIndex(i)}
                       onMouseLeave={() => setHoveredIndex((prev) => (prev === i ? null : prev))}
                     />

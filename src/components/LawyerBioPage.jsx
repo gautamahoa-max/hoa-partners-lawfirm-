@@ -78,7 +78,7 @@ export default function LawyerBioPage({ onBack }) {
               {/* Cột trái: Thông tin Năng lực & Chứng chỉ hành nghề */}
               <div className="lg:col-span-5 space-y-6">
                 <div>
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-2 font-mono">
+                  <span className="text-xs font-bold text-slate-600 uppercase tracking-widest block mb-2 font-mono">
                     {lang === 'vi' ? 'TƯ CÁCH & KINH NGHIỆM' : 'CREDENTIALS & EXPERIENCE'}
                   </span>
                   <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-[#0F2144]">
@@ -126,7 +126,7 @@ export default function LawyerBioPage({ onBack }) {
                 <div className="space-y-6 pt-4">
                   <div className="p-5 rounded-xl border border-slate-200 bg-[#FAF9F6] hover:border-slate-300 transition-colors">
                     <div className="flex items-center gap-3 mb-2">
-                      <span className="text-xs font-bold text-slate-400 font-mono px-2 py-0.5 rounded bg-white border border-slate-200">
+                      <span className="text-xs font-bold text-[#0F2144] font-mono px-2 py-0.5 rounded bg-white border border-slate-200">
                         01
                       </span>
                       <h4 className="text-sm sm:text-base font-bold text-[#0F2144]">
@@ -140,7 +140,7 @@ export default function LawyerBioPage({ onBack }) {
 
                   <div className="p-5 rounded-xl border border-slate-200 bg-[#FAF9F6] hover:border-slate-300 transition-colors">
                     <div className="flex items-center gap-3 mb-2">
-                      <span className="text-xs font-bold text-slate-400 font-mono px-2 py-0.5 rounded bg-white border border-slate-200">
+                      <span className="text-xs font-bold text-[#0F2144] font-mono px-2 py-0.5 rounded bg-white border border-slate-200">
                         02
                       </span>
                       <h4 className="text-sm sm:text-base font-bold text-[#0F2144]">
@@ -154,7 +154,7 @@ export default function LawyerBioPage({ onBack }) {
 
                   <div className="p-5 rounded-xl border border-slate-200 bg-[#FAF9F6] hover:border-slate-300 transition-colors">
                     <div className="flex items-center gap-3 mb-2">
-                      <span className="text-xs font-bold text-slate-400 font-mono px-2 py-0.5 rounded bg-white border border-slate-200">
+                      <span className="text-xs font-bold text-[#0F2144] font-mono px-2 py-0.5 rounded bg-white border border-slate-200">
                         03
                       </span>
                       <h4 className="text-sm sm:text-base font-bold text-[#0F2144]">

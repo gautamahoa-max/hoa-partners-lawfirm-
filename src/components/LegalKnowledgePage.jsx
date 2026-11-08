@@ -79,7 +79,7 @@ export default function LegalKnowledgePage({ onBack }) {
                 className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 pl-11 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0F2144] focus:border-transparent transition-all shadow-sm"
               />
               <svg 
-                className="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" 
+                className="w-5 h-5 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" 
                 fill="none" 
                 stroke="currentColor" 
                 viewBox="0 0 24 24"
@@ -89,7 +89,8 @@ export default function LegalKnowledgePage({ onBack }) {
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs text-slate-400 hover:text-slate-600 font-bold"
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs text-slate-500 hover:text-slate-800 font-bold"
+                  aria-label="Xóa tìm kiếm"
                 >
                   ✕
                 </button>
@@ -136,10 +137,10 @@ export default function LegalKnowledgePage({ onBack }) {
                     <div>
                       {/* Badge và thời gian đọc */}
                       <div className="flex items-center justify-between gap-2 mb-3.5">
-                        <span className="inline-block text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded bg-[#F1F3F7] text-[#0F2144]">
+                        <span className="inline-block text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded bg-[#F1F3F7] text-[#0F2144]">
                           {article.badge}
                         </span>
-                        <span className="text-[11px] font-medium text-slate-400">
+                        <span className="text-xs font-semibold text-slate-500">
                           {article.readTime}
                         </span>
                       </div>
@@ -200,7 +201,7 @@ export default function LegalKnowledgePage({ onBack }) {
                   className="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-[0_2px_12px_rgba(15,33,68,0.04)] flex flex-col justify-between"
                 >
                   <div>
-                    <span className="font-mono text-xs font-bold text-slate-400 block mb-2">
+                    <span className="font-mono text-xs font-bold text-slate-600 block mb-2">
                       0{index + 1} • TÌNH HUỐNG THỰC TẾ
                     </span>
                     <h3 className="text-sm sm:text-base font-bold text-[#0F2144] leading-snug mb-3">

@@ -22,7 +22,7 @@ export default function Footer() {
   const copyrightText = footer.copyright.replace('{year}', currentYear);
 
   return (
-    <footer id="lien-he" className="bg-white text-slate-900 pt-16 pb-12 border-t-4 border-[#0F2144] scroll-mt-10">
+    <footer id="lien-he" className="bg-white text-slate-900 pt-16 pb-12 border-t border-slate-200/90 scroll-mt-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Phần trên: Thương hiệu bên trái & Các liên kết tối giản bên phải kiểu Cravath */}

@@ -53,7 +53,7 @@ export default function Navbar() {
             <div className="flex items-center gap-2 text-xs font-semibold">
               <button
                 onClick={() => setLang('vi')}
-                className={`transition-colors ${lang === 'vi' ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-white'}`}
+                className={`transition-colors ${lang === 'vi' ? 'text-amber-400 font-bold' : 'text-slate-300 hover:text-white'}`}
                 title="Tiếng Việt"
               >
                 VI
@@ -61,7 +61,7 @@ export default function Navbar() {
               <span className="text-slate-600">/</span>
               <button
                 onClick={() => setLang('en')}
-                className={`transition-colors ${lang === 'en' ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-white'}`}
+                className={`transition-colors ${lang === 'en' ? 'text-amber-400 font-bold' : 'text-slate-300 hover:text-white'}`}
                 title="English"
               >
                 EN
@@ -92,7 +92,7 @@ export default function Navbar() {
               <span className="text-lg sm:text-xl font-extrabold tracking-tight text-[#0F2144] block leading-snug">
                 {navContent.firmName}
               </span>
-              <span className="text-[9px] sm:text-[10px] uppercase font-semibold tracking-wider text-slate-500 mt-0.5 block truncate">
+              <span className="text-[11px] sm:text-xs uppercase font-semibold tracking-wider text-slate-500 mt-0.5 block truncate">
                 {navContent.firmSub}
               </span>
             </div>
@@ -120,14 +120,14 @@ export default function Navbar() {
             <div className="lg:hidden flex items-center gap-1.5 text-xs font-semibold px-2 py-1 bg-slate-100 rounded">
               <button
                 onClick={() => setLang('vi')}
-                className={lang === 'vi' ? 'text-[#0F2144] font-bold' : 'text-slate-400'}
+                className={lang === 'vi' ? 'text-[#0F2144] font-bold' : 'text-slate-500 hover:text-slate-900'}
               >
                 VI
               </button>
               <span className="text-slate-300">/</span>
               <button
                 onClick={() => setLang('en')}
-                className={lang === 'en' ? 'text-[#0F2144] font-bold' : 'text-slate-400'}
+                className={lang === 'en' ? 'text-[#0F2144] font-bold' : 'text-slate-500 hover:text-slate-900'}
               >
                 EN
               </button>

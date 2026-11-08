@@ -59,7 +59,7 @@ export default function Process() {
               >
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <span className="font-mono text-xs font-bold text-slate-400">
+                    <span className="font-mono text-xs font-bold text-slate-600">
                       Giai đoạn {step.num}
                     </span>
                     <Icon className="w-5 h-5 text-slate-600" />

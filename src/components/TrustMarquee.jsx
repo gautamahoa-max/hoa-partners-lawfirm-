@@ -41,7 +41,7 @@ export default function TrustMarquee() {
                 <p className="text-xs font-bold text-slate-900 truncate">
                   {partner.name}
                 </p>
-                <p className="text-[10px] text-slate-500 truncate">
+                <p className="text-xs text-slate-500 truncate">
                   {partner.sub}
                 </p>
               </div>

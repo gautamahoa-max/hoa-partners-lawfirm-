@@ -51,10 +51,10 @@ export default function Testimonials() {
               {/* Cột 1: Chỉ số & Diễn đàn tài phán */}
               <div className="lg:col-span-4 space-y-2">
                 <div className="flex items-center gap-3">
-                  <span className="text-xs font-bold text-slate-400 font-mono tracking-wider">
+                  <span className="text-xs font-bold text-slate-600 font-mono tracking-wider">
                     {item.index}
                   </span>
-                  <span className="text-[10px] font-bold text-[#0F2144] tracking-widest uppercase bg-slate-200/60 px-2 py-0.5 rounded font-mono">
+                  <span className="text-xs font-bold text-[#0F2144] tracking-widest uppercase bg-slate-200/70 px-2 py-0.5 rounded font-mono">
                     {item.badge}
                   </span>
                 </div>
@@ -137,7 +137,7 @@ export default function Testimonials() {
                   <h4 className="text-base sm:text-lg font-bold text-[#0F2144] tracking-tight">
                     {currentNote.clientName}
                   </h4>
-                  <p className="text-xs sm:text-[13px] font-medium text-amber-500 mt-1">
+                  <p className="text-xs sm:text-[13px] font-semibold text-amber-700 mt-1">
                     {currentNote.clientRole}
                   </p>
                 </div>

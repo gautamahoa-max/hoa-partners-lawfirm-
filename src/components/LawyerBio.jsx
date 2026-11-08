@@ -21,7 +21,7 @@ export default function LawyerBio() {
           <div className="lg:col-span-5 space-y-6">
             
             <div className="border-b border-slate-200/80 pb-6">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-2 font-mono">
+              <span className="text-xs font-bold text-slate-600 uppercase tracking-widest block mb-2 font-mono">
                 {bio.badge}
               </span>
               <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#0F2144]">
@@ -75,7 +75,7 @@ export default function LawyerBio() {
             <div className="space-y-5 pt-4">
               <div className="pt-4 border-t border-slate-200/80">
                 <div className="flex items-baseline gap-3 mb-1">
-                  <span className="text-xs font-bold text-slate-400 font-mono">01</span>
+                  <span className="text-xs font-bold text-[#0F2144] font-mono px-2 py-0.5 rounded bg-slate-100">01</span>
                   <h4 className="text-sm font-bold text-[#0F2144]">
                     {bio.p1Title}
                   </h4>
@@ -87,7 +87,7 @@ export default function LawyerBio() {
 
               <div className="pt-4 border-t border-slate-200/80">
                 <div className="flex items-baseline gap-3 mb-1">
-                  <span className="text-xs font-bold text-slate-400 font-mono">02</span>
+                  <span className="text-xs font-bold text-[#0F2144] font-mono px-2 py-0.5 rounded bg-slate-100">02</span>
                   <h4 className="text-sm font-bold text-[#0F2144]">
                     {bio.p2Title}
                   </h4>
@@ -99,7 +99,7 @@ export default function LawyerBio() {
 
               <div className="pt-4 border-t border-slate-200/80">
                 <div className="flex items-baseline gap-3 mb-1">
-                  <span className="text-xs font-bold text-slate-400 font-mono">03</span>
+                  <span className="text-xs font-bold text-[#0F2144] font-mono px-2 py-0.5 rounded bg-slate-100">03</span>
                   <h4 className="text-sm font-bold text-[#0F2144]">
                     {bio.p3Title}
                   </h4>

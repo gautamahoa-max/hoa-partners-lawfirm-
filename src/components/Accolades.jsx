@@ -51,7 +51,7 @@ export default function Accolades() {
               <div key={idx} className="space-y-2.5">
                 <div className="flex items-center gap-2">
                   <Icon className="w-4 h-4 text-[#0F2144]" />
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                  <span className="text-xs font-bold text-slate-600 uppercase tracking-wider">
                     {item.badge}
                   </span>
                 </div>

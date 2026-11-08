@@ -142,7 +142,7 @@ export default function ContactPage({ onBack }) {
               /* Bảng Form tiếp nhận thông tin chuẩn 3 trường */
               <div className="bg-[#FAF9F6] border border-slate-200/90 rounded-2xl p-6 sm:p-9 shadow-sm text-left">
                 <div className="border-b border-slate-200 pb-4 mb-6">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest font-mono block">
+                  <span className="text-xs font-bold text-slate-600 uppercase tracking-widest font-mono block">
                     {formT.legend}
                   </span>
                   <h3 className="text-lg font-bold text-[#0F2144] mt-1">
@@ -169,7 +169,7 @@ export default function ContactPage({ onBack }) {
                       onChange={handleChange}
                       placeholder={formT.namePlaceholder}
                       required
-                      className="w-full px-4 py-3 text-xs sm:text-sm rounded-lg bg-white border border-slate-300 text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0F2144] focus:border-transparent transition-all placeholder:text-slate-400"
+                      className="w-full px-4 py-3 text-xs sm:text-sm rounded-lg bg-white border border-slate-300 text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0F2144] focus:border-transparent transition-all placeholder:text-slate-500"
                     />
                   </div>
 
@@ -185,7 +185,7 @@ export default function ContactPage({ onBack }) {
                       onChange={handleChange}
                       placeholder={formT.phonePlaceholder}
                       required
-                      className="w-full px-4 py-3 text-xs sm:text-sm rounded-lg bg-white border border-slate-300 text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0F2144] focus:border-transparent transition-all placeholder:text-slate-400"
+                      className="w-full px-4 py-3 text-xs sm:text-sm rounded-lg bg-white border border-slate-300 text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0F2144] focus:border-transparent transition-all placeholder:text-slate-500"
                     />
                   </div>
 
@@ -201,7 +201,7 @@ export default function ContactPage({ onBack }) {
                       onChange={handleChange}
                       placeholder={formT.notesPlaceholder}
                       required
-                      className="w-full px-4 py-3 text-xs sm:text-sm rounded-lg bg-white border border-slate-300 text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0F2144] focus:border-transparent transition-all placeholder:text-slate-400 leading-relaxed"
+                      className="w-full px-4 py-3 text-xs sm:text-sm rounded-lg bg-white border border-slate-300 text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0F2144] focus:border-transparent transition-all placeholder:text-slate-500 leading-relaxed"
                     ></textarea>
                   </div>
 
