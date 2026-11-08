@@ -83,7 +83,7 @@ export default function Navbar() {
               window.location.hash = '';
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
-            className="flex items-center gap-3 text-left group min-w-0"
+            className="flex items-center gap-2.5 sm:gap-3 text-left group min-w-0 flex-1 max-w-[210px] sm:max-w-none pr-1"
           >
             <div className="w-10 h-10 rounded-lg bg-[#0F2144] flex items-center justify-center text-amber-400 shrink-0 shadow-sm">
               <ScaleIcon className="w-5 h-5" />
@@ -116,7 +116,7 @@ export default function Navbar() {
           </nav>
 
           {/* Language switcher for mobile & Hamburger Menu */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <div className="lg:hidden flex items-center gap-1.5 text-xs font-semibold px-2 py-1 bg-slate-100 rounded">
               <button
                 onClick={() => setLang('vi')}

@@ -81,7 +81,7 @@ function MainContent() {
 
   // Trang chủ mặc định
   return (
-    <div className="min-h-screen bg-white text-slate-900 flex flex-col font-sans selection:bg-slate-200 selection:text-slate-900">
+    <div className="min-h-screen bg-white text-slate-900 flex flex-col font-sans selection:bg-slate-200 selection:text-slate-900 overflow-x-hidden">
       {/* 1. Header & Navigation Bar */}
       <Navbar />
 

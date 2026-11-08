@@ -191,7 +191,7 @@ export default function Services() {
   };
 
   return (
-    <section id="linh-vuc" className="py-20 sm:py-24 bg-white border-b border-slate-200/80">
+    <section id="linh-vuc" className="py-20 sm:py-24 bg-white border-b border-slate-200/80 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header danh mục chuyên môn tối giản, trang trọng */}
@@ -211,7 +211,7 @@ export default function Services() {
         <div className="flex flex-col items-center">
           
           {/* Vòng tròn tương tác 6 phân khúc chuẩn Precision Dial (Monochrome Luxury) */}
-          <div className="relative w-full max-w-[440px] aspect-square flex items-center justify-center my-2">
+          <div className="relative w-full max-w-[340px] sm:max-w-[440px] aspect-square flex items-center justify-center my-2">
             
             <svg
               viewBox="0 0 400 400"
