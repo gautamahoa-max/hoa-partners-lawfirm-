@@ -151,7 +151,7 @@ export default function Testimonials() {
                     alt={currentNote.clientName}
                     className="w-full h-full object-cover object-top transition-opacity duration-500"
                     onError={(e) => {
-                      e.target.src = './client-1.png';
+                      e.target.src = './client-1.jpg';
                     }}
                   />
                 </div>
