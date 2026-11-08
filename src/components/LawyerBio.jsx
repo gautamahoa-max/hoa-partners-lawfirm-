@@ -1,5 +1,5 @@
 import React from 'react';
-import { ZaloIcon } from './Icons';
+import { VCardIcon } from './Icons';
 import { useLanguage } from '../context/LanguageContext';
 
 export default function LawyerBio() {
@@ -58,16 +58,16 @@ export default function LawyerBio() {
                           {bio.email}
                         </a>
                         
-                        {/* 1 Nút liên hệ Zalo trực tiếp */}
+                        {/* Nút liên hệ Zalo trực tiếp với icon dạng thẻ vCard chuẩn YKVN */}
                         <a
                           href="https://zalo.me/0988886447"
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center justify-center w-6 h-6 rounded bg-[#0068FF] hover:bg-[#0055cc] text-white transition-all shadow-xs shrink-0 ml-1"
-                          title="Chat qua Zalo: 098.888.6447"
-                          aria-label="Chat qua Zalo"
+                          className="inline-flex items-center justify-center w-5 h-5 rounded bg-[#0F2144] hover:bg-[#18356d] text-white transition-colors shrink-0 ml-1 cursor-pointer"
+                          title="Liên hệ Zalo: 098.888.6447"
+                          aria-label="Liên hệ Zalo"
                         >
-                          <ZaloIcon className="w-4 h-4 text-white" />
+                          <VCardIcon className="w-3.5 h-3.5 text-white" />
                         </a>
                       </div>
 
