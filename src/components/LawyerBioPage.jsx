@@ -1,26 +1,9 @@
 import React, { useEffect } from 'react';
+import { ZaloIcon } from './Icons';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import FloatingContact from './FloatingContact';
 import { useLanguage } from '../context/LanguageContext';
-
-// vCard Icon SVG
-function VCardIcon({ className = 'w-4 h-4' }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-      <path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm-11 5a2 2 0 11.001 4.001A2 2 0 019 9zm4 7H5v-1c0-1.33 2.67-2 4-2s4 .67 4 2v1zm6-1h-4v-2h4v2zm0-4h-4v-2h4v2z" />
-    </svg>
-  );
-}
-
-// LinkedIn Icon SVG
-function LinkedInIcon({ className = 'w-4 h-4' }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-      <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z" />
-    </svg>
-  );
-}
 
 export default function LawyerBioPage({ onBack }) {
   const { lang, t } = useLanguage();
@@ -29,34 +12,6 @@ export default function LawyerBioPage({ onBack }) {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
-
-  const handleDownloadVCard = () => {
-    const vcard = [
-      'BEGIN:VCARD',
-      'VERSION:3.0',
-      'N:Võ;Văn Hoà;;Luật sư;',
-      'FN:Luật sư Võ Văn Hoà',
-      'ORG:Công ty Luật TNHH Hoà & Cộng sự',
-      'TITLE:Luật sư Điều hành & Sáng lập',
-      'TEL;TYPE=CELL,VOICE:0988886447',
-      'EMAIL;TYPE=PREF,INTERNET:gautamahoa@gmail.com',
-      'ADR;TYPE=WORK:;;9/12 Chu Huy Mân, P. Tân An;TP. Buôn Ma Thuột;Đắk Lắk;;Việt Nam',
-      'ADR;TYPE=WORK:;;2A đường 33, P. Bình Trưng;TP. Hồ Chí Minh;;;Việt Nam',
-      'URL:https://gautamahoa-max.github.io/hoa-partners-lawfirm-/',
-      'NOTE:Đoàn Luật sư TP. Hồ Chí Minh • Liên đoàn Luật sư Việt Nam',
-      'END:VCARD',
-    ].join('\r\n');
-
-    const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', 'Luat_su_Vo_Van_Hoa.vcf');
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  };
 
   return (
     <div className="min-h-screen bg-white text-slate-900 flex flex-col font-sans selection:bg-slate-200 selection:text-slate-900">
@@ -141,28 +96,17 @@ export default function LawyerBioPage({ onBack }) {
                             {bio.email}
                           </a>
                           
-                          {/* Bộ icon liên hệ: vCard & LinkedIn / Zalo */}
-                          <div className="inline-flex items-center gap-1.5 shrink-0 ml-1">
-                            <button
-                              type="button"
-                              onClick={handleDownloadVCard}
-                              className="w-5 h-5 rounded bg-[#0F2144] hover:bg-[#18356d] text-white flex items-center justify-center transition-colors cursor-pointer"
-                              title={lang === 'vi' ? 'Lưu danh bạ (vCard)' : 'Download vCard'}
-                              aria-label="Download vCard"
-                            >
-                              <VCardIcon className="w-3.5 h-3.5" />
-                            </button>
-                            <a
-                              href="https://zalo.me/0988886447"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="w-5 h-5 rounded bg-[#0F2144] hover:bg-[#18356d] text-white flex items-center justify-center transition-colors text-xs"
-                              title={lang === 'vi' ? 'Liên hệ qua Zalo / LinkedIn' : 'Connect via Zalo / LinkedIn'}
-                              aria-label="Connect via Zalo or LinkedIn"
-                            >
-                              <LinkedInIcon className="w-3.5 h-3.5" />
-                            </a>
-                          </div>
+                          {/* 1 Nút liên hệ Zalo trực tiếp */}
+                          <a
+                            href="https://zalo.me/0988886447"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center justify-center w-6 h-6 rounded bg-[#0068FF] hover:bg-[#0055cc] text-white transition-all shadow-xs shrink-0 ml-1"
+                            title="Chat qua Zalo: 098.888.6447"
+                            aria-label="Chat qua Zalo"
+                          >
+                            <ZaloIcon className="w-4 h-4 text-white" />
+                          </a>
                         </div>
 
                       </div>
