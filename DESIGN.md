@@ -1,38 +1,56 @@
-# Design System: HÒA & CỘNG SỰ (HOA & PARTNERS LAW FIRM)
-*Synthesized from YKVN Tier-1 Law Practice & Anthropic Frontend-Design Directives.*
+# Design System: CÔNG TY LUẬT TNHH HOÀ & CỘNG SỰ (HOA & PARTNERS)
+*Synthesized from YKVN Tier-1 Law Practice & Taste-Design Anti-Generic Directives.*
 
 ## 1. Visual Theme & Atmosphere
-An authoritative, stately, and corporate presence modeled after Vietnam's premier tier-1 corporate law practice (**YKVN**). Blends international legal rigor with domestic courtroom mastery.
-
-- **Atmosphere:** Tier-1 Corporate Law Firm, Courtroom Gravitas, International Arbitration Prestige.
-- **Density:** 5 (Daily App Balanced — spacious, highly legible).
-- **Variance:** 6 (Architectural & Editorial Grid).
-- **Motion:** Restrained, functional micro-feedback answering user actions.
-
----
-
-## 2. Color Palette & Roles (YKVN Palette)
-- **Deep Marine Navy (`#0F2144` / `#142859`)**: Primary corporate brand color, evoking institutional stability, sovereignty, and trust.
-- **Parchment Surface (`#F8F9FA` / `#FDFDFC`)**: Primary background canvas, providing clean contrast without eye strain.
-- **Pure White (`#FFFFFF`)**: Interior card surfaces and navigation bar.
-- **Dignified Crimson Accent (`#C5221F`)**: Selective indicator for primary action triggers and legal seals.
-- **Hairline Border (`#E2E8F0` / `#E5E7EB`)**: 1px structural rules replacing fluffy drop shadows.
+An authoritative, stately, and cinematic presence modeled after Vietnam's premier tier-1 litigation practice (**YKVN**). Blends courtroom gravitas, architectural discipline, and refined modern restraint.
+- **Atmosphere:** Sovereign Courtroom Gravitas, Institutional Integrity, High-Agency Litigation Mastery.
+- **Density:** 5 (Daily App Balanced — generous breathing room, zero visual clutter).
+- **Variance:** 7 (Asymmetric Editorial Grid, strict ban on centered generic heroes).
+- **Motion:** 6 (Cinematic Ken Burns breathing zoom on architectural horizons, tactile spring physics on interactive triggers).
 
 ---
 
-## 3. Structural Architecture (YKVN Signature Elements)
-- **Top Utility Bar:** Multi-jurisdiction offices (Hà Nội &bull; TP. Hồ Chí Minh &bull; Singapore), 24/7 hotline, and bilingual switcher (VI / EN).
-- **Dual-Tab Practice System:**
-  - Tab 1: **Lĩnh Vực Tư Vấn (Practice Areas)** — Trọng Tài Quốc Tế, Ngân Hàng & Tài Chính, M&A, Tranh Tụng Tòa Án, Bất Động Sản, Pháp Chế Thường Xuyên.
-  - Tab 2: **Ngành Nghề Tư Vấn (Industry Sectors)** — Năng lượng, Ngân hàng, Bất động sản, Công nghiệp, Công nghệ & Logistics.
-- **International Directory Recognition:** Citations and band tiers from *Chambers and Partners*, *The Legal 500*, and *IFLR1000*.
-- **Managing Partner Profile:** Formal executive partner introduction for **Luật sư Võ Văn Hoà (Managing Partner)**.
-- **Statutory Court Fee Engine:** Interactive calculation compliant with **Resolution 326/2016/UBTVQH14**.
+## 2. Color Palette & Roles
+- **Imperial Obsidian Navy (`#061226`)**: Deep foundation canvas, communicating sovereignty and impenetrable confidentiality.
+- **Royal Navy Surface (`#0A1932`)**: Secondary elevation surface for cards, navigation, and structured panels.
+- **Warm Amber Gold (`#F59E0B` / `#D97706`)**: Single calibrated accent (<80% saturation) for primary action triggers, status indicators, and geometric brand blocks.
+- **Ivory Crisp Text (`#FFFFFF`)**: Primary headline text, guaranteeing AAA contrast.
+- **Muted Silver Slate (`#94A3B8` / `#CBD5E1`)**: Secondary descriptive copy, legal citations, and metadata.
+- **Whisper Hairline Border (`rgba(255, 255, 255, 0.12)`)**: 1px architectural divider lines replacing fluffy or colored drop shadows.
+- **Strictly BANNED:** Pure black (`#000000`), neon purple/blue AI gradients, oversaturated glow effects.
 
 ---
 
-## 4. Typography Architecture (Anthropic Frontend-Design Directives)
-- **Headlines:** `Playfair Display` with `leading-[1.38]` and `tracking-normal` — calibrated specifically for Vietnamese stacked diacritics to guarantee zero vertical character collision.
-- **Body:** `Be Vietnam Pro` — Humanist sans-serif with natural sentence case. Line lengths constrained to less than 75 characters.
-- **Monospace Digits:** `system-ui, monospace` for court fees, decree numbers, and docket codes (`TT-01`, `DN-02`).
-- **Banned:** `Inter`, all-caps tracked-out eyebrows, single-word colored accents, appended arrow characters (`→`), fake percentages.
+## 3. Typographic Architecture
+- **Display & Headlines:** `Be Vietnam Pro` (Weights 700 / 800) with `leading-[1.2]` and `tracking-tight` — calibrated specifically for Vietnamese stacked diacritics to guarantee zero vertical character collision.
+- **Body:** `Be Vietnam Pro` (Weights 400 / 500) — natural sentence case, relaxed leading (`leading-[1.75]`), line length strictly capped at 65 characters (`max-w-3xl`).
+- **Monospace Digits & Codes:** `JetBrains Mono, ui-monospace` for legal articles, docket indexes (`01`, `02`, `03`), and phone numbers.
+- **Banned:** `Inter`, generic system fonts, all-caps tracked-out screaming headers, fake percentages.
+
+---
+
+## 4. Hero Section Architecture (Taste-Design Standard)
+- **Spatial Separation:** Strict asymmetric composition. Text occupies the left cognitive zone with solid high-contrast backing; the architectural horizon image occupies the right/upper plane. Text NEVER collides with high-frequency image textures.
+- **YKVN Signature Geometric Brand Block:** A sharp 12px geometric amber gold square (`ykvn-accent-block`) anchoring the institutional jurisdiction badge.
+- **Continuous Cinematic Micro-Motion (`animate-ykvn-zoom`):** Hardware-accelerated Ken Burns slow breathing zoom (16-second cycle, `scale(1)` to `scale(1.08)` via `transform` only).
+- **Feature Structure:** Generic "3 equal cards horizontally" row is BANNED. Replaced with an asymmetric, staggered 2-column or hierarchically tiered practice grid.
+- **CTA Restraint:** Single high-contrast tactile primary button (`active:translate-y-[1px]`) paired with a direct communication channel (Hotline 24/7). Zero generic "Learn more" links.
+
+---
+
+## 5. Component Behaviors
+- **Buttons:** Solid Amber Gold (`#F59E0B`) with subtle deep drop shadow. Tactile -1px vertical translate on active press.
+- **Glassmorphism Panels:** Frosted surface with `backdrop-blur-md`, `bg-white/[0.05]`, and 1px hairline border (`rgba(255,255,255,0.12)`).
+- **Dividers:** 1px hairline rules with calibrated alpha (`border-white/15`). No thick borders or HR elements.
+- **Interactive Feedback:** Transition durations strictly set to 200ms–300ms cubic bezier.
+
+---
+
+## 6. Anti-Patterns (Banned AI Clichés)
+- **NO emojis anywhere** in the UI or copywriting.
+- **NO generic 3 equal cards in a row.**
+- **NO fake metrics or invented percentages** ("99.9% win rate", "10,000+ satisfied clients").
+- **NO AI copywriting buzzwords** ("Seamless", "Elevate", "Next-Gen", "Unleash").
+- **NO filler navigation text** ("Scroll down", "Swipe to explore", bouncing arrows).
+- **NO centered Hero layouts** on desktop viewports.
+- **NO overlapping text on busy imagery** — every element must have clean spatial clarity.
