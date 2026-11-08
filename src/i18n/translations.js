@@ -223,7 +223,7 @@ export const TRANSLATIONS = {
       phoneFormatted: '098.888.6447',
       email: 'gautamahoa@gmail.com',
       avatar: './lawyer-vo-van-hoa.jpg',
-      degree: 'Thạc sĩ Luật Kinh tế (LL.M) • Cử nhân Luật (LL.B)',
+      degree: 'Cử nhân Luật Kinh tế (LL.B)',
       quote: '“Một người hành nghề Luật giỏi không chỉ nắm vững điều luật, mà phải thấu hiểu bản chất quan hệ dân sự, bảo vệ quyền lợi thiết thân của thân chủ và đồng hành bằng sự liêm chính.”',
       practiceTitle: 'Lĩnh Vực Tư Vấn',
       practiceAreas: [
@@ -237,13 +237,12 @@ export const TRANSLATIONS = {
       paragraphs: [
         'Luật sư Võ Văn Hoà, Luật sư Sáng lập và Điều hành của Công ty Luật TNHH Hoà & Cộng sự, được đánh giá là một trong những luật sư uy tín hàng đầu trong lĩnh vực tư vấn pháp luật và tranh tụng Dân sự, tập trung chuyên sâu vào các tranh chấp Đất đai - Bất động sản, Thừa kế, Hợp đồng và Hôn nhân gia đình.',
         'Luật sư Hoà đã trực tiếp tham gia tư vấn và bảo vệ thành công quyền lợi hợp pháp cho hàng trăm thân chủ trong các vụ việc pháp lý mang tính bước ngoặt và phức tạp tại Tòa án nhân dân các cấp tại TP. Hồ Chí Minh, Đắk Lắk và các tỉnh thành phía Nam. Thân chủ của Luật sư Hoà bao gồm các cá nhân, hộ gia đình, chủ doanh nghiệp và các tổ chức kinh tế cần giải pháp pháp lý an toàn, minh bạch và bảo vệ tối đa quyền tài sản.',
-        'Với hơn 15 năm kinh nghiệm hành nghề thực tiễn cùng nền tảng học thuật vững chắc với học vị Thạc sĩ Luật Kinh tế (LL.M), Luật sư Hoà xây dựng chiến lược tố tụng sắc bén, đề cao tính cẩn trọng, chứng cứ xác thực và giải pháp hòa giải thực chất nhằm tiết kiệm tối đa thời gian và chi phí cho khách hàng.',
+        'Với hơn 15 năm kinh nghiệm hành nghề thực tiễn cùng nền tảng chuyên môn sâu sắc về Luật Kinh tế, Luật sư Hoà xây dựng chiến lược tố tụng sắc bén, đề cao tính cẩn trọng, chứng cứ xác thực và giải pháp hòa giải thực chất nhằm tiết kiệm tối đa thời gian và chi phí cho khách hàng.',
         'Bên cạnh hoạt động tranh tụng tại Tòa án, Luật sư Hoà thường xuyên hỗ trợ thân chủ trong đàm phán giải quyết tranh chấp ngoài tố tụng, rà soát cấu trúc giao dịch bất động sản và tư vấn hoạch định tài sản gia đình. Luật sư Hoà luôn tuân thủ chuẩn mực đạo đức nghề nghiệp nghiêm ngặt của Liên đoàn Luật sư Việt Nam và phương châm hành nghề: "Tận tâm - Bản lĩnh - Hiệu quả".',
       ],
       educationTitle: 'Học Vấn',
       educationItems: [
-        'Thạc sĩ Luật Kinh tế (LL.M), Trường Đại học Luật TP. Hồ Chí Minh',
-        'Cử nhân Luật (LL.B), Trường Đại học Luật TP. Hồ Chí Minh',
+        'Cử nhân Luật Kinh tế, Trường Đại học Mở TP.HCM',
       ],
       barTitle: 'Đoàn Luật Sư và Hiệp Hội Nghề Nghiệp',
       barItems: [
@@ -778,7 +777,7 @@ export const TRANSLATIONS = {
       phoneFormatted: '098.888.6447',
       email: 'gautamahoa@gmail.com',
       avatar: './lawyer-vo-van-hoa.jpg',
-      degree: 'Master of Economic Laws (LL.M) • Bachelor of Laws (LL.B)',
+      degree: 'Bachelor of Economic Laws (LL.B)',
       quote: '“A truly dedicated attorney does not merely master statutory rules, but deeply understands the nuances of civil relations, protects clients’ legitimate personal and property rights, and stands beside them with absolute integrity.”',
       practiceTitle: 'Practice Areas',
       practiceAreas: [
@@ -792,13 +791,12 @@ export const TRANSLATIONS = {
       paragraphs: [
         'Attorney Vo Van Hoa, Founder and Managing Partner of Hoa & Associates Law Firm, is widely recognized as a leading advocate in civil litigation and legal advisory, focusing deeply on complex land and real estate disputes, inheritance, contracts, and family estate matters.',
         'Attorney Hoa has successfully advised and represented hundreds of clients in landmark and intricate civil proceedings across People’s Courts at all levels in Ho Chi Minh City, Dak Lak, and southern provinces. His clientele includes individuals, families, real estate investors, and enterprises seeking secure, comprehensive, and assertive property rights protection.',
-        'With over 15 years of rigorous courtroom practice and a strong academic foundation holding a Master of Economic Law (LL.M), Attorney Hoa formulates incisive dispute strategies rooted in verifiable evidence and meticulous case preparation. He continuously prioritizes substantive mediation and pragmatic negotiation to optimize time, safeguard relationships, and minimize client costs.',
+        'With over 15 years of rigorous courtroom practice and extensive specialized expertise in Economic Law, Attorney Hoa formulates incisive dispute strategies rooted in verifiable evidence and meticulous case preparation. He continuously prioritizes substantive mediation and pragmatic negotiation to optimize time, safeguard relationships, and minimize client costs.',
         'In addition to trial advocacy, Attorney Hoa actively counsels clients on contract risk governance, out-of-court dispute settlement, and family wealth structuring. He is a member of the Ho Chi Minh City Bar Association and the Vietnam Bar Federation (VBF), strictly upholding professional legal ethics under the firm’s guiding motto: "Dedicated • Resolute • Effective".',
       ],
       educationTitle: 'Education',
       educationItems: [
-        'Master of Economic Law (LL.M), Ho Chi Minh City University of Law',
-        'Bachelor of Laws (LL.B), Ho Chi Minh City University of Law',
+        'Bachelor of Economic Law (LL.B), Ho Chi Minh City Open University',
       ],
       barTitle: 'Bar & Professional Associations',
       barItems: [
