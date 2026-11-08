@@ -219,7 +219,7 @@ export const TRANSLATIONS = {
       degree: 'Thạc sĩ Luật Kinh tế (LL.M) • Cử nhân Luật (LL.B)',
       quote: '“Một người hành nghề Luật giỏi không chỉ nắm vững điều luật, mà phải thấu hiểu bản chất quan hệ dân sự, bảo vệ quyền lợi thiết thân của thân chủ và đồng hành bằng sự liêm chính.”',
       creds: [
-        'Thành viên Liên đoàn Luật sư Việt Nam & Đoàn Luật sư',
+        'Thành viên Liên đoàn Luật sư Việt Nam & Đoàn Luật sư TP. Hồ Chí Minh',
         'Hơn 15 năm kinh nghiệm chuyên sâu trong tranh tụng Dân sự, Đất đai, Thừa kế và Hợp đồng',
         'Đại diện thành công hàng trăm vụ án Dân sự phức tạp tại Tòa án nhân dân các cấp tại TP.HCM, Đắk Lắk và các tỉnh phía Nam',
       ],
@@ -742,7 +742,7 @@ export const TRANSLATIONS = {
       degree: 'Master of Economic Laws (LL.M) • Bachelor of Laws (LL.B)',
       quote: '“A truly dedicated attorney does not merely master statutory rules, but deeply understands the nuances of civil relations, protects clients’ legitimate personal and property rights, and stands beside them with absolute integrity.”',
       creds: [
-        'Member of Vietnam Bar Federation & Bar Association',
+        'Member of Vietnam Bar Federation & Ho Chi Minh City Bar Association',
         'Over 15 years of specialized experience in Civil Litigation, Land Disputes, Inheritance, and Contracts',
         'Successfully represented hundreds of complex civil cases before People’s Courts across all levels in HCMC, Dak Lak, and southern provinces',
       ],

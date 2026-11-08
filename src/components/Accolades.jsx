@@ -19,7 +19,7 @@ export default function Accolades() {
       icon: BriefcaseIcon,
       badge: 'TỔ CHỨC NGHỀ NGHIỆP',
       title: 'Liên đoàn Luật sư Việt Nam',
-      desc: 'Thành viên Đoàn Luật sư TP. Hà Nội, hoạt động theo chuẩn mực đạo đức và quy tắc ứng xử nghề nghiệp nghiêm ngặt.',
+      desc: 'Thành viên Đoàn Luật sư TP. Hồ Chí Minh, hoạt động theo chuẩn mực đạo đức và quy tắc ứng xử nghề nghiệp nghiêm ngặt.',
     },
     {
       icon: ShieldCheckIcon,
