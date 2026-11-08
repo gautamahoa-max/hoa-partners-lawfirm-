@@ -298,6 +298,10 @@ export const TRANSLATIONS = {
     footer: {
       firmTitle: 'HÒA & CỘNG SỰ',
       firmSubtitle: 'CÔNG TY LUẬT TNHH HOÀ VÀ CỘNG SỰ • LUẬT SƯ VÕ VĂN HOÀ',
+      headquartersLabel: 'Trụ sở chính:',
+      headquartersAddress: '9/12 Chu Huy Mân, phường Tân An, tỉnh Đắk Lắk',
+      repOfficeLabel: 'Văn phòng đại diện:',
+      repOfficeAddress: '2A đường 33, phường Bình Trưng, TP.HCM',
       call: 'LIÊN HỆ: 098.888.6447',
       practice: 'LĨNH VỰC HÀNH NGHỀ',
       dossier: 'DANH SÁCH VỤ ÁN',
@@ -817,6 +821,10 @@ export const TRANSLATIONS = {
     footer: {
       firmTitle: 'HOA & ASSOCIATES',
       firmSubtitle: 'HOA & ASSOCIATES LAW FIRM • MANAGING PARTNER VO VAN HOA',
+      headquartersLabel: 'Headquarters:',
+      headquartersAddress: '9/12 Chu Huy Man, Tan An Ward, Dak Lak Province',
+      repOfficeLabel: 'Representative Office:',
+      repOfficeAddress: '2A 33rd Street, Binh Trung Ward, Ho Chi Minh City',
       call: 'CALL: +84 98.888.6447',
       practice: 'PRACTICE AREAS',
       dossier: 'CASE DOCKET',

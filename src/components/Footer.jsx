@@ -28,14 +28,34 @@ export default function Footer() {
         {/* Phần trên: Thương hiệu bên trái & Các liên kết tối giản bên phải kiểu Cravath */}
         <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-10 text-left">
           
-          {/* Cột trái: Tên hãng luật sang trọng kiểu Cravath */}
-          <div>
+          {/* Cột trái: Tên hãng luật sang trọng & Địa chỉ các văn phòng */}
+          <div className="max-w-xl">
             <h2 className="text-2xl sm:text-[1.75rem] font-bold text-[#0F2144] tracking-tight">
               {footer.firmTitle}
             </h2>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.15em] text-slate-500 mt-2">
+            <p className="text-xs font-semibold uppercase tracking-[0.15em] text-slate-500 mt-2">
               {footer.firmSubtitle}
             </p>
+
+            {/* Khối địa chỉ Trụ sở chính & Văn phòng đại diện chuẩn pháp lý */}
+            <div className="mt-6 pt-5 border-t border-slate-200/80 space-y-2.5 text-xs sm:text-[13px]">
+              <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2">
+                <span className="font-bold text-[#0F2144] uppercase tracking-wider shrink-0">
+                  • {footer.headquartersLabel || 'Trụ sở chính:'}
+                </span>
+                <span className="text-slate-600 leading-relaxed font-normal">
+                  {footer.headquartersAddress}
+                </span>
+              </div>
+              <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2">
+                <span className="font-bold text-[#0F2144] uppercase tracking-wider shrink-0">
+                  • {footer.repOfficeLabel || 'Văn phòng đại diện:'}
+                </span>
+                <span className="text-slate-600 leading-relaxed font-normal">
+                  {footer.repOfficeAddress}
+                </span>
+              </div>
+            </div>
           </div>
 
           {/* Cột phải: Các liên kết chữ hoa tinh giản (Cravath style) */}
