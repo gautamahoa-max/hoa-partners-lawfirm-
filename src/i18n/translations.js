@@ -32,6 +32,7 @@ export const TRANSLATIONS = {
       p3Title: 'Chiến lược tố tụng kiên quyết',
       p3Desc: 'Đại diện xuyên suốt từ tiền tố tụng, hòa giải cơ sở, tranh luận tại Tòa cho tới thi hành xong phán quyết.',
       ctaSchedule: 'Đặt lịch hẹn tư vấn với luật sư',
+      ctaDossier: 'Xem danh mục án vụ tiêu biểu',
       ctaHotline: 'Hotline 24/7: 098.888.6447',
     },
     services: {
@@ -550,6 +551,7 @@ export const TRANSLATIONS = {
       p3Title: 'Resolute Dispute Strategy',
       p3Desc: 'Comprehensive representation from pre-suit settlement negotiations to courtroom trial and final judgment enforcement.',
       ctaSchedule: 'Schedule a Consultation with Partner',
+      ctaDossier: 'Explore Key Case Docket',
       ctaHotline: 'Hotline 24/7: +84 98.888.6447',
     },
     services: {

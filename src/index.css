@@ -46,3 +46,30 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* YKVN-inspired Ken Burns Slow Breathing Zoom for Hero Banner */
+@keyframes ykvnZoom {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.09);
+  }
+}
+
+.animate-ykvn-zoom {
+  animation: ykvnZoom 16s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+/* YKVN Signature Geometric Brand Block Accent */
+.ykvn-accent-block::before {
+  content: "";
+  display: inline-block;
+  width: 0.75rem;
+  height: 0.75rem;
+  background-color: #F59E0B; /* Amber 500 */
+  margin-right: 0.65rem;
+  vertical-align: middle;
+  transform: translateY(-1px);
+}
