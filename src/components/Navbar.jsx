@@ -85,8 +85,12 @@ export default function Navbar() {
             }}
             className="flex items-center gap-2.5 sm:gap-3 text-left group min-w-0 flex-1 max-w-[210px] sm:max-w-none pr-1"
           >
-            <div className="w-10 h-10 rounded-lg bg-[#0F2144] flex items-center justify-center text-amber-400 shrink-0 shadow-sm">
-              <ScaleIcon className="w-5 h-5" />
+            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-lg bg-[#0F2144] p-1.5 flex items-center justify-center shrink-0 shadow-sm border border-slate-700/20 transition-transform group-hover:scale-105">
+              <img 
+                src="./logo-emblem-gold.png" 
+                alt="Logo Công ty Luật TNHH Hoà & Cộng sự" 
+                className="w-full h-full object-contain" 
+              />
             </div>
             <div className="min-w-0">
               <span className="text-lg sm:text-xl font-extrabold tracking-tight text-[#0F2144] block leading-snug">

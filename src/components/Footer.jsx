@@ -30,12 +30,23 @@ export default function Footer() {
           
           {/* Cột trái: Tên hãng luật sang trọng & Địa chỉ các văn phòng */}
           <div className="max-w-xl">
-            <h2 className="text-2xl sm:text-[1.75rem] font-bold text-[#0F2144] tracking-tight">
-              {footer.firmTitle}
-            </h2>
-            <p className="text-xs font-semibold uppercase tracking-[0.15em] text-slate-500 mt-2">
-              {footer.firmSubtitle}
-            </p>
+            <div className="flex items-center gap-3.5 mb-3">
+              <div className="w-12 h-12 rounded-lg bg-[#0F2144] p-2 flex items-center justify-center shrink-0 shadow-sm border border-slate-700/20">
+                <img 
+                  src="./logo-emblem-gold.png" 
+                  alt="Biểu trưng Công ty Luật TNHH Hoà & Cộng sự" 
+                  className="w-full h-full object-contain" 
+                />
+              </div>
+              <div>
+                <h2 className="text-2xl sm:text-[1.75rem] font-bold text-[#0F2144] tracking-tight leading-snug">
+                  {footer.firmTitle}
+                </h2>
+                <p className="text-xs font-semibold uppercase tracking-[0.15em] text-slate-500 mt-0.5">
+                  {footer.firmSubtitle}
+                </p>
+              </div>
+            </div>
 
             {/* Khối địa chỉ Trụ sở chính & Văn phòng đại diện chuẩn pháp lý */}
             <div className="mt-6 pt-5 border-t border-slate-200/80 space-y-2.5 text-xs sm:text-[13px]">
