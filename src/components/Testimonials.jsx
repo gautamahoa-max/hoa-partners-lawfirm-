@@ -76,7 +76,7 @@ export default function Testimonials() {
               </span>
             </div>
 
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#0F2144] tracking-tight leading-[1.25]">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#0F2144] tracking-tight leading-[1.25] text-balance">
               {testData.title}
             </h2>
 

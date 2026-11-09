@@ -283,9 +283,9 @@ export const TRANSLATIONS = {
         { id: 'family', label: 'Hôn nhân & Tài sản' },
       ],
       stageLabels: {
-        challenge: '01. Nút thắt pháp lý',
-        strategy: '02. Chiến lược Luật sư',
-        verdict: '03. Phán quyết Tòa án',
+        challenge: '01. Nút thắt',
+        strategy: '02. Chiến lược',
+        verdict: '03. Phán quyết',
       },
       clientEyebrow: 'Đánh giá từ thân chủ • Uy tín thực tế',
       cases: [
