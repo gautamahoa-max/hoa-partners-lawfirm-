@@ -100,10 +100,12 @@ export default function Footer() {
 
             <div>
               <button
-                onClick={() => scrollTo('ho-so')}
+                onClick={() => {
+                  window.location.hash = '#/lien-he';
+                }}
                 className="hover:underline underline-offset-4 transition-all text-left block"
               >
-                {footer.dossier}
+                {footer.contact || (lang === 'vi' ? 'LIÊN HỆ TRỰC TIẾP' : 'DIRECT CONTACT')}
               </button>
             </div>
 

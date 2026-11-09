@@ -3,7 +3,6 @@ import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Services from './components/Services';
-import Testimonials from './components/Testimonials';
 import Footer from './components/Footer';
 import FloatingContact from './components/FloatingContact';
 import ServiceDetailPage from './components/ServiceDetailPage';
@@ -92,9 +91,6 @@ function MainContent() {
 
         {/* 3. Lĩnh Vực Hành Nghề Cốt Lõi (Biểu đồ Donut tương tác) */}
         <Services />
-
-        {/* 4. Hồ Sơ Tiêu Biểu & Danh sách vụ án từng tham dự */}
-        <Testimonials />
       </main>
 
       {/* 6. Chân Trang Pháp Lý Chuẩn Cravath */}
