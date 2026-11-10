@@ -373,15 +373,24 @@ export default function LegalKnowledgePage({ articleId, onBack }) {
                   {filteredArticles.map((article) => (
                     <article
                       key={article.id}
-                      className="group flex flex-col justify-between"
+                      onClick={() => openArticle(article)}
+                      className="group flex flex-col justify-between cursor-pointer"
                     >
                       <div>
                         {/* Tiêu đề bài viết: in hoa, đậm, màu navy #0F2144 */}
                         <h2
-                          onClick={() => openArticle(article)}
-                          className="text-sm sm:text-[15px] font-extrabold text-[#0F2144] uppercase tracking-wide leading-snug cursor-pointer group-hover:text-blue-900 group-hover:underline transition-colors mb-2"
+                          className="text-sm sm:text-[15px] font-extrabold text-[#0F2144] uppercase tracking-wide leading-snug group-hover:text-blue-900 group-hover:underline transition-colors mb-2"
                         >
-                          {article.title}
+                          <a
+                            href={`#/kien-thuc-phap-luat/${article.id}`}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              openArticle(article);
+                            }}
+                            className="focus:outline-none"
+                          >
+                            {article.title}
+                          </a>
                         </h2>
 
                         {/* Ngày đăng: in nghiêng, font serif/italic nhẹ */}
@@ -390,22 +399,9 @@ export default function LegalKnowledgePage({ articleId, onBack }) {
                         </time>
 
                         {/* Trích dẫn nội dung */}
-                        <p
-                          onClick={() => openArticle(article)}
-                          className="text-xs sm:text-[13px] text-slate-600 leading-relaxed font-normal cursor-pointer"
-                        >
+                        <p className="text-xs sm:text-[13px] text-slate-600 leading-relaxed font-normal">
                           {article.summary}
                         </p>
-                      </div>
-
-                      {/* Nút xem chi tiết */}
-                      <div className="mt-4 pt-2">
-                        <button
-                          onClick={() => openArticle(article)}
-                          className="text-xs font-semibold text-[#0F2144] hover:text-blue-900 inline-flex items-center gap-1 group-hover:translate-x-0.5 transition-transform"
-                        >
-                          {knowledge.readMore} <span aria-hidden="true">→</span>
-                        </button>
                       </div>
                     </article>
                   ))}
