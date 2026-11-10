@@ -90,26 +90,6 @@ export default function Footer() {
             </div>
 
             <div>
-              <a
-                href="mailto:Gautamahoa@gmail.com"
-                className="hover:underline underline-offset-4 transition-all block"
-              >
-                GAUTAMAHOA@GMAIL.COM
-              </a>
-            </div>
-
-            <div>
-              <button
-                onClick={() => {
-                  window.location.hash = '#/lien-he';
-                }}
-                className="hover:underline underline-offset-4 transition-all text-left block"
-              >
-                {footer.contact || (lang === 'vi' ? 'LIÊN HỆ TRỰC TIẾP' : 'DIRECT CONTACT')}
-              </button>
-            </div>
-
-            <div>
               <button
                 onClick={() => {
                   window.location.hash = '#/luat-su';
@@ -128,6 +108,17 @@ export default function Footer() {
                 className="hover:underline underline-offset-4 transition-all text-left block"
               >
                 {footer.knowledge || (lang === 'vi' ? 'KIẾN THỨC PHÁP LUẬT' : 'LEGAL KNOWLEDGE')}
+              </button>
+            </div>
+
+            <div>
+              <button
+                onClick={() => {
+                  window.location.hash = '#/lien-he';
+                }}
+                className="hover:underline underline-offset-4 transition-all text-left block"
+              >
+                {footer.contact || (lang === 'vi' ? 'LIÊN HỆ TRỰC TIẾP' : 'DIRECT CONTACT')}
               </button>
             </div>
 
