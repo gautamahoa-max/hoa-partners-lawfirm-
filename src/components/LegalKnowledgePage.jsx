@@ -4,23 +4,39 @@ import Footer from './Footer';
 import FloatingContact from './FloatingContact';
 import { useLanguage } from '../context/LanguageContext';
 
-export default function LegalKnowledgePage({ onBack }) {
+export default function LegalKnowledgePage({ articleId, onBack }) {
   const { lang, t } = useLanguage();
   const knowledge = t.legalKnowledge;
 
-  // Filter state
+  // Filter state for the listing view
   const [searchKeyword, setSearchKeyword] = useState('');
   const [selectedIndustry, setSelectedIndustry] = useState(knowledge.industries[0]);
   const [selectedPractice, setSelectedPractice] = useState(knowledge.practices[0]);
   const [selectedAuthor, setSelectedAuthor] = useState(knowledge.authors[0]);
   const [selectedDate, setSelectedDate] = useState('all');
 
-  // Selected article for reading modal
-  const [selectedArticle, setSelectedArticle] = useState(null);
+  // Share dropdown state for the detail view
+  const [showShareMenu, setShowShareMenu] = useState(false);
+  const [copiedLink, setCopiedLink] = useState(false);
 
+  // Sync filter default labels when language switches
+  useEffect(() => {
+    setSelectedIndustry(knowledge.industries[0]);
+    setSelectedPractice(knowledge.practices[0]);
+    setSelectedAuthor(knowledge.authors[0]);
+  }, [lang, knowledge.industries, knowledge.practices, knowledge.authors]);
+
+  // Scroll to top when switching between list and article detail
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
+    setShowShareMenu(false);
+  }, [articleId]);
+
+  // Active article for the full-page YKVN detail view
+  const activeArticle = useMemo(() => {
+    if (!articleId) return null;
+    return knowledge.articles.find((a) => a.id === articleId) || null;
+  }, [articleId, knowledge.articles]);
 
   // Reset all filters
   const handleReset = (e) => {
@@ -32,16 +48,38 @@ export default function LegalKnowledgePage({ onBack }) {
     setSelectedDate('all');
   };
 
+  // Navigate to an article's detail page
+  const openArticle = (article) => {
+    window.location.hash = `#/kien-thuc-phap-luat/${article.id}`;
+  };
+
+  // Return to the legal updates listing page
+  const backToList = () => {
+    window.location.hash = '#/kien-thuc-phap-luat';
+  };
+
+  // Copy article URL
+  const handleCopyLink = () => {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(window.location.href);
+      setCopiedLink(true);
+      setTimeout(() => setCopiedLink(false), 2000);
+    }
+  };
+
   // Filter articles
   const filteredArticles = useMemo(() => {
     return knowledge.articles.filter((article) => {
-      // 1. Keyword search (title, summary, highlights)
+      // 1. Keyword search (title, displayTitle, summary, introParagraphs)
       if (searchKeyword.trim()) {
         const q = searchKeyword.trim().toLowerCase();
         const inTitle = article.title.toLowerCase().includes(q);
+        const inDisplay = article.displayTitle && article.displayTitle.toLowerCase().includes(q);
         const inSummary = article.summary.toLowerCase().includes(q);
-        const inHighlights = article.highlights && article.highlights.some((h) => h.toLowerCase().includes(q));
-        if (!inTitle && !inSummary && !inHighlights) return false;
+        const inIntro =
+          article.introParagraphs &&
+          article.introParagraphs.some((p) => p.toLowerCase().includes(q));
+        if (!inTitle && !inDisplay && !inSummary && !inIntro) return false;
       }
 
       // 2. Industry filter
@@ -62,7 +100,7 @@ export default function LegalKnowledgePage({ onBack }) {
       // 5. Date filter
       if (selectedDate !== 'all' && article.rawDate) {
         const articleDate = new Date(article.rawDate);
-        const now = new Date('2026-11-10T00:00:00'); // Consistent reference date
+        const now = new Date('2026-11-10T00:00:00');
         const diffDays = (now - articleDate) / (1000 * 60 * 60 * 24);
 
         if (selectedDate === '1w' && diffDays > 7) return false;
@@ -75,8 +113,243 @@ export default function LegalKnowledgePage({ onBack }) {
 
       return true;
     });
-  }, [knowledge.articles, searchKeyword, selectedIndustry, selectedPractice, selectedAuthor, selectedDate, knowledge]);
+  }, [
+    knowledge.articles,
+    searchKeyword,
+    selectedIndustry,
+    selectedPractice,
+    selectedAuthor,
+    selectedDate,
+    knowledge,
+  ]);
 
+  // ============================================================================
+  // VIEW 1: FULL-PAGE ARTICLE DETAIL VIEW (YKVN Article Layout)
+  // ============================================================================
+  if (activeArticle) {
+    return (
+      <div className="min-h-screen bg-[#FFFFFF] text-slate-900 flex flex-col font-sans selection:bg-slate-200 selection:text-slate-900">
+        <Navbar />
+
+        <main className="flex-grow pt-6 sm:pt-8 pb-20">
+          <div className="max-w-[1140px] mx-auto px-4 sm:px-6 lg:px-8">
+            
+            {/* Top Utility Bar: Back link on left, Print & Share icons on right */}
+            <div className="flex items-center justify-between mb-4">
+              <button
+                onClick={backToList}
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-[#1E345B] py-1 px-2 -ml-2 rounded hover:bg-slate-100 transition-colors uppercase tracking-wider"
+              >
+                {knowledge.backToListBtn}
+              </button>
+
+              {/* Print & Share Icons (Exact YKVN Top-Right Action Bar) */}
+              <div className="flex items-center gap-3 text-slate-400 relative">
+                <button
+                  onClick={() => window.print()}
+                  title={knowledge.printLabel}
+                  aria-label={knowledge.printLabel}
+                  className="hover:text-[#1E345B] transition-colors p-1.5"
+                >
+                  <svg className="w-4 h-4 fill-current" viewBox="0 0 512 512">
+                    <path d="M448 288v128h-384v-128h-64v192h512v-192zm-32-256h-320v352h320v-352zm-64 288h-192v-32h192v32zm0-96h-192v-32h192v32zm0-96h-192v-32h192v32z" />
+                  </svg>
+                </button>
+
+                <div className="relative">
+                  <button
+                    onClick={() => setShowShareMenu((prev) => !prev)}
+                    title={knowledge.shareLabel}
+                    aria-label={knowledge.shareLabel}
+                    className="hover:text-[#1E345B] transition-colors p-1.5"
+                  >
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                      viewBox="0 0 24 24"
+                    >
+                      <circle cx="18" cy="5" r="3" />
+                      <circle cx="6" cy="12" r="3" />
+                      <circle cx="18" cy="19" r="3" />
+                      <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                      <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                    </svg>
+                  </button>
+
+                  {showShareMenu && (
+                    <div className="absolute right-0 mt-2 w-44 bg-white border border-slate-200 rounded-lg shadow-lg py-1.5 z-30 text-xs text-slate-700">
+                      <a
+                        href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block px-3.5 py-2 hover:bg-slate-50 hover:text-[#1E345B] font-medium"
+                      >
+                        Facebook
+                      </a>
+                      <a
+                        href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block px-3.5 py-2 hover:bg-slate-50 hover:text-[#1E345B] font-medium"
+                      >
+                        LinkedIn
+                      </a>
+                      <button
+                        type="button"
+                        onClick={handleCopyLink}
+                        className="w-full text-left px-3.5 py-2 hover:bg-slate-50 hover:text-[#1E345B] font-medium"
+                      >
+                        {copiedLink ? `✓ ${knowledge.copiedLabel}` : 'Copy Link'}
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Article Heading (Title Case, Bold Navy #1E345B) */}
+            <h1 className="text-2xl sm:text-[28px] lg:text-[32px] font-bold text-[#1E345B] tracking-tight leading-snug mb-5">
+              {activeArticle.displayTitle || activeArticle.title}
+            </h1>
+
+            {/* Publication Date */}
+            <p className="text-[13px] sm:text-[14px] text-[#777777] mb-6">
+              {activeArticle.date}
+            </p>
+
+            {/* Branded Article Banner (Frosted Blue Glass + White Logo Bar + Royal Blue Rule) */}
+            <div className="w-full mb-8">
+              <img
+                src="./article-detail-banner.jpg"
+                alt={activeArticle.displayTitle || activeArticle.title}
+                className="w-full h-auto block select-none"
+              />
+            </div>
+
+            {/* Opening Editorial Paragraphs */}
+            {activeArticle.introParagraphs && (
+              <div className="space-y-5 text-[14px] sm:text-[15px] text-[#666666] leading-[1.8] mb-8">
+                {activeArticle.introParagraphs.map((para, idx) => (
+                  <p key={idx}>{para}</p>
+                ))}
+              </div>
+            )}
+
+            {/* 3-Column Comparison Table (Exact YKVN Centered Table Style) */}
+            {activeArticle.table && (
+              <div className="my-8 sm:my-10">
+                <div className="overflow-x-auto">
+                  <table className="w-full border-collapse text-center">
+                    <thead>
+                      <tr>
+                        {activeArticle.table.headers.map((header, hIdx) => (
+                          <th
+                            key={hIdx}
+                            className="py-4 px-4 font-bold text-[#555555] text-[13.5px] sm:text-[14.5px] align-middle"
+                          >
+                            {header}
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {activeArticle.table.rows.map((row, rIdx) => (
+                        <tr key={rIdx}>
+                          {row.map((cell, cIdx) => (
+                            <td
+                              key={cIdx}
+                              className="py-5 px-4 text-[#666666] text-[13.5px] sm:text-[14.5px] align-middle leading-relaxed"
+                            >
+                              {cell}
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Table Footnote */}
+                {activeArticle.table.footnote && (
+                  <p className="text-[13.5px] sm:text-[14.5px] text-[#666666] mt-6 leading-[1.8]">
+                    {activeArticle.table.footnote}
+                  </p>
+                )}
+              </div>
+            )}
+
+            {/* Closing Editorial Paragraphs */}
+            {activeArticle.closingParagraphs && (
+              <div className="space-y-5 text-[14px] sm:text-[15px] text-[#666666] leading-[1.8] mb-8">
+                {activeArticle.closingParagraphs.map((para, idx) => (
+                  <p key={idx}>{para}</p>
+                ))}
+              </div>
+            )}
+
+            {/* Lawyer Contact Section (Exact YKVN Bottom Lawyer Card) */}
+            <div className="mt-8">
+              <p className="text-[14px] sm:text-[15px] text-[#666666] leading-[1.8] mb-8">
+                {knowledge.contactPrompt}
+              </p>
+
+              {/* Lawyer Portrait & Info */}
+              <div className="w-48 sm:w-52 text-center my-4">
+                <a
+                  href="#gioi-thieu"
+                  className="group inline-block text-center focus:outline-none"
+                >
+                  <div className="w-32 h-32 sm:w-36 sm:h-36 mx-auto rounded-full overflow-hidden mb-3.5 border border-slate-200/80 shadow-sm">
+                    <img
+                      src="./lawyer-vo-van-hoa.jpg"
+                      alt={knowledge.lawyerName}
+                      className="w-full h-full object-cover object-top grayscale group-hover:grayscale-0 transition-all duration-300"
+                    />
+                  </div>
+                  <span className="block text-[14px] font-bold text-[#222222] group-hover:text-[#1E345B] transition-colors">
+                    {knowledge.lawyerName}
+                  </span>
+                  <span className="block text-[13px] text-[#777777] mt-0.5">
+                    {knowledge.lawyerRole}
+                  </span>
+                  <span className="block text-[13px] text-[#777777]">
+                    {knowledge.lawyerLocation}
+                  </span>
+                </a>
+              </div>
+
+              {/* Dashed Horizontal Divider */}
+              <hr className="border-t border-dashed border-slate-300 my-10" />
+
+              {/* Firm Contact Info Footer Block */}
+              <div className="text-[14px] sm:text-[15px] text-[#666666] leading-[1.8] space-y-1">
+                <p className="mb-3">{knowledge.moreInfoPrompt}</p>
+                <p>{knowledge.firmPhone}</p>
+                <p>
+                  <a
+                    href="#/lien-he"
+                    className="text-[#1E345B] hover:underline font-medium"
+                  >
+                    {knowledge.firmContactLink}
+                  </a>
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </main>
+
+        <Footer />
+        <FloatingContact />
+      </div>
+    );
+  }
+
+  // ============================================================================
+  // VIEW 2: LEGAL UPDATES LISTING PAGE (YKVN Cập Nhật Pháp Luật Grid + Sidebar)
+  // ============================================================================
   return (
     <div className="min-h-screen bg-[#FFFFFF] text-slate-900 flex flex-col font-sans selection:bg-slate-200 selection:text-slate-900">
       <Navbar />
@@ -117,7 +390,6 @@ export default function LegalKnowledgePage({ onBack }) {
             
             {/* Cột trái: Danh sách bài viết */}
             <div className="lg:col-span-8 order-2 lg:order-1">
-
               {filteredArticles.length === 0 ? (
                 <div className="bg-[#F8FAFC] rounded-lg p-10 text-center border border-slate-200/90 my-8">
                   <p className="text-slate-600 text-sm mb-4">
@@ -140,7 +412,7 @@ export default function LegalKnowledgePage({ onBack }) {
                       <div>
                         {/* Tiêu đề bài viết: in hoa, đậm, màu navy #0F2144 */}
                         <h2
-                          onClick={() => setSelectedArticle(article)}
+                          onClick={() => openArticle(article)}
                           className="text-sm sm:text-[15px] font-extrabold text-[#0F2144] uppercase tracking-wide leading-snug cursor-pointer group-hover:text-blue-900 group-hover:underline transition-colors mb-2"
                         >
                           {article.title}
@@ -152,7 +424,10 @@ export default function LegalKnowledgePage({ onBack }) {
                         </time>
 
                         {/* Trích dẫn nội dung */}
-                        <p className="text-xs sm:text-[13px] text-slate-600 leading-relaxed font-normal">
+                        <p
+                          onClick={() => openArticle(article)}
+                          className="text-xs sm:text-[13px] text-slate-600 leading-relaxed font-normal cursor-pointer"
+                        >
                           {article.summary}
                         </p>
                       </div>
@@ -160,7 +435,7 @@ export default function LegalKnowledgePage({ onBack }) {
                       {/* Nút xem chi tiết */}
                       <div className="mt-4 pt-2">
                         <button
-                          onClick={() => setSelectedArticle(article)}
+                          onClick={() => openArticle(article)}
                           className="text-xs font-semibold text-[#0F2144] hover:text-blue-900 inline-flex items-center gap-1 group-hover:translate-x-0.5 transition-transform"
                         >
                           {knowledge.readMore} <span aria-hidden="true">→</span>
@@ -318,94 +593,6 @@ export default function LegalKnowledgePage({ onBack }) {
 
         </div>
       </main>
-
-      {/* Modal Đọc Bài Viết Chi Tiết */}
-      {selectedArticle && (
-        <div
-          className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6 overflow-y-auto"
-          onClick={() => setSelectedArticle(null)}
-        >
-          <div
-            className="bg-white rounded-2xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-slate-200 max-h-[90vh] overflow-y-auto relative animate-in fade-in zoom-in-95 duration-200"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Nút đóng modal */}
-            <button
-              onClick={() => setSelectedArticle(null)}
-              className="absolute top-5 right-5 text-slate-400 hover:text-slate-700 p-2 rounded-full hover:bg-slate-100 transition-colors"
-              aria-label={knowledge.closeModal}
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-
-            {/* Tags & Metadata */}
-            <div className="flex flex-wrap items-center gap-2 mb-3">
-              <span className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded bg-[#F1F3F7] text-[#0F2144]">
-                {selectedArticle.badge}
-              </span>
-              <span className="text-[11px] font-medium text-slate-500">
-                {selectedArticle.readTime}
-              </span>
-            </div>
-
-            {/* Tiêu đề bài viết */}
-            <h2 className="text-lg sm:text-xl font-extrabold text-[#0F2144] uppercase tracking-wide leading-snug mb-2">
-              {selectedArticle.title}
-            </h2>
-
-            {/* Ngày và tác giả */}
-            <div className="flex items-center gap-2 text-xs italic text-slate-500 font-serif mb-6 pb-4 border-b border-slate-100">
-              <span>{selectedArticle.date}</span>
-              <span>•</span>
-              <span className="not-italic font-sans font-semibold text-slate-700">{selectedArticle.author}</span>
-            </div>
-
-            {/* Nội dung phân tích */}
-            <div className="text-sm text-slate-700 leading-relaxed space-y-4 mb-6 font-normal whitespace-pre-line">
-              {selectedArticle.content}
-            </div>
-
-            {/* Điểm nhấn trọng tâm */}
-            {selectedArticle.highlights && selectedArticle.highlights.length > 0 && (
-              <div className="bg-[#F8FAFC] rounded-xl p-5 border border-slate-200/80 mb-6">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-[#0F2144] mb-3">
-                  {lang === 'vi' ? 'Điểm Nhấn Pháp Lý Trọng Tâm' : 'Key Legal Takeaways'}
-                </h4>
-                <ul className="space-y-2">
-                  {selectedArticle.highlights.map((h, idx) => (
-                    <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-[13px] text-slate-700">
-                      <span className="w-1.5 h-1.5 rounded-full bg-amber-500 mt-2 shrink-0" />
-                      <span>{h}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {/* Modal Footer Actions */}
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-4 border-t border-slate-100">
-              <button
-                onClick={() => {
-                  setSelectedArticle(null);
-                  window.location.hash = '#/lien-he';
-                }}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#0F2144] to-[#1E3A8A] text-white text-xs font-bold uppercase tracking-wider hover:shadow-lg transition-all"
-              >
-                ⚖️ {knowledge.consultThis}
-              </button>
-              <button
-                onClick={() => setSelectedArticle(null)}
-                className="w-full sm:w-auto px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
-              >
-                {knowledge.closeModal}
-              </button>
-            </div>
-
-          </div>
-        </div>
-      )}
 
       <Footer />
       <FloatingContact />

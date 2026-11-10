@@ -47,11 +47,13 @@ function MainContent() {
     );
   }
 
-  // Kiểm tra nếu route là trang kiến thức pháp luật / cập nhật pháp luật
-  const isKnowledgeRoute = /^#(?:(?:\/)?(?:cap-nhat-phap-luat|legal-updates|kien-thuc-phap-luat|kien-thuc|legal-knowledge))(?:\/)?$/.test(currentRoute);
-  if (isKnowledgeRoute) {
+  // Kiểm tra nếu route là trang kiến thức pháp luật / cập nhật pháp luật (bao gồm cả chi tiết bài viết)
+  const knowledgeMatch = currentRoute.match(/^#(?:\/)?(?:cap-nhat-phap-luat|legal-updates|kien-thuc-phap-luat|kien-thuc|legal-knowledge)(?:\/([\w-]+))?(?:\/)?$/);
+  if (knowledgeMatch) {
+    const activeArticleId = knowledgeMatch[1] || null;
     return (
       <LegalKnowledgePage
+        articleId={activeArticleId}
         onBack={() => {
           window.location.hash = '';
         }}
