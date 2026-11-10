@@ -359,16 +359,6 @@ export default function LegalKnowledgePage({ articleId, onBack }) {
       <main className="flex-grow pt-8 sm:pt-10 pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          {/* Breadcrumb quay lại */}
-          <div className="mb-4">
-            <button
-              onClick={onBack}
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-[#0F2144] py-1 px-2.5 rounded hover:bg-slate-100 transition-colors uppercase tracking-wider"
-            >
-              {knowledge.backBtn}
-            </button>
-          </div>
-
           {/* Tiêu đề trang Cập Nhật Pháp Luật */}
           <div className="mb-6 sm:mb-8">
             <h1 className="text-2xl sm:text-3xl lg:text-[34px] font-extrabold text-[#0F2144] tracking-tight">
