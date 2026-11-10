@@ -215,18 +215,9 @@ export default function LegalKnowledgePage({ articleId, onBack }) {
             </h1>
 
             {/* Publication Date */}
-            <p className="text-[13px] sm:text-[14px] text-[#777777] mb-6">
+            <p className="text-[13px] sm:text-[14px] text-[#777777] mb-8">
               {activeArticle.date}
             </p>
-
-            {/* Branded Article Banner (Frosted Blue Glass + White Logo Bar + Royal Blue Rule) */}
-            <div className="w-full mb-8">
-              <img
-                src="./article-detail-banner.jpg"
-                alt={activeArticle.displayTitle || activeArticle.title}
-                className="w-full h-auto block select-none"
-              />
-            </div>
 
             {/* Opening Editorial Paragraphs */}
             {activeArticle.introParagraphs && (
