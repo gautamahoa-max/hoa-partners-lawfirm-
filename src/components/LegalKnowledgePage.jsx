@@ -280,54 +280,7 @@ export default function LegalKnowledgePage({ articleId, onBack }) {
               </div>
             )}
 
-            {/* Lawyer Contact Section (Exact YKVN Bottom Lawyer Card) */}
-            <div className="mt-8">
-              <p className="text-[14px] sm:text-[15px] text-[#666666] leading-[1.8] mb-8">
-                {knowledge.contactPrompt}
-              </p>
 
-              {/* Lawyer Portrait & Info */}
-              <div className="w-48 sm:w-52 text-center my-4">
-                <a
-                  href="#gioi-thieu"
-                  className="group inline-block text-center focus:outline-none"
-                >
-                  <div className="w-32 h-32 sm:w-36 sm:h-36 mx-auto rounded-full overflow-hidden mb-3.5 border border-slate-200/80 shadow-sm">
-                    <img
-                      src="./lawyer-vo-van-hoa.jpg"
-                      alt={knowledge.lawyerName}
-                      className="w-full h-full object-cover object-top grayscale group-hover:grayscale-0 transition-all duration-300"
-                    />
-                  </div>
-                  <span className="block text-[14px] font-bold text-[#222222] group-hover:text-[#1E345B] transition-colors">
-                    {knowledge.lawyerName}
-                  </span>
-                  <span className="block text-[13px] text-[#777777] mt-0.5">
-                    {knowledge.lawyerRole}
-                  </span>
-                  <span className="block text-[13px] text-[#777777]">
-                    {knowledge.lawyerLocation}
-                  </span>
-                </a>
-              </div>
-
-              {/* Dashed Horizontal Divider */}
-              <hr className="border-t border-dashed border-slate-300 my-10" />
-
-              {/* Firm Contact Info Footer Block */}
-              <div className="text-[14px] sm:text-[15px] text-[#666666] leading-[1.8] space-y-1">
-                <p className="mb-3">{knowledge.moreInfoPrompt}</p>
-                <p>{knowledge.firmPhone}</p>
-                <p>
-                  <a
-                    href="#/lien-he"
-                    className="text-[#1E345B] hover:underline font-medium"
-                  >
-                    {knowledge.firmContactLink}
-                  </a>
-                </p>
-              </div>
-            </div>
 
           </div>
         </main>
