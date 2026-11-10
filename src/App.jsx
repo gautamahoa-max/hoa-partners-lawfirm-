@@ -47,8 +47,8 @@ function MainContent() {
     );
   }
 
-  // Kiểm tra nếu route là trang kiến thức pháp luật (#/kien-thuc-phap-luat, #/kien-thuc hoặc #/legal-knowledge)
-  const isKnowledgeRoute = /^#(?:(?:\/)?(?:kien-thuc-phap-luat|kien-thuc|legal-knowledge))(?:\/)?$/.test(currentRoute);
+  // Kiểm tra nếu route là trang kiến thức pháp luật / cập nhật pháp luật
+  const isKnowledgeRoute = /^#(?:(?:\/)?(?:cap-nhat-phap-luat|legal-updates|kien-thuc-phap-luat|kien-thuc|legal-knowledge))(?:\/)?$/.test(currentRoute);
   if (isKnowledgeRoute) {
     return (
       <LegalKnowledgePage
