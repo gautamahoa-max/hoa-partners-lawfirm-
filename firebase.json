@@ -1,5 +1,17 @@
 {
   "firestore": {
     "rules": "firestore.rules"
+  },
+  "auth": {
+    "providers": {
+      "googleSignIn": {
+        "oAuthBrandDisplayName": "Hoa & Partners Law Firm",
+        "supportEmail": "gautamahoa@gmail.com",
+        "authorizedRedirectUris": [
+          "https://hoa-partners.firebaseapp.com/__/auth/handler",
+          "https://gautamahoa-max.github.io/hoa-partners-lawfirm-/"
+        ]
+      }
+    }
   }
 }
