@@ -9,12 +9,14 @@ import ServiceDetailPage from './components/ServiceDetailPage';
 import LawyerBioPage from './components/LawyerBioPage';
 import ContactPage from './components/ContactPage';
 import LegalKnowledgePage from './components/LegalKnowledgePage';
+import { purgeLegacySensitiveStorage } from './utils/security';
 
 function MainContent() {
   const [currentRoute, setCurrentRoute] = useState(window.location.hash);
   const { t, lang } = useLanguage();
 
   useEffect(() => {
+    purgeLegacySensitiveStorage();
     const handleHashChange = () => {
       setCurrentRoute(window.location.hash);
     };

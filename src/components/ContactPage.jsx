@@ -7,6 +7,13 @@ import Navbar from './Navbar';
 import Footer from './Footer';
 import FloatingContact from './FloatingContact';
 import { useLanguage } from '../context/LanguageContext';
+import {
+  purgeLegacySensitiveStorage,
+  sanitizeInput,
+  isValidPhone,
+  checkRateLimit,
+  recordSubmissionTimestamp,
+} from '../utils/security';
 
 export default function ContactPage({ onBack }) {
   const { lang, setLang, t } = useLanguage();
@@ -17,6 +24,7 @@ export default function ContactPage({ onBack }) {
     fullName: '',
     phone: '',
     notes: '',
+    botField: '', // Honeypot anti-bot trap
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -25,38 +33,64 @@ export default function ContactPage({ onBack }) {
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    purgeLegacySensitiveStorage();
   }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const maxLen = name === 'fullName' ? 120 : name === 'phone' ? 20 : name === 'botField' ? 100 : 2000;
+    setFormData((prev) => ({ ...prev, [name]: value.slice(0, maxLen) }));
     if (errorMessage) setErrorMessage('');
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!formData.fullName.trim() || !formData.phone.trim() || !formData.notes.trim()) {
+    // 1. Honeypot check: if hidden botField is filled, silently drop
+    if (formData.botField) {
+      setIsSubmitted(true);
+      return;
+    }
+
+    const cleanName = sanitizeInput(formData.fullName, 120).trim();
+    const cleanPhone = sanitizeInput(formData.phone, 20).trim();
+    const cleanNotes = sanitizeInput(formData.notes, 2000).trim();
+
+    if (!cleanName || !cleanPhone || !cleanNotes) {
       setErrorMessage(formT.errorEmpty);
+      return;
+    }
+
+    if (!isValidPhone(cleanPhone)) {
+      setErrorMessage(
+        lang === 'vi'
+          ? 'Vui lòng nhập số điện thoại hợp lệ (từ 9 đến 15 chữ số).'
+          : 'Please enter a valid phone number (9 to 15 digits).'
+      );
+      return;
+    }
+
+    // 2. Rate limit check
+    const rateStatus = checkRateLimit();
+    if (!rateStatus.allowed) {
+      setErrorMessage(
+        rateStatus.reason === 'cooldown'
+          ? lang === 'vi'
+            ? `Vui lòng đợi ${rateStatus.waitSeconds} giây trước khi gửi yêu cầu tiếp theo.`
+            : `Please wait ${rateStatus.waitSeconds} seconds before submitting another request.`
+          : lang === 'vi'
+            ? 'Bạn đã đạt giới hạn gửi yêu cầu trong phiên làm việc này. Vui lòng liên hệ trực tiếp qua Hotline.'
+            : 'Maximum submissions reached for this session. Please call our Hotline directly.'
+      );
       return;
     }
 
     setIsSubmitting(true);
     setErrorMessage('');
 
-    // Giả lập lưu hồ sơ và xác nhận thành công sau 500ms
+    // Xác nhận tiếp nhận an toàn trong bộ nhớ phiên (Không lưu dữ liệu nhạy cảm PII vào localStorage để chống rò rỉ XSS)
     setTimeout(() => {
-      try {
-        const existingInquiries = JSON.parse(localStorage.getItem('hp_consultations') || '[]');
-        existingInquiries.push({
-          ...formData,
-          createdAt: new Date().toISOString(),
-        });
-        localStorage.setItem('hp_consultations', JSON.stringify(existingInquiries));
-      } catch (err) {
-        console.error('Storage error:', err);
-      }
-
+      recordSubmissionTimestamp();
       setIsSubmitting(false);
       setIsSubmitted(true);
     }, 500);
@@ -67,6 +101,7 @@ export default function ContactPage({ onBack }) {
       fullName: '',
       phone: '',
       notes: '',
+      botField: '',
     });
     setIsSubmitted(false);
     setErrorMessage('');
@@ -154,7 +189,21 @@ export default function ContactPage({ onBack }) {
                   </div>
                 )}
 
-                <form onSubmit={handleSubmit} className="space-y-5">
+                <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+                  {/* Honeypot field ẩn để chống bot tự động spam */}
+                  <div className="hidden" aria-hidden="true">
+                    <label htmlFor="botField">Do not fill this out if you are human</label>
+                    <input
+                      id="botField"
+                      type="text"
+                      name="botField"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      value={formData.botField}
+                      onChange={handleChange}
+                    />
+                  </div>
+
                   {/* 1. Họ và tên */}
                   <div>
                     <label className="block text-xs font-bold text-[#0F2144] uppercase tracking-wider mb-1.5">
@@ -166,6 +215,8 @@ export default function ContactPage({ onBack }) {
                       value={formData.fullName}
                       onChange={handleChange}
                       placeholder={formT.namePlaceholder}
+                      maxLength={120}
+                      autoComplete="name"
                       required
                       className="w-full px-4 py-3 text-xs sm:text-sm rounded-lg bg-white border border-slate-300 text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0F2144] focus:border-transparent transition-all placeholder:text-slate-500"
                     />
@@ -182,6 +233,9 @@ export default function ContactPage({ onBack }) {
                       value={formData.phone}
                       onChange={handleChange}
                       placeholder={formT.phonePlaceholder}
+                      maxLength={20}
+                      autoComplete="tel"
+                      inputMode="tel"
                       required
                       className="w-full px-4 py-3 text-xs sm:text-sm rounded-lg bg-white border border-slate-300 text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0F2144] focus:border-transparent transition-all placeholder:text-slate-500"
                     />
@@ -198,6 +252,7 @@ export default function ContactPage({ onBack }) {
                       value={formData.notes}
                       onChange={handleChange}
                       placeholder={formT.notesPlaceholder}
+                      maxLength={2000}
                       required
                       className="w-full px-4 py-3 text-xs sm:text-sm rounded-lg bg-white border border-slate-300 text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0F2144] focus:border-transparent transition-all placeholder:text-slate-500 leading-relaxed"
                     ></textarea>

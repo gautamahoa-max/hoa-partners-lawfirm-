@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ScaleIcon, PhoneIcon } from './Icons';
 import { useLanguage } from '../context/LanguageContext';
+import { safeScrollToAnchor } from '../utils/security';
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -20,17 +21,11 @@ export default function Navbar() {
     if (window.location.hash.startsWith('#/')) {
       window.location.hash = '';
       setTimeout(() => {
-        const target = document.querySelector(href);
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth' });
-        }
+        safeScrollToAnchor(href);
       }, 80);
       return;
     }
-    const target = document.querySelector(href);
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth' });
-    }
+    safeScrollToAnchor(href);
   };
 
   return (
