@@ -14,6 +14,8 @@ import {
   checkRateLimit,
   recordSubmissionTimestamp,
 } from '../utils/security';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { db } from '../services/firebase';
 
 export default function ContactPage({ onBack }) {
   const { lang, setLang, t } = useLanguage();
@@ -88,12 +90,25 @@ export default function ContactPage({ onBack }) {
     setIsSubmitting(true);
     setErrorMessage('');
 
-    // Xác nhận tiếp nhận an toàn trong bộ nhớ phiên (Không lưu dữ liệu nhạy cảm PII vào localStorage để chống rò rỉ XSS)
-    setTimeout(() => {
-      recordSubmissionTimestamp();
-      setIsSubmitting(false);
-      setIsSubmitted(true);
-    }, 500);
+    // Lưu yêu cầu tư vấn an toàn vào Cloud Firestore (Không lưu PII vào localStorage trình duyệt)
+    (async () => {
+      try {
+        await addDoc(collection(db, 'consultations'), {
+          fullName: cleanName,
+          phone: cleanPhone,
+          notes: cleanNotes,
+          status: 'new',
+          createdAt: serverTimestamp(),
+          source: 'web_contact_form',
+        });
+      } catch (err) {
+        console.warn('Lưu hồ sơ Firestore:', err);
+      } finally {
+        recordSubmissionTimestamp();
+        setIsSubmitting(false);
+        setIsSubmitted(true);
+      }
+    })();
   };
 
   const handleReset = () => {

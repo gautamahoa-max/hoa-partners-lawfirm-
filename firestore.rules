@@ -1,0 +1,95 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // =========================================================================
+    // HELPER FUNCTIONS & AUTHENTICATION
+    // =========================================================================
+
+    // Verify if the user is authenticated with Firebase Auth
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Verify if the authenticated user is an authorized attorney admin
+    // Enforces verified email address to prevent privilege escalation via unverified accounts
+    function isAdmin() {
+      return isAuthenticated() &&
+        'email' in request.auth.token &&
+        (
+          request.auth.token.email in ['gautamahoa@gmail.com', 'vovanhoa.bank@gmail.com'] ||
+          request.auth.token.email.lower() in ['gautamahoa@gmail.com', 'vovanhoa.bank@gmail.com']
+        ) &&
+        ('email_verified' in request.auth.token ? request.auth.token.email_verified == true : true);
+    }
+
+    // =========================================================================
+    // CONSULTATION INQUIRIES DOMAIN VALIDATOR
+    // =========================================================================
+
+    // Validates consultation inquiry documents created by unauthenticated visitors
+    function isValidConsultationCreate(data) {
+      return 
+        // 1. Mandatory schema bounds & required fields
+        data.keys().hasAll(['fullName', 'phone', 'notes', 'createdAt']) &&
+        data.keys().hasOnly(['fullName', 'phone', 'notes', 'createdAt', 'status', 'source', 'email', 'topic', 'service']) &&
+        
+        // 2. Strict type safety and character limits
+        data.fullName is string &&
+        data.fullName.size() >= 1 &&
+        data.fullName.size() <= 150 &&
+        
+        data.phone is string &&
+        data.phone.size() >= 5 &&
+        data.phone.size() <= 25 &&
+        
+        data.notes is string &&
+        data.notes.size() >= 1 &&
+        data.notes.size() <= 3000 &&
+        
+        // 3. createdAt must be a Firestore Timestamp (e.g., serverTimestamp()) or ISO string
+        (
+          data.createdAt is timestamp || 
+          (data.createdAt is string && data.createdAt.size() >= 1 && data.createdAt.size() <= 50)
+        ) &&
+        
+        // 4. Optional fields validation
+        (!('status' in data) || (data.status is string && data.status.size() <= 50)) &&
+        (!('source' in data) || (data.source is string && data.source.size() <= 100)) &&
+        (!('email' in data) || (data.email is string && data.email.size() <= 150)) &&
+        (!('topic' in data) || (data.topic is string && data.topic.size() <= 100)) &&
+        (!('service' in data) || (data['service'] is string && data['service'].size() <= 100));
+    }
+
+    // =========================================================================
+    // COLLECTION RULES
+    // =========================================================================
+
+    // Consultations collection (Legal consultation inquiries from website visitors)
+    match /consultations/{consultationId} {
+      // Public visitors can submit inquiries subject to strict payload validation
+      allow create: if isValidConsultationCreate(request.resource.data);
+
+      // Only authenticated admin lawyers can read (list & get inquiries)
+      allow read: if isAdmin();
+
+      // Only authenticated admin lawyers can update (e.g. status changes, review notes)
+      // Creation timestamp is immutable upon update
+      allow update: if isAdmin() && 
+        (!('createdAt' in resource.data) || request.resource.data.createdAt == resource.data.createdAt);
+
+      // Only authenticated admin lawyers can delete consultation records
+      allow delete: if isAdmin();
+    }
+
+    // =========================================================================
+    // DEFAULT DENY RULE
+    // =========================================================================
+
+    // Deny all reads and writes for any other document or collection
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

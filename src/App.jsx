@@ -9,6 +9,7 @@ import ServiceDetailPage from './components/ServiceDetailPage';
 import LawyerBioPage from './components/LawyerBioPage';
 import ContactPage from './components/ContactPage';
 import LegalKnowledgePage from './components/LegalKnowledgePage';
+import AdminPage from './components/AdminPage';
 import { purgeLegacySensitiveStorage } from './utils/security';
 
 function MainContent() {
@@ -24,6 +25,18 @@ function MainContent() {
     window.addEventListener('hashchange', handleHashChange);
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
+
+  // Kiểm tra nếu route là trang quản trị luật sư (#/quan-tri hoặc #/admin)
+  const isAdminRoute = /^#(?:(?:\/)?(?:quan-tri|admin))(?:\/)?$/.test(currentRoute);
+  if (isAdminRoute) {
+    return (
+      <AdminPage
+        onBack={() => {
+          window.location.hash = '';
+        }}
+      />
+    );
+  }
 
   // Kiểm tra nếu route là trang luật sư riêng (#/luat-su, #/gioi-thieu hoặc #/ve-chung-toi)
   const isLawyerRoute = /^#(?:(?:\/)?(?:luat-su|gioi-thieu|ve-chung-toi))(?:\/)?$/.test(currentRoute);
