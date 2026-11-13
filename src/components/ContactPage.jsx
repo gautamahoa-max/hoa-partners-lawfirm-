@@ -145,42 +145,33 @@ export default function ContactPage({ onBack }) {
           <div className="max-w-2xl mx-auto px-4 sm:px-6">
             
             {isSubmitted ? (
-              /* Màn hình gửi thành công */
-              <div className="bg-[#FAF9F6] border border-slate-200 rounded-2xl p-8 sm:p-10 space-y-6 text-center shadow-sm animate-fade-in">
-                <div className="w-14 h-14 rounded-full bg-emerald-100 border border-emerald-300 flex items-center justify-center text-emerald-700 mx-auto">
-                  <CheckCircleIcon className="w-8 h-8" />
+              /* Màn hình gửi thành công tinh gọn, hiện đại */
+              <div className="bg-white border border-slate-200/90 rounded-2xl p-8 sm:p-10 text-center shadow-[0_4px_24px_rgba(15,33,68,0.05)] animate-fade-in">
+                <div className="w-12 h-12 rounded-full bg-emerald-50 border border-emerald-200/80 flex items-center justify-center text-emerald-600 mx-auto mb-5">
+                  <CheckCircleIcon className="w-6 h-6" />
                 </div>
 
-                <div>
-                  <h3 className="text-xl sm:text-2xl font-bold text-[#0F2144] tracking-tight">
-                    {formT.successTitle}
-                  </h3>
-                  <p className="mt-2 text-sm font-semibold text-emerald-800">
-                    {formT.successSubtitle}
-                  </p>
-                  <p className="mt-3 text-xs sm:text-sm text-slate-600 leading-relaxed max-w-lg mx-auto">
-                    {formT.successDesc}
-                  </p>
-                </div>
+                <h3 className="text-xl sm:text-2xl font-bold text-[#0F2144] tracking-tight">
+                  {formT.successTitle}
+                </h3>
+                <p className="mt-2.5 text-sm text-slate-600 leading-relaxed max-w-md mx-auto">
+                  {formT.successSubtitle}
+                </p>
 
-                {/* Hộp thông báo khẩn cấp */}
-                <div className="p-4 rounded-xl bg-amber-50/80 border border-amber-200 text-xs sm:text-sm text-slate-700 space-y-2 max-w-md mx-auto">
-                  <p className="font-semibold text-amber-900">
-                    {formT.successHotlineNote}
-                  </p>
+                {/* Thanh liên hệ khẩn cấp & thao tác gọn gàng */}
+                <div className="mt-7 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-center gap-3">
                   <a
                     href="tel:0988886447"
-                    className="inline-flex items-center gap-2 text-base font-bold text-[#0F2144] hover:text-blue-700"
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#0F2144] text-white text-xs sm:text-sm font-semibold hover:bg-[#162A56] transition-all shadow-sm"
                   >
-                    <PhoneIcon className="w-4 h-4 text-emerald-600" />
-                    <span>098.888.6447 (24/7)</span>
+                    <PhoneIcon className="w-4 h-4 text-amber-400" />
+                    <span>{formT.successHotlineNote} 098.888.6447</span>
                   </a>
-                </div>
 
-                <div className="pt-2">
                   <button
+                    type="button"
                     onClick={handleReset}
-                    className="inline-flex items-center justify-center px-6 py-2.5 rounded text-xs font-semibold bg-[#0F2144] text-white hover:bg-[#162C5B] transition-colors"
+                    className="w-full sm:w-auto inline-flex items-center justify-center px-5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/70 text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-100 hover:text-[#0F2144] transition-all cursor-pointer"
                   >
                     {formT.resetBtn}
                   </button>
