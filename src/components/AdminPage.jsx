@@ -1,20 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  signInWithPopup, 
-  signOut, 
-  onAuthStateChanged 
+import {
+  signInWithPopup,
+  signOut,
+  onAuthStateChanged,
 } from 'firebase/auth';
-import { 
-  collection, 
-  query, 
-  orderBy, 
-  onSnapshot, 
-  doc, 
-  updateDoc, 
-  deleteDoc 
-} from 'firebase/firestore';
-import { auth, googleProvider, db, isAuthorizedAdmin } from '../services/firebase';
-import { PhoneIcon, CheckCircleIcon } from './Icons';
+import { auth, googleProvider, isAuthorizedAdmin } from '../services/firebase';
+import {
+  CONSULTATION_STATUSES,
+  subscribeConsultations,
+  updateConsultation,
+  deleteConsultation,
+  exportConsultationsCsv,
+} from '../services/consultations';
+import { PhoneIcon } from './Icons';
+
+const STATUS_META = {
+  new: { label: 'Mới tiếp nhận', badgeClass: 'bg-amber-50 text-amber-900 border-amber-300' },
+  contacted: { label: 'Đã liên hệ', badgeClass: 'bg-blue-50 text-blue-900 border-blue-300' },
+  in_progress: { label: 'Đang thụ lý', badgeClass: 'bg-purple-50 text-purple-900 border-purple-300' },
+  completed: { label: 'Đã hoàn tất', badgeClass: 'bg-emerald-50 text-emerald-900 border-emerald-300' },
+};
 
 export default function AdminPage({ onBack }) {
   const [currentUser, setCurrentUser] = useState(null);
@@ -22,8 +27,12 @@ export default function AdminPage({ onBack }) {
   const [authError, setAuthError] = useState('');
   const [inquiries, setInquiries] = useState([]);
   const [isDataLoading, setIsDataLoading] = useState(false);
+  const [dataError, setDataError] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
+  const [editingNoteId, setEditingNoteId] = useState(null);
+  const [noteDraft, setNoteDraft] = useState('');
+  const [isSavingNote, setIsSavingNote] = useState(false);
 
   // Lắng nghe trạng thái đăng nhập
   useEffect(() => {
@@ -44,33 +53,26 @@ export default function AdminPage({ onBack }) {
   useEffect(() => {
     if (!currentUser || !isAuthorizedAdmin(currentUser)) {
       setInquiries([]);
+      setDataError('');
       return;
     }
 
     setIsDataLoading(true);
-    try {
-      const q = query(collection(db, 'consultations'), orderBy('createdAt', 'desc'));
-      const unsubscribe = onSnapshot(
-        q,
-        (snapshot) => {
-          const list = snapshot.docs.map((d) => ({
-            id: d.id,
-            ...d.data(),
-          }));
-          setInquiries(list);
-          setIsDataLoading(false);
-        },
-        (error) => {
-          console.error('Lỗi tải dữ liệu Firestore:', error);
-          setIsDataLoading(false);
-        }
-      );
+    setDataError('');
+    const unsubscribe = subscribeConsultations(
+      (list) => {
+        setInquiries(list);
+        setIsDataLoading(false);
+        setDataError('');
+      },
+      (error) => {
+        console.error('Lỗi tải dữ liệu Firestore:', error);
+        setDataError(`Không thể tải danh sách hồ sơ: ${error?.message || 'Lỗi kết nối Firestore.'}`);
+        setIsDataLoading(false);
+      }
+    );
 
-      return () => unsubscribe();
-    } catch (err) {
-      console.error('Lỗi kết nối Firestore:', err);
-      setIsDataLoading(false);
-    }
+    return () => unsubscribe();
   }, [currentUser]);
 
   const handleGoogleLogin = async () => {
@@ -100,27 +102,48 @@ export default function AdminPage({ onBack }) {
 
   const handleUpdateStatus = async (id, newStatus) => {
     try {
-      const ref = doc(db, 'consultations', id);
-      await updateDoc(ref, { status: newStatus });
+      setDataError('');
+      await updateConsultation(id, { status: newStatus }, currentUser?.email || '');
     } catch (err) {
       console.error('Lỗi cập nhật trạng thái:', err);
+      setDataError(`Không thể cập nhật trạng thái hồ sơ: ${err?.message || 'Vui lòng thử lại.'}`);
+    }
+  };
+
+  const handleSaveNotes = async (id) => {
+    if (isSavingNote) return;
+    setIsSavingNote(true);
+    try {
+      setDataError('');
+      await updateConsultation(id, { lawyerNotes: noteDraft.trim() }, currentUser?.email || '');
+      setEditingNoteId(null);
+      setNoteDraft('');
+    } catch (err) {
+      console.error('Lỗi lưu ghi chú luật sư:', err);
+      setDataError(`Không thể lưu ghi chú nội bộ: ${err?.message || 'Vui lòng thử lại.'}`);
+    } finally {
+      setIsSavingNote(false);
     }
   };
 
   const handleDelete = async (id) => {
     if (!window.confirm('Bạn có chắc chắn muốn xóa yêu cầu tư vấn này khỏi hệ thống?')) return;
     try {
-      await deleteDoc(doc(db, 'consultations', id));
+      setDataError('');
+      await deleteConsultation(id);
     } catch (err) {
       console.error('Lỗi xóa yêu cầu:', err);
+      setDataError(`Không thể xóa hồ sơ: ${err?.message || 'Vui lòng thử lại.'}`);
     }
   };
 
+  const normalizedSearch = searchTerm.toLowerCase();
   const filteredInquiries = inquiries.filter((item) => {
     const matchesSearch =
-      (item.fullName || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (item.fullName || '').toLowerCase().includes(normalizedSearch) ||
       (item.phone || '').includes(searchTerm) ||
-      (item.notes || '').toLowerCase().includes(searchTerm.toLowerCase());
+      (item.notes || '').toLowerCase().includes(normalizedSearch) ||
+      (item.lawyerNotes || '').toLowerCase().includes(normalizedSearch);
 
     const matchesStatus =
       filterStatus === 'all' ||
@@ -263,6 +286,23 @@ export default function AdminPage({ onBack }) {
               </div>
             </div>
 
+            {/* Thông báo lỗi thao tác dữ liệu */}
+            {dataError && (
+              <div
+                role="alert"
+                className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-xl text-xs flex items-center justify-between gap-3"
+              >
+                <span>{dataError}</span>
+                <button
+                  type="button"
+                  onClick={() => setDataError('')}
+                  className="text-red-700 hover:text-red-900 font-semibold shrink-0"
+                >
+                  Đóng
+                </button>
+              </div>
+            )}
+
             {/* Thanh công cụ tìm kiếm và lọc */}
             <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm flex flex-col sm:flex-row gap-3 items-center justify-between">
               <div className="w-full sm:w-80">
@@ -275,7 +315,7 @@ export default function AdminPage({ onBack }) {
                 />
               </div>
 
-              <div className="flex items-center gap-2 w-full sm:w-auto text-xs font-semibold">
+              <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto text-xs font-semibold justify-end">
                 <span className="text-slate-500 shrink-0">Lọc theo:</span>
                 <select
                   value={filterStatus}
@@ -283,11 +323,23 @@ export default function AdminPage({ onBack }) {
                   className="px-3 py-2 rounded-lg border border-slate-200 text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#0F2144] bg-white"
                 >
                   <option value="all">Tất cả ({inquiries.length})</option>
-                  <option value="new">Mới tiếp nhận ({inquiries.filter(i => !i.status || i.status === 'new').length})</option>
-                  <option value="contacted">Đã liên hệ ({inquiries.filter(i => i.status === 'contacted').length})</option>
-                  <option value="in_progress">Đang thụ lý ({inquiries.filter(i => i.status === 'in_progress').length})</option>
-                  <option value="completed">Đã hoàn tất ({inquiries.filter(i => i.status === 'completed').length})</option>
+                  {CONSULTATION_STATUSES.map((st) => {
+                    const count = inquiries.filter((i) => (st === 'new' ? !i.status || i.status === 'new' : i.status === st)).length;
+                    return (
+                      <option key={st} value={st}>
+                        {STATUS_META[st]?.label || st} ({count})
+                      </option>
+                    );
+                  })}
                 </select>
+                <button
+                  type="button"
+                  onClick={() => exportConsultationsCsv(filteredInquiries)}
+                  disabled={filteredInquiries.length === 0}
+                  className="px-3.5 py-2 rounded-lg bg-[#0F2144] hover:bg-[#162A56] disabled:opacity-40 disabled:cursor-not-allowed text-white text-xs font-semibold transition-colors shrink-0"
+                >
+                  Xuất CSV
+                </button>
               </div>
             </div>
 
@@ -317,26 +369,17 @@ export default function AdminPage({ onBack }) {
                       : 'Vừa xong';
 
                     const status = item.status || 'new';
+                    const statusMeta = STATUS_META[status] || STATUS_META.new;
+                    const isEditingNote = editingNoteId === item.id;
 
                     return (
                       <div key={item.id} className="p-5 hover:bg-slate-50/70 transition-colors">
                         <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
-                          <div className="space-y-2 max-w-2xl">
-                            <div className="flex items-center gap-3">
+                          <div className="space-y-2 max-w-2xl w-full">
+                            <div className="flex items-center gap-3 flex-wrap">
                               <span className="text-base font-bold text-[#0F2144]">{item.fullName}</span>
-                              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase border ${
-                                status === 'new' 
-                                  ? 'bg-amber-50 text-amber-900 border-amber-300' 
-                                  : status === 'contacted'
-                                  ? 'bg-blue-50 text-blue-900 border-blue-300'
-                                  : status === 'in_progress'
-                                  ? 'bg-purple-50 text-purple-900 border-purple-300'
-                                  : 'bg-emerald-50 text-emerald-900 border-emerald-300'
-                              }`}>
-                                {status === 'new' && 'Mới tiếp nhận'}
-                                {status === 'contacted' && 'Đã liên hệ'}
-                                {status === 'in_progress' && 'Đang thụ lý'}
-                                {status === 'completed' && 'Đã hoàn tất'}
+                              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase border ${statusMeta.badgeClass}`}>
+                                {statusMeta.label}
                               </span>
                               <span className="text-[11px] text-slate-500">{formattedDate}</span>
                             </div>
@@ -354,6 +397,67 @@ export default function AdminPage({ onBack }) {
                             <div className="text-xs text-slate-700 bg-slate-50 p-3 rounded-lg border border-slate-200/80 leading-relaxed whitespace-pre-wrap font-sans">
                               {item.notes}
                             </div>
+
+                            {/* Ghi chú nội bộ của Luật sư */}
+                            <div className="pt-1">
+                              {isEditingNote ? (
+                                <div className="space-y-2 bg-amber-50/60 border border-amber-200 rounded-lg p-3">
+                                  <label className="block text-[11px] font-semibold text-amber-900">
+                                    Ghi chú nội bộ của Luật sư
+                                  </label>
+                                  <textarea
+                                    rows={3}
+                                    maxLength={5000}
+                                    value={noteDraft}
+                                    onChange={(e) => setNoteDraft(e.target.value)}
+                                    placeholder="Nhập đánh giá sơ bộ, hướng xử lý hoặc lịch hẹn..."
+                                    className="w-full text-xs p-2.5 rounded-lg border border-amber-300 bg-white focus:outline-none focus:ring-2 focus:ring-[#0F2144]"
+                                  />
+                                  <div className="flex items-center gap-2">
+                                    <button
+                                      type="button"
+                                      disabled={isSavingNote}
+                                      onClick={() => handleSaveNotes(item.id)}
+                                      className="px-3 py-1.5 rounded bg-[#0F2144] hover:bg-[#162A56] disabled:opacity-50 text-white text-xs font-semibold transition-colors"
+                                    >
+                                      {isSavingNote ? 'Đang lưu...' : 'Lưu ghi chú'}
+                                    </button>
+                                    <button
+                                      type="button"
+                                      disabled={isSavingNote}
+                                      onClick={() => {
+                                        setEditingNoteId(null);
+                                        setNoteDraft('');
+                                      }}
+                                      className="px-3 py-1.5 rounded border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium transition-colors"
+                                    >
+                                      Hủy
+                                    </button>
+                                  </div>
+                                </div>
+                              ) : (
+                                <div className="flex items-start justify-between gap-3 bg-amber-50/40 border border-amber-200/70 rounded-lg px-3 py-2">
+                                  <div className="text-xs text-slate-700 leading-relaxed whitespace-pre-wrap">
+                                    <span className="font-semibold text-amber-900">Ghi chú luật sư: </span>
+                                    {item.lawyerNotes ? (
+                                      <span>{item.lawyerNotes}</span>
+                                    ) : (
+                                      <span className="text-slate-400 italic">Chưa có ghi chú nội bộ</span>
+                                    )}
+                                  </div>
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      setEditingNoteId(item.id);
+                                      setNoteDraft(item.lawyerNotes || '');
+                                    }}
+                                    className="text-[11px] font-semibold text-[#0F2144] hover:underline shrink-0"
+                                  >
+                                    {item.lawyerNotes ? 'Sửa ghi chú' : 'Thêm ghi chú'}
+                                  </button>
+                                </div>
+                              )}
+                            </div>
                           </div>
 
                           {/* Hành động của luật sư */}
@@ -363,10 +467,11 @@ export default function AdminPage({ onBack }) {
                               onChange={(e) => handleUpdateStatus(item.id, e.target.value)}
                               className="text-xs px-2.5 py-1.5 rounded border border-slate-300 bg-white font-medium text-slate-700 focus:outline-none focus:ring-1 focus:ring-[#0F2144]"
                             >
-                              <option value="new">Mới tiếp nhận</option>
-                              <option value="contacted">Đã liên hệ</option>
-                              <option value="in_progress">Đang thụ lý</option>
-                              <option value="completed">Đã hoàn tất</option>
+                              {CONSULTATION_STATUSES.map((st) => (
+                                <option key={st} value={st}>
+                                  {STATUS_META[st]?.label || st}
+                                </option>
+                              ))}
                             </select>
 
                             <button

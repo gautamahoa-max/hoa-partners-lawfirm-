@@ -9,8 +9,9 @@ import ServiceDetailPage from './components/ServiceDetailPage';
 import LawyerBioPage from './components/LawyerBioPage';
 import ContactPage from './components/ContactPage';
 import LegalKnowledgePage from './components/LegalKnowledgePage';
-import AdminPage from './components/AdminPage';
 import { purgeLegacySensitiveStorage } from './utils/security';
+
+const AdminPage = React.lazy(() => import('./components/AdminPage'));
 
 function MainContent() {
   const [currentRoute, setCurrentRoute] = useState(window.location.hash);
@@ -30,11 +31,19 @@ function MainContent() {
   const isAdminRoute = /^#(?:(?:\/)?(?:quan-tri|admin))(?:\/)?$/.test(currentRoute);
   if (isAdminRoute) {
     return (
-      <AdminPage
-        onBack={() => {
-          window.location.hash = '';
-        }}
-      />
+      <React.Suspense
+        fallback={
+          <div className="min-h-screen bg-slate-50 flex items-center justify-center text-sm text-slate-500">
+            Đang tải cổng quản trị...
+          </div>
+        }
+      >
+        <AdminPage
+          onBack={() => {
+            window.location.hash = '';
+          }}
+        />
+      </React.Suspense>
     );
   }
 

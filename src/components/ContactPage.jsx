@@ -14,8 +14,7 @@ import {
   checkRateLimit,
   recordSubmissionTimestamp,
 } from '../utils/security';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { db } from '../services/firebase';
+import { submitConsultation } from '../services/consultations';
 
 export default function ContactPage({ onBack }) {
   const { lang, setLang, t } = useLanguage();
@@ -32,6 +31,7 @@ export default function ContactPage({ onBack }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [submitFailed, setSubmitFailed] = useState(false);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -43,9 +43,10 @@ export default function ContactPage({ onBack }) {
     const maxLen = name === 'fullName' ? 120 : name === 'phone' ? 20 : name === 'botField' ? 100 : 2000;
     setFormData((prev) => ({ ...prev, [name]: value.slice(0, maxLen) }));
     if (errorMessage) setErrorMessage('');
+    if (submitFailed) setSubmitFailed(false);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // 1. Honeypot check: if hidden botField is filled, silently drop
@@ -89,26 +90,28 @@ export default function ContactPage({ onBack }) {
 
     setIsSubmitting(true);
     setErrorMessage('');
+    setSubmitFailed(false);
 
-    // Lưu yêu cầu tư vấn an toàn vào Cloud Firestore (Không lưu PII vào localStorage trình duyệt)
-    (async () => {
-      try {
-        await addDoc(collection(db, 'consultations'), {
-          fullName: cleanName,
-          phone: cleanPhone,
-          notes: cleanNotes,
-          status: 'new',
-          createdAt: serverTimestamp(),
-          source: 'web_contact_form',
-        });
-      } catch (err) {
-        console.warn('Lưu hồ sơ Firestore:', err);
-      } finally {
-        recordSubmissionTimestamp();
-        setIsSubmitting(false);
-        setIsSubmitted(true);
-      }
-    })();
+    try {
+      await submitConsultation({
+        fullName: cleanName,
+        phone: cleanPhone,
+        notes: cleanNotes,
+        lang,
+      });
+      recordSubmissionTimestamp();
+      setIsSubmitted(true);
+    } catch (err) {
+      console.error('Lỗi gửi yêu cầu tư vấn:', err);
+      setSubmitFailed(true);
+      setErrorMessage(
+        lang === 'vi'
+          ? 'Không thể gửi yêu cầu tư vấn lúc này do lỗi kết nối. Quý khách vui lòng thử lại hoặc gọi ngay Hotline 24/7: 098.888.6447.'
+          : 'Unable to submit your consultation request due to a connection error. Please try again or call our 24/7 Hotline: 098.888.6447.'
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleReset = () => {
@@ -120,6 +123,7 @@ export default function ContactPage({ onBack }) {
     });
     setIsSubmitted(false);
     setErrorMessage('');
+    setSubmitFailed(false);
   };
 
   return (
@@ -190,8 +194,22 @@ export default function ContactPage({ onBack }) {
                 </div>
 
                 {errorMessage && (
-                  <div className="mb-6 p-3 rounded-lg bg-red-50 border border-red-200 text-xs text-red-700 font-medium">
-                    {errorMessage}
+                  <div
+                    role="alert"
+                    className="mb-6 p-3.5 rounded-lg bg-red-50 border border-red-200 text-xs text-red-700 font-medium space-y-1.5"
+                  >
+                    <p>{errorMessage}</p>
+                    {submitFailed && (
+                      <p>
+                        {lang === 'vi' ? 'Hỗ trợ khẩn cấp 24/7: ' : '24/7 Urgent Hotline: '}
+                        <a
+                          href="tel:0988886447"
+                          className="font-bold underline text-red-900 hover:text-red-700"
+                        >
+                          098.888.6447
+                        </a>
+                      </p>
+                    )}
                   </div>
                 )}
 

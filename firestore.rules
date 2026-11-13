@@ -1,5 +1,29 @@
 rules_version = '2';
 
+// =========================================================================
+// Assumed Data Model
+// =========================================================================
+//
+// Collection: consultations
+// Document ID: auto-generated
+// Fields:
+//   - fullName: string (required on create, 1..150 chars) - client full name
+//   - phone: string (required on create, 5..25 chars) - client phone number
+//   - notes: string (required on create, 1..3000 chars) - consultation details
+//   - createdAt: timestamp | string (required on create, immutable, 1..50 chars if string)
+//   - status: string (optional; must be 'new' on create; one of
+//     ['new', 'contacted', 'in_progress', 'completed'] on update)
+//   - source: string (optional, <= 100 chars) - submission source identifier
+//   - email: string (optional, <= 150 chars) - client email address
+//   - topic: string (optional, <= 100 chars) - consultation topic
+//   - service: string (optional, <= 100 chars) - requested legal service
+//   - lang: string (optional, <= 10 chars) - UI language code (e.g. 'vi', 'en')
+//   - lawyerNotes: string (optional, admin update only, <= 5000 chars)
+//   - updatedAt: timestamp | string (optional, admin update only, <= 50 chars if string)
+//   - updatedBy: string (optional, admin update only, <= 150 chars)
+//
+// =========================================================================
+
 service cloud.firestore {
   match /databases/{database}/documents {
 
@@ -25,41 +49,111 @@ service cloud.firestore {
     }
 
     // =========================================================================
-    // CONSULTATION INQUIRIES DOMAIN VALIDATOR
+    // CONSULTATION INQUIRIES DOMAIN VALIDATORS
     // =========================================================================
 
     // Validates consultation inquiry documents created by unauthenticated visitors
     function isValidConsultationCreate(data) {
-      return 
+      return
         // 1. Mandatory schema bounds & required fields
         data.keys().hasAll(['fullName', 'phone', 'notes', 'createdAt']) &&
-        data.keys().hasOnly(['fullName', 'phone', 'notes', 'createdAt', 'status', 'source', 'email', 'topic', 'service']) &&
-        
+        data.keys().hasOnly([
+          'fullName',
+          'phone',
+          'notes',
+          'createdAt',
+          'status',
+          'source',
+          'email',
+          'topic',
+          'service',
+          'lang'
+        ]) &&
+
         // 2. Strict type safety and character limits
         data.fullName is string &&
         data.fullName.size() >= 1 &&
         data.fullName.size() <= 150 &&
-        
+
         data.phone is string &&
         data.phone.size() >= 5 &&
         data.phone.size() <= 25 &&
-        
+
         data.notes is string &&
         data.notes.size() >= 1 &&
         data.notes.size() <= 3000 &&
-        
+
         // 3. createdAt must be a Firestore Timestamp (e.g., serverTimestamp()) or ISO string
         (
-          data.createdAt is timestamp || 
+          data.createdAt is timestamp ||
           (data.createdAt is string && data.createdAt.size() >= 1 && data.createdAt.size() <= 50)
         ) &&
-        
-        // 4. Optional fields validation
-        (!('status' in data) || (data.status is string && data.status.size() <= 50)) &&
+
+        // 4. Optional fields validation (visitors can only create with 'new' status if provided)
+        (!('status' in data) || (data.status is string && data.status == 'new')) &&
         (!('source' in data) || (data.source is string && data.source.size() <= 100)) &&
         (!('email' in data) || (data.email is string && data.email.size() <= 150)) &&
         (!('topic' in data) || (data.topic is string && data.topic.size() <= 100)) &&
-        (!('service' in data) || (data['service'] is string && data['service'].size() <= 100));
+        (!('service' in data) || (data['service'] is string && data['service'].size() <= 100)) &&
+        (!('lang' in data) || (data.lang is string && data.lang.size() <= 10));
+    }
+
+    // Validates consultation inquiry updates performed by authorized admins
+    function isValidConsultationUpdate(data, existingData) {
+      return
+        // 1. Strict schema enforcement (no extraneous fields)
+        data.keys().hasOnly([
+          'fullName',
+          'phone',
+          'notes',
+          'createdAt',
+          'status',
+          'source',
+          'email',
+          'topic',
+          'service',
+          'lang',
+          'lawyerNotes',
+          'updatedAt',
+          'updatedBy'
+        ]) &&
+
+        // 2. Creation timestamp is immutable once set
+        (
+          !('createdAt' in existingData) ||
+          ('createdAt' in data && data.createdAt == existingData.createdAt)
+        ) &&
+        (
+          !('createdAt' in data) ||
+          data.createdAt is timestamp ||
+          (data.createdAt is string && data.createdAt.size() >= 1 && data.createdAt.size() <= 50)
+        ) &&
+
+        // 3. Preserve core fields if already present and enforce type/size bounds
+        (!('fullName' in existingData) || 'fullName' in data) &&
+        (!('fullName' in data) || (data.fullName is string && data.fullName.size() >= 1 && data.fullName.size() <= 150)) &&
+
+        (!('phone' in existingData) || 'phone' in data) &&
+        (!('phone' in data) || (data.phone is string && data.phone.size() >= 5 && data.phone.size() <= 25)) &&
+
+        (!('notes' in existingData) || 'notes' in data) &&
+        (!('notes' in data) || (data.notes is string && data.notes.size() >= 1 && data.notes.size() <= 3000)) &&
+
+        (!('source' in data) || (data.source is string && data.source.size() <= 100)) &&
+        (!('email' in data) || (data.email is string && data.email.size() <= 150)) &&
+        (!('topic' in data) || (data.topic is string && data.topic.size() <= 100)) &&
+        (!('service' in data) || (data['service'] is string && data['service'].size() <= 100)) &&
+        (!('lang' in data) || (data.lang is string && data.lang.size() <= 10)) &&
+
+        // 4. Admin workflow & audit fields validation
+        (!('status' in data) || (data.status is string && data.status in ['new', 'contacted', 'in_progress', 'completed'])) &&
+        (!('lawyerNotes' in data) || (data.lawyerNotes is string && data.lawyerNotes.size() <= 5000)) &&
+        (
+          !('updatedAt' in data) ||
+          data.updatedAt is timestamp ||
+          (data.updatedAt is string && data.updatedAt.size() <= 50)
+        ) &&
+        (!('updatedBy' in data) || (data.updatedBy is string && data.updatedBy.size() <= 150));
     }
 
     // =========================================================================
@@ -74,10 +168,8 @@ service cloud.firestore {
       // Only authenticated admin lawyers can read (list & get inquiries)
       allow read: if isAdmin();
 
-      // Only authenticated admin lawyers can update (e.g. status changes, review notes)
-      // Creation timestamp is immutable upon update
-      allow update: if isAdmin() && 
-        (!('createdAt' in resource.data) || request.resource.data.createdAt == resource.data.createdAt);
+      // Only authenticated admin lawyers can update (status, lawyerNotes, audit fields)
+      allow update: if isAdmin() && isValidConsultationUpdate(request.resource.data, resource.data);
 
       // Only authenticated admin lawyers can delete consultation records
       allow delete: if isAdmin();
