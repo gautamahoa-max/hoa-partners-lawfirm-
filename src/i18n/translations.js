@@ -248,6 +248,12 @@ export const TRANSLATIONS = {
         'Đoàn Luật sư TP. Hồ Chí Minh',
         'Liên đoàn Luật sư Việt Nam (VBF)',
       ],
+      experienceTitle: 'Nơi Từng Công Tác',
+      experienceItems: [
+        'Ngân hàng TMCP Phương Đông (OCB)',
+        'Ngân hàng TMCP Quốc tế Việt Nam (VIB)',
+        'Ngân hàng TMCP Xuất Nhập Khẩu Việt Nam (Eximbank)',
+      ],
       creds: [
         'Thành viên Liên đoàn Luật sư Việt Nam & Đoàn Luật sư TP. Hồ Chí Minh',
         'Hơn 15 năm kinh nghiệm chuyên sâu trong tranh tụng Dân sự, Đất đai, Thừa kế và Hợp đồng',
@@ -1113,6 +1119,12 @@ export const TRANSLATIONS = {
       barItems: [
         'Ho Chi Minh City Bar Association',
         'Vietnam Bar Federation (VBF)',
+      ],
+      experienceTitle: 'Prior Experience',
+      experienceItems: [
+        'Orient Commercial Joint Stock Bank (OCB)',
+        'Vietnam International Commercial Joint Stock Bank (VIB)',
+        'Vietnam Export Import Commercial Joint Stock Bank (Eximbank)',
       ],
       creds: [
         'Member of Vietnam Bar Federation & Ho Chi Minh City Bar Association',

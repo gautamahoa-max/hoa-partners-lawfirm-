@@ -179,6 +179,20 @@ export default function LawyerBioPage({ onBack }) {
                   </div>
                 </div>
 
+                {/* Nơi từng công tác */}
+                {bio.experienceItems && bio.experienceItems.length > 0 && (
+                  <div>
+                    <h3 className="text-sm sm:text-base font-bold text-[#0F2144] mb-2.5 tracking-tight">
+                      {bio.experienceTitle || (lang === 'vi' ? 'Nơi Từng Công Tác' : 'Prior Experience')}
+                    </h3>
+                    <div className="space-y-1.5 text-slate-600 leading-relaxed">
+                      {bio.experienceItems.map((item, idx) => (
+                        <p key={idx}>{item}</p>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
               </div>
 
             </div>
