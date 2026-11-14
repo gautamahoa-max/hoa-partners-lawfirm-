@@ -12,7 +12,8 @@ export default function LocationSection() {
 
   const encodedQuery = encodeURIComponent(activeOffice.mapQuery);
   const embedUrl = `https://www.google.com/maps/embed?origin=mfe&pb=!1m2!2m1!1s${encodedQuery}&hl=${lang === 'en' ? 'en' : 'vi'}&z=16`;
-  const externalMapUrl = `https://www.google.com/maps/search/?api=1&query=${encodedQuery}`;
+  const externalMapUrl =
+    activeOffice.mapUrl || `https://www.google.com/maps/search/?api=1&query=${encodedQuery}`;
 
   return (
     <section id="dia-diem" className="py-16 sm:py-20 bg-white scroll-mt-16">
