@@ -225,7 +225,8 @@ export const TRANSLATIONS = {
           lines: ['2A Đường 33', 'Phường Bình Trưng', 'TP. Hồ Chí Minh'],
           phone: '+84 98 888 6447',
           tel: '+84988886447',
-          mapQuery: '2A Đường số 33, Bình Trưng Tây, Thủ Đức, Thành phố Hồ Chí Minh',
+          mapQuery: '10.784232,106.7672599',
+          mapUrl: 'https://maps.app.goo.gl/7Z3cJN2L11TTUqN2A',
         },
         {
           id: 'daklak',
@@ -1125,7 +1126,8 @@ export const TRANSLATIONS = {
           lines: ['2A 33rd Street', 'Binh Trung Ward', 'Ho Chi Minh City'],
           phone: '+84 98 888 6447',
           tel: '+84988886447',
-          mapQuery: '2A Đường số 33, Bình Trưng Tây, Thủ Đức, Thành phố Hồ Chí Minh',
+          mapQuery: '10.784232,106.7672599',
+          mapUrl: 'https://maps.app.goo.gl/7Z3cJN2L11TTUqN2A',
         },
         {
           id: 'daklak',
