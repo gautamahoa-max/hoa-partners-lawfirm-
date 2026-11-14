@@ -234,10 +234,10 @@ export const TRANSLATIONS = {
         'Đại Diện Ngoài Tố Tụng',
       ],
       paragraphs: [
-        'Luật sư Võ Văn Hoà, Luật sư Sáng lập và Điều hành của Công ty Luật TNHH Hoà & Cộng sự, được đánh giá là một trong những luật sư uy tín hàng đầu trong lĩnh vực tư vấn pháp luật và tranh tụng Dân sự, tập trung chuyên sâu vào các tranh chấp Đất đai - Bất động sản, Thừa kế, Hợp đồng và Hôn nhân gia đình.',
-        'Luật sư Hoà đã trực tiếp tham gia tư vấn và bảo vệ thành công quyền lợi hợp pháp cho hàng trăm thân chủ trong các vụ việc pháp lý mang tính bước ngoặt và phức tạp tại Tòa án nhân dân các cấp tại TP. Hồ Chí Minh, Đắk Lắk và các tỉnh thành phía Nam. Thân chủ của Luật sư Hoà bao gồm các cá nhân, hộ gia đình, chủ doanh nghiệp và các tổ chức kinh tế cần giải pháp pháp lý an toàn, minh bạch và bảo vệ tối đa quyền tài sản.',
-        'Với hơn 15 năm kinh nghiệm hành nghề thực tiễn cùng nền tảng chuyên môn sâu sắc về Luật Kinh tế, Luật sư Hoà xây dựng chiến lược tố tụng sắc bén, đề cao tính cẩn trọng, chứng cứ xác thực và giải pháp hòa giải thực chất nhằm tiết kiệm tối đa thời gian và chi phí cho khách hàng.',
-        'Bên cạnh hoạt động tranh tụng tại Tòa án, Luật sư Hoà thường xuyên hỗ trợ thân chủ trong đàm phán giải quyết tranh chấp ngoài tố tụng, rà soát cấu trúc giao dịch bất động sản và tư vấn hoạch định tài sản gia đình. Luật sư Hoà luôn tuân thủ chuẩn mực đạo đức nghề nghiệp nghiêm ngặt của Liên đoàn Luật sư Việt Nam và phương châm hành nghề: "Tận tâm - Bản lĩnh - Hiệu quả".',
+        'Luật sư Võ Văn Hoà, Luật sư Sáng lập và Điều hành của Công ty Luật TNHH Hoà & Cộng sự, hoạt động chuyên sâu trong lĩnh vực tư vấn pháp luật và tranh tụng Dân sự, tập trung vào các tranh chấp Đất đai - Bất động sản, Thừa kế, Hợp đồng dân sự - tín dụng và Hôn nhân gia đình.',
+        'Luật sư Hoà đã trực tiếp tham gia tư vấn và bảo vệ quyền lợi hợp pháp cho nhiều thân chủ trong các vụ việc pháp lý phức tạp tại Tòa án nhân dân các cấp ở TP. Hồ Chí Minh, Đắk Lắk và các tỉnh thành phía Nam. Thân chủ của Luật sư Hoà bao gồm các cá nhân, hộ gia đình, chủ doanh nghiệp và các tổ chức kinh tế cần giải pháp pháp lý an toàn, minh bạch và bảo vệ tối đa quyền tài sản.',
+        'Với nền tảng chuyên môn vững chắc về Luật Kinh tế cùng kinh nghiệm thực tiễn tích lũy trong thời gian công tác tại các ngân hàng thương mại lớn (OCB, VIB, Eximbank), Luật sư Hoà xây dựng chiến lược giải quyết tranh chấp sắc bén, đề cao tính cẩn trọng, chứng cứ xác thực và giải pháp hòa giải thực chất nhằm tối ưu thời gian và chi phí cho khách hàng.',
+        'Bên cạnh hoạt động tranh tụng tại Tòa án, Luật sư Hoà thường xuyên hỗ trợ thân chủ trong đàm phán giải quyết tranh chấp ngoài tố tụng, rà soát cấu trúc giao dịch bất động sản, hợp đồng tín dụng - thế chấp và tư vấn hoạch định tài sản gia đình. Luật sư Hoà luôn tuân thủ chuẩn mực đạo đức nghề nghiệp nghiêm ngặt của Liên đoàn Luật sư Việt Nam và phương châm hành nghề: "Tận tâm - Bản lĩnh - Hiệu quả".',
       ],
       educationTitle: 'Học Vấn',
       educationItems: [
@@ -256,8 +256,8 @@ export const TRANSLATIONS = {
       ],
       creds: [
         'Thành viên Liên đoàn Luật sư Việt Nam & Đoàn Luật sư TP. Hồ Chí Minh',
-        'Hơn 15 năm kinh nghiệm chuyên sâu trong tranh tụng Dân sự, Đất đai, Thừa kế và Hợp đồng',
-        'Đại diện thành công hàng trăm vụ án Dân sự phức tạp tại Tòa án nhân dân các cấp tại TP.HCM, Đắk Lắk và các tỉnh phía Nam',
+        'Kinh nghiệm thực tiễn trong lĩnh vực tài chính - ngân hàng tại OCB, VIB, Eximbank và tranh tụng Dân sự, Đất đai, Hợp đồng',
+        'Trực tiếp tư vấn, đại diện giải quyết nhiều vụ việc Dân sự và tranh chấp tài sản tại TP.HCM, Đắk Lắk và các tỉnh phía Nam',
       ],
       contactBtn: 'Liên hệ trực tiếp với Luật sư Hoà',
       principlesEyebrow: 'Tôn chỉ hành nghề • Văn hóa thực thi',
@@ -1106,10 +1106,10 @@ export const TRANSLATIONS = {
         'Out-of-Court Representation & Dispute Resolution',
       ],
       paragraphs: [
-        'Attorney Vo Van Hoa, Founder and Managing Partner of Hoa & Associates Law Firm, is widely recognized as a leading advocate in civil litigation and legal advisory, focusing deeply on complex land and real estate disputes, inheritance, contracts, and family estate matters.',
-        'Attorney Hoa has successfully advised and represented hundreds of clients in landmark and intricate civil proceedings across People’s Courts at all levels in Ho Chi Minh City, Dak Lak, and southern provinces. His clientele includes individuals, families, real estate investors, and enterprises seeking secure, comprehensive, and assertive property rights protection.',
-        'With over 15 years of rigorous courtroom practice and extensive specialized expertise in Economic Law, Attorney Hoa formulates incisive dispute strategies rooted in verifiable evidence and meticulous case preparation. He continuously prioritizes substantive mediation and pragmatic negotiation to optimize time, safeguard relationships, and minimize client costs.',
-        'In addition to trial advocacy, Attorney Hoa actively counsels clients on contract risk governance, out-of-court dispute settlement, and family wealth structuring. He is a member of the Ho Chi Minh City Bar Association and the Vietnam Bar Federation (VBF), strictly upholding professional legal ethics under the firm’s guiding motto: "Dedicated • Resolute • Effective".',
+        'Attorney Vo Van Hoa, Founder and Managing Partner of Hoa & Associates Law Firm, specializes in civil litigation and legal advisory, focusing on land and real estate disputes, inheritance, civil and credit contracts, and matrimonial property matters.',
+        'Attorney Hoa has directly advised and represented numerous clients in complex civil proceedings before People’s Courts at all levels in Ho Chi Minh City, Dak Lak, and southern provinces. His clientele includes individuals, families, business owners, and economic organizations seeking secure, transparent, and effective protection of their property rights.',
+        'Combining a solid academic foundation in Economic Law with hands-on practical experience gained during his tenure at major Vietnamese commercial banks (OCB, VIB, Eximbank), Attorney Hoa formulates sharp, pragmatic dispute strategies grounded in verifiable evidence and substantive negotiation to optimize time and costs for clients.',
+        'In addition to courtroom advocacy, Attorney Hoa counsels clients on out-of-court dispute settlement, real estate and mortgage-credit contract structuring, and family asset planning. He is a member of the Ho Chi Minh City Bar Association and the Vietnam Bar Federation (VBF), strictly upholding professional legal ethics under the firm’s guiding motto: "Dedicated • Resolute • Effective".',
       ],
       educationTitle: 'Education',
       educationItems: [
@@ -1128,8 +1128,8 @@ export const TRANSLATIONS = {
       ],
       creds: [
         'Member of Vietnam Bar Federation & Ho Chi Minh City Bar Association',
-        'Over 15 years of specialized experience in Civil Litigation, Land Disputes, Inheritance, and Contracts',
-        'Successfully represented hundreds of complex civil cases before People’s Courts across all levels in HCMC, Dak Lak, and southern provinces',
+        'Practical legal & banking background at OCB, VIB, and Eximbank alongside Civil, Land, and Contract litigation',
+        'Advised and represented clients in civil and property dispute proceedings across HCMC, Dak Lak, and southern provinces',
       ],
       contactBtn: 'Contact Attorney Hoa Directly',
       principlesEyebrow: 'Practice Philosophy • Execution Culture',
