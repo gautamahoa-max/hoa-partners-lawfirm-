@@ -11,6 +11,7 @@ import {
   submitConsultation,
 } from '../services/consultations.js';
 import { formatConsentDateLabels } from './formatters.js';
+import { buildPdfFromJpegPages, resolveConsentVersion } from './consentPdf.js';
 
 test('sanitizeInput strips HTML, control characters, dangerous protocols, and enforces maxLength', () => {
   assert.equal(sanitizeInput('<script>alert(1)</script>Hello'), 'alert(1)Hello');
@@ -131,4 +132,48 @@ test('formatConsentDateLabels formats NĐ 30 Vietnamese and English dates in GMT
   const fallback = formatConsentDateLabels('');
   assert.match(fallback.vi, /^Đắk Lắk, ngày \d{2} tháng \d{1,2} năm \d{4}$/);
   assert.match(fallback.en, /^Dak Lak, [A-Z][a-z]+ \d{1,2}, \d{4}$/);
+});
+
+test('resolveConsentVersion resolves exact versioned PDF or falls back safely', () => {
+  const registry = {
+    'HP-PDPL-02/2026': { version: 'HP-PDPL-02/2026', pdfUrl: '/v2.pdf' },
+    'HP-PDPL-03/2026': { version: 'HP-PDPL-03/2026', pdfUrl: '/v3.pdf' },
+  };
+  const exact = resolveConsentVersion(registry, 'HP-PDPL-02/2026', 'HP-PDPL-03/2026');
+  assert.equal(exact.pdfUrl, '/v2.pdf');
+  assert.equal(exact.isExactVersionMatch, true);
+
+  const fallback = resolveConsentVersion(registry, 'HP-PDPL-99/2099', 'HP-PDPL-03/2026');
+  assert.equal(fallback.pdfUrl, '/v3.pdf');
+  assert.equal(fallback.isExactVersionMatch, false);
+});
+
+test('buildPdfFromJpegPages produces valid multi-page A4 PDF readable by pdfjs-dist', async () => {
+  const tinyJpegBytes = Uint8Array.from(
+    Buffer.from(
+      '/9j/4AAQSkZJRgABAQAASABIAAD/4QBMRXhpZgAATU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAAqADAAQAAAABAAAAAgAAAAD/7QA4UGhvdG9zaG9wIDMuMAA4QklNBAQAAAAAAAA4QklNBCUAAAAAABDUHYzZjwCyBOmACZjs+EJ+/8AAEQgAAgACAwEiAAIRAQMRAf/EAB8AAAEFAQEBAQEBAAAAAAAAAAABAgMEBQYHCAkKC//EALUQAAIBAwMCBAMFBQQEAAABfQECAwAEEQUSITFBBhNRYQcicRQygZGhCCNCscEVUtHwJDNicoIJChYXGBkaJSYnKCkqNDU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6g4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2drh4uPk5ebn6Onq8fLz9PX29/j5+v/EAB8BAAMBAQEBAQEBAQEAAAAAAAABAgMEBQYHCAkKC//EALURAAIBAgQEAwQHBQQEAAECdwABAgMRBAUhMQYSQVEHYXETIjKBCBRCkaGxwQkjM1LwFWJy0QoWJDThJfEXGBkaJicoKSo1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoKDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uLj5OXm5+jp6vLz9PX29/j5+v/bAEMAAgICAgICAwICAwUDAwMFBgUFBQUGCAYGBgYGCAoICAgICAgKCgoKCgoKCgwMDAwMDA4ODg4ODw8PDw8PDw8PD//bAEMBAgICBAQEBwQEBxALCQsQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEP/dAAQAAf/aAAwDAQACEQMRAD8A/fyiiigD/9k=',
+      'base64'
+    )
+  );
+
+  assert.throws(() => buildPdfFromJpegPages([]), /At least one rendered JPEG page/);
+
+  const pdfBytes = buildPdfFromJpegPages([
+    { bytes: tinyJpegBytes, widthPx: 1240, heightPx: 1754 },
+    { bytes: tinyJpegBytes, widthPx: 1240, heightPx: 1754 },
+  ]);
+
+  const asciiHead = Buffer.from(pdfBytes.subarray(0, 8)).toString('ascii');
+  const asciiTail = Buffer.from(pdfBytes.subarray(-6)).toString('ascii');
+  assert.equal(asciiHead, '%PDF-1.4');
+  assert.equal(asciiTail, '%%EOF\n');
+
+  const pdfjsLib = await import('pdfjs-dist/legacy/build/pdf.mjs');
+  const doc = await pdfjsLib.getDocument({ data: pdfBytes, verbosity: 0 }).promise;
+  assert.equal(doc.numPages, 2);
+  const p1 = await doc.getPage(1);
+  const vp = p1.getViewport({ scale: 1 });
+  assert.ok(Math.abs(vp.width - 595.28) < 0.05);
+  assert.ok(Math.abs(vp.height - 841.99) < 0.2);
+  await doc.destroy();
 });

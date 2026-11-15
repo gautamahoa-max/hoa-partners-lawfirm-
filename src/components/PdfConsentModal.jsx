@@ -1,15 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf.mjs';
-import pdfWorkerUrl from 'pdfjs-dist/legacy/build/pdf.worker.min.mjs?url';
-import consentPdfUrl from '../assets/thu-chap-thuan-xu-ly-du-lieu-ca-nhan.pdf';
+import { getConsentArchiveEntry, pdfjsLib } from '../utils/consentArchive';
+import { renderConsentPdfPage } from '../utils/consentPdf';
 import { formatConsentDateLabels } from '../utils/formatters';
-
-pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorkerUrl;
-
-const PAGE_DATE_PLACEHOLDERS = {
-  1: 'Đắk Lắk, năm 2026',
-  6: 'Dak Lak, 2026',
-};
 
 function PdfPageCanvas({ pdfDoc, pageNumber, zoom, baseWidth, watermarkLabel, dateLabel }) {
   const canvasRef = useRef(null);
@@ -27,56 +19,23 @@ function PdfPageCanvas({ pdfDoc, pageNumber, zoom, baseWidth, watermarkLabel, da
         const unscaledViewport = page.getViewport({ scale: 1 });
         const targetCssWidth = Math.max(260, baseWidth) * zoom;
         const scale = targetCssWidth / unscaledViewport.width;
-        const viewport = page.getViewport({ scale });
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
         const canvas = canvasRef.current;
         if (!canvas || cancelled) return;
-        const context = canvas.getContext('2d', { alpha: false });
 
-        canvas.width = Math.floor(viewport.width * dpr);
-        canvas.height = Math.floor(viewport.height * dpr);
-        canvas.style.width = `${Math.floor(viewport.width)}px`;
-        canvas.style.height = `${Math.floor(viewport.height)}px`;
-
-        renderTask = page.render({
-          canvasContext: context,
-          viewport,
-          transform: dpr !== 1 ? [dpr, 0, 0, dpr, 0, 0] : undefined,
+        await renderConsentPdfPage({
+          page,
+          canvas,
+          scale,
+          dpr,
+          dateLabel,
+          pdfjsLib,
+          isCancelled: () => cancelled,
+          onTaskCreated: (task) => {
+            renderTask = task;
+          },
         });
-
-        await renderTask.promise;
-        if (cancelled) return;
-
-        const targetText = PAGE_DATE_PLACEHOLDERS[pageNumber];
-        if (targetText && dateLabel) {
-          const textContent = await page.getTextContent();
-          if (cancelled) return;
-          const dateItem = textContent.items.find((item) => item.str?.trim() === targetText);
-          if (dateItem) {
-            const [a, b, , , vx, vy] = pdfjsLib.Util.transform(viewport.transform, dateItem.transform);
-            const fontPx = Math.hypot(a, b);
-            const origWidthPx = dateItem.width * scale;
-            const centerX = vx + origWidthPx / 2;
-            const clearWidth = origWidthPx + fontPx * 0.9;
-
-            context.save();
-            context.setTransform(dpr, 0, 0, dpr, 0, 0);
-            context.fillStyle = '#ffffff';
-            context.fillRect(
-              centerX - clearWidth / 2,
-              vy - fontPx * 1.05,
-              clearWidth,
-              fontPx * 1.4
-            );
-            context.font = `italic ${fontPx}px "Times New Roman", "Liberation Serif", Times, serif`;
-            context.fillStyle = '#000000';
-            context.textAlign = 'center';
-            context.textBaseline = 'alphabetic';
-            context.fillText(dateLabel, centerX, vy);
-            context.restore();
-          }
-        }
       } catch (err) {
         if (err?.name !== 'RenderingCancelledException' && !cancelled) {
           console.error(`Lỗi kết xuất trang PDF ${pageNumber}:`, err);
@@ -163,7 +122,8 @@ export default function PdfConsentModal({ lang, formT, consentAcceptedAt, onClos
       try {
         setLoading(true);
         setLoadError('');
-        const response = await fetch(consentPdfUrl, { signal: abortController.signal });
+        const archiveEntry = getConsentArchiveEntry();
+        const response = await fetch(archiveEntry.pdfUrl, { signal: abortController.signal });
         if (!response.ok) {
           throw new Error(`HTTP ${response.status}`);
         }

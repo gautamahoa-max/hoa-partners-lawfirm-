@@ -39,6 +39,7 @@ export default function AdminPage({ onBack }) {
   const [editingNoteId, setEditingNoteId] = useState(null);
   const [noteDraft, setNoteDraft] = useState('');
   const [isSavingNote, setIsSavingNote] = useState(false);
+  const [exportingPdfId, setExportingPdfId] = useState(null);
 
   // Lắng nghe trạng thái đăng nhập
   useEffect(() => {
@@ -140,6 +141,21 @@ export default function AdminPage({ onBack }) {
     } catch (err) {
       console.error('Lỗi xóa yêu cầu:', err);
       setDataError(`Không thể xóa hồ sơ: ${err?.message || 'Vui lòng thử lại.'}`);
+    }
+  };
+
+  const handleExportConsentPdf = async (item) => {
+    if (!item || exportingPdfId) return;
+    setExportingPdfId(item.id);
+    try {
+      setDataError('');
+      const { downloadClientConsentPdf } = await import('../utils/consentArchive');
+      await downloadClientConsentPdf(item);
+    } catch (err) {
+      console.error('Lỗi xuất PDF Thư chấp thuận:', err);
+      setDataError(`Không thể xuất file PDF chấp thuận: ${err?.message || 'Vui lòng thử lại.'}`);
+    } finally {
+      setExportingPdfId(null);
     }
   };
 
@@ -385,13 +401,20 @@ export default function AdminPage({ onBack }) {
                                 {statusMeta.label}
                               </span>
                               <span className="text-[11px] text-slate-500">{formattedDate}</span>
-                              {item.consentVersion && (
+                              {item.consentVersion ? (
                                 <span
                                   className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200"
                                   title={consentTimeLabel ? `Xác nhận lúc ${consentTimeLabel}` : 'Đã xác nhận Thư chấp thuận'}
                                 >
                                   Chấp thuận: {item.consentVersion}
                                   {consentTimeLabel ? ` (${consentTimeLabel})` : ''}
+                                </span>
+                              ) : (
+                                <span
+                                  className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200"
+                                  title="Hồ sơ tiếp nhận trước thời điểm bật lưu dấu vết chấp thuận trên Firestore Rules"
+                                >
+                                  Thiếu dấu vết chấp thuận
                                 </span>
                               )}
                             </div>
@@ -485,6 +508,17 @@ export default function AdminPage({ onBack }) {
                                 </option>
                               ))}
                             </select>
+
+                            {(item.consentVersion || item.consentAcceptedAt) && (
+                              <button
+                                type="button"
+                                disabled={exportingPdfId === item.id}
+                                onClick={() => handleExportConsentPdf(item)}
+                                className="text-xs font-semibold text-[#0F2144] bg-slate-100 hover:bg-slate-200 disabled:opacity-50 px-2.5 py-1.5 rounded border border-slate-300 transition-colors cursor-pointer"
+                              >
+                                {exportingPdfId === item.id ? 'Đang xuất PDF...' : 'Tải PDF Chấp thuận'}
+                              </button>
+                            )}
 
                             <button
                               onClick={() => handleDelete(item.id)}
