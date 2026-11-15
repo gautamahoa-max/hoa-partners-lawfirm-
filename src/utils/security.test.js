@@ -10,6 +10,7 @@ import {
   exportConsultationsCsv,
   submitConsultation,
 } from '../services/consultations.js';
+import { formatConsentDateLabels } from './formatters.js';
 
 test('sanitizeInput strips HTML, control characters, dangerous protocols, and enforces maxLength', () => {
   assert.equal(sanitizeInput('<script>alert(1)</script>Hello'), 'alert(1)Hello');
@@ -116,4 +117,18 @@ test('CONSULTATION_STATUSES and submitConsultation validation reject invalid pay
     () => submitConsultation({ fullName: 'Nguyen A', phone: '0988886447', notes: 'Test', consent: false }),
     { code: 'validation/invalid-input' }
   );
+});
+
+test('formatConsentDateLabels formats NĐ 30 Vietnamese and English dates in GMT+7', () => {
+  const jan = formatConsentDateLabels('2026-01-05T10:00:00.000Z');
+  assert.equal(jan.vi, 'Đắk Lắk, ngày 05 tháng 01 năm 2026');
+  assert.equal(jan.en, 'Dak Lak, January 5, 2026');
+
+  const nov = formatConsentDateLabels('2026-11-15T05:38:00.000Z');
+  assert.equal(nov.vi, 'Đắk Lắk, ngày 15 tháng 11 năm 2026');
+  assert.equal(nov.en, 'Dak Lak, November 15, 2026');
+
+  const fallback = formatConsentDateLabels('');
+  assert.match(fallback.vi, /^Đắk Lắk, ngày \d{2} tháng \d{1,2} năm \d{4}$/);
+  assert.match(fallback.en, /^Dak Lak, [A-Z][a-z]+ \d{1,2}, \d{4}$/);
 });

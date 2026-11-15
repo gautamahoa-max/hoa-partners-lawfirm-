@@ -1,11 +1,17 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf.mjs';
 import pdfWorkerUrl from 'pdfjs-dist/legacy/build/pdf.worker.min.mjs?url';
 import consentPdfUrl from '../assets/thu-chap-thuan-xu-ly-du-lieu-ca-nhan.pdf';
+import { formatConsentDateLabels } from '../utils/formatters';
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorkerUrl;
 
-function PdfPageCanvas({ pdfDoc, pageNumber, zoom, baseWidth, watermarkLabel }) {
+const PAGE_DATE_PLACEHOLDERS = {
+  1: 'Đắk Lắk, năm 2026',
+  6: 'Dak Lak, 2026',
+};
+
+function PdfPageCanvas({ pdfDoc, pageNumber, zoom, baseWidth, watermarkLabel, dateLabel }) {
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -40,6 +46,37 @@ function PdfPageCanvas({ pdfDoc, pageNumber, zoom, baseWidth, watermarkLabel }) 
         });
 
         await renderTask.promise;
+        if (cancelled) return;
+
+        const targetText = PAGE_DATE_PLACEHOLDERS[pageNumber];
+        if (targetText && dateLabel) {
+          const textContent = await page.getTextContent();
+          if (cancelled) return;
+          const dateItem = textContent.items.find((item) => item.str?.trim() === targetText);
+          if (dateItem) {
+            const [a, b, , , vx, vy] = pdfjsLib.Util.transform(viewport.transform, dateItem.transform);
+            const fontPx = Math.hypot(a, b);
+            const origWidthPx = dateItem.width * scale;
+            const centerX = vx + origWidthPx / 2;
+            const clearWidth = origWidthPx + fontPx * 0.9;
+
+            context.save();
+            context.setTransform(dpr, 0, 0, dpr, 0, 0);
+            context.fillStyle = '#ffffff';
+            context.fillRect(
+              centerX - clearWidth / 2,
+              vy - fontPx * 1.05,
+              clearWidth,
+              fontPx * 1.4
+            );
+            context.font = `italic ${fontPx}px "Times New Roman", "Liberation Serif", Times, serif`;
+            context.fillStyle = '#000000';
+            context.textAlign = 'center';
+            context.textBaseline = 'alphabetic';
+            context.fillText(dateLabel, centerX, vy);
+            context.restore();
+          }
+        }
       } catch (err) {
         if (err?.name !== 'RenderingCancelledException' && !cancelled) {
           console.error(`Lỗi kết xuất trang PDF ${pageNumber}:`, err);
@@ -53,7 +90,7 @@ function PdfPageCanvas({ pdfDoc, pageNumber, zoom, baseWidth, watermarkLabel }) 
         renderTask.cancel();
       }
     };
-  }, [pdfDoc, pageNumber, zoom, baseWidth]);
+  }, [pdfDoc, pageNumber, zoom, baseWidth, dateLabel]);
 
   return (
     <div
@@ -78,10 +115,11 @@ function PdfPageCanvas({ pdfDoc, pageNumber, zoom, baseWidth, watermarkLabel }) 
 /**
  * View-only PDF modal rendered strictly onto protected canvases (no download/print toolbar).
  */
-export default function PdfConsentModal({ lang, formT, onClose, onAgree }) {
+export default function PdfConsentModal({ lang, formT, consentAcceptedAt, onClose, onAgree }) {
   const scrollRef = useRef(null);
   const pageRefs = useRef({});
   const hasAutoJumpedRef = useRef(false);
+  const dateLabels = useMemo(() => formatConsentDateLabels(consentAcceptedAt), [consentAcceptedAt]);
 
   const [pdfDoc, setPdfDoc] = useState(null);
   const [numPages, setNumPages] = useState(0);
@@ -301,6 +339,7 @@ export default function PdfConsentModal({ lang, formT, onClose, onAgree }) {
                     zoom={zoom}
                     baseWidth={baseWidth}
                     watermarkLabel={formT.privacyWatermark}
+                    dateLabel={pageNumber === 1 ? dateLabels.vi : pageNumber === 6 ? dateLabels.en : ''}
                   />
                   <p className="text-center text-[11px] text-slate-500 font-medium">
                     {lang === 'en' ? `Page ${pageNumber} / ${numPages}` : `Trang ${pageNumber} / ${numPages}`}

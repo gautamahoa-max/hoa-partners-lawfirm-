@@ -402,6 +402,7 @@ export default function ContactPage({ onBack }) {
           <PdfConsentModal
             lang={lang}
             formT={formT}
+            consentAcceptedAt={formData.consentAcceptedAt}
             onClose={() => setShowPrivacyModal(false)}
             onAgree={() => {
               setFormData((prev) => ({
