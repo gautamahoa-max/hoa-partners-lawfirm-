@@ -164,11 +164,11 @@ export default function PdfConsentModal({ lang, formT, onClose, onAgree }) {
   }, [lang]);
 
   useEffect(() => {
-    if (!pdfDoc || numPages < 5 || hasAutoJumpedRef.current) return;
+    if (!pdfDoc || numPages < 6 || hasAutoJumpedRef.current) return;
     hasAutoJumpedRef.current = true;
     if (lang === 'en') {
       requestAnimationFrame(() => {
-        pageRefs.current[5]?.scrollIntoView({ behavior: 'auto', block: 'start' });
+        pageRefs.current[6]?.scrollIntoView({ behavior: 'auto', block: 'start' });
       });
     }
   }, [pdfDoc, numPages, lang]);
@@ -212,21 +212,21 @@ export default function PdfConsentModal({ lang, formT, onClose, onAgree }) {
           </div>
 
           <div className="flex items-center gap-1.5 sm:gap-2">
-            {numPages >= 5 && (
+            {numPages >= 6 && (
               <div className="hidden md:flex items-center rounded-lg border border-slate-200 bg-slate-50 p-0.5 text-[11px] font-semibold">
                 <button
                   type="button"
                   onClick={() => jumpToPage(1)}
                   className="px-2 py-1 rounded-md text-[#0F2144] hover:bg-white transition-colors cursor-pointer"
                 >
-                  VN (1–4)
+                  VN (1–5)
                 </button>
                 <button
                   type="button"
-                  onClick={() => jumpToPage(5)}
+                  onClick={() => jumpToPage(6)}
                   className="px-2 py-1 rounded-md text-[#0F2144] hover:bg-white transition-colors cursor-pointer"
                 >
-                  EN (5–6)
+                  {`EN (6–${numPages})`}
                 </button>
               </div>
             )}
