@@ -109,22 +109,15 @@ export async function submitConsultation({
     createdAt: serverTimestamp(),
   };
 
-  let payload = {
+  const payload = {
     ...basePayload,
     ...buildConsentAuditFields({ consentVersion, consentAcceptedAt }),
   };
-  let usedSchemaFallback = false;
 
   for (let attempt = 0; attempt < 2; attempt += 1) {
     try {
       return await withTimeout(addDoc(collection(db, COLLECTION_NAME), payload), SUBMIT_TIMEOUT_MS);
     } catch (err) {
-      // shortcut: fallback to 10-field payload if remote firestore.rules isn't deployed yet; remove once deployed
-      if (!usedSchemaFallback && err?.code === 'permission-denied') {
-        usedSchemaFallback = true;
-        payload = basePayload;
-        continue;
-      }
       if (attempt === 0 && isRetryable(err)) {
         await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY_MS));
         continue;
