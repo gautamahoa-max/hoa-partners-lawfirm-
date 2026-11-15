@@ -6,12 +6,12 @@ import Services from './components/Services';
 import LocationSection from './components/LocationSection';
 import Footer from './components/Footer';
 import FloatingContact from './components/FloatingContact';
-import ServiceDetailPage from './components/ServiceDetailPage';
-import LawyerBioPage from './components/LawyerBioPage';
-import ContactPage from './components/ContactPage';
-import LegalKnowledgePage from './components/LegalKnowledgePage';
 import { purgeLegacySensitiveStorage } from './utils/security';
 
+const ServiceDetailPage = React.lazy(() => import('./components/ServiceDetailPage'));
+const LawyerBioPage = React.lazy(() => import('./components/LawyerBioPage'));
+const ContactPage = React.lazy(() => import('./components/ContactPage'));
+const LegalKnowledgePage = React.lazy(() => import('./components/LegalKnowledgePage'));
 const AdminPage = React.lazy(() => import('./components/AdminPage'));
 
 function MainContent() {
@@ -52,11 +52,13 @@ function MainContent() {
   const isLawyerRoute = /^#(?:(?:\/)?(?:luat-su|gioi-thieu|ve-chung-toi))(?:\/)?$/.test(currentRoute);
   if (isLawyerRoute) {
     return (
-      <LawyerBioPage
-        onBack={() => {
-          window.location.hash = '';
-        }}
-      />
+      <React.Suspense fallback={<div className="min-h-screen bg-white" />}>
+        <LawyerBioPage
+          onBack={() => {
+            window.location.hash = '';
+          }}
+        />
+      </React.Suspense>
     );
   }
 
@@ -64,11 +66,13 @@ function MainContent() {
   const isContactRoute = /^#(?:(?:\/)?(?:lien-he|contact))(?:\/)?$/.test(currentRoute);
   if (isContactRoute) {
     return (
-      <ContactPage
-        onBack={() => {
-          window.location.hash = '';
-        }}
-      />
+      <React.Suspense fallback={<div className="min-h-screen bg-white" />}>
+        <ContactPage
+          onBack={() => {
+            window.location.hash = '';
+          }}
+        />
+      </React.Suspense>
     );
   }
 
@@ -77,12 +81,14 @@ function MainContent() {
   if (knowledgeMatch) {
     const activeArticleId = knowledgeMatch[1] || null;
     return (
-      <LegalKnowledgePage
-        articleId={activeArticleId}
-        onBack={() => {
-          window.location.hash = '';
-        }}
-      />
+      <React.Suspense fallback={<div className="min-h-screen bg-white" />}>
+        <LegalKnowledgePage
+          articleId={activeArticleId}
+          onBack={() => {
+            window.location.hash = '';
+          }}
+        />
+      </React.Suspense>
     );
   }
 
@@ -93,15 +99,17 @@ function MainContent() {
   // Nếu đang ở trang chi tiết chuyên môn
   if (activeServiceId) {
     return (
-      <ServiceDetailPage
-        serviceId={activeServiceId}
-        onBack={() => {
-          window.location.hash = '';
-        }}
-        onSelectService={(id) => {
-          window.location.hash = `#/linh-vuc/${id}`;
-        }}
-      />
+      <React.Suspense fallback={<div className="min-h-screen bg-white" />}>
+        <ServiceDetailPage
+          serviceId={activeServiceId}
+          onBack={() => {
+            window.location.hash = '';
+          }}
+          onSelectService={(id) => {
+            window.location.hash = `#/linh-vuc/${id}`;
+          }}
+        />
+      </React.Suspense>
     );
   }
 

@@ -51,7 +51,11 @@ function isRetryable(err) {
 /**
  * Sanitize, validate, and submit a consultation inquiry with 10s timeout and 1 transient retry.
  */
-export async function submitConsultation({ fullName, phone, notes, lang } = {}) {
+export async function submitConsultation({ fullName, phone, notes, lang, consent } = {}) {
+  if (consent === false) {
+    throw createValidationError('Consent to personal data processing is required.');
+  }
+
   const cleanName = sanitizeInput(fullName, 120).trim();
   const cleanPhone = sanitizeInput(phone, 25).trim();
   const cleanNotes = sanitizeInput(notes, 2000).trim();

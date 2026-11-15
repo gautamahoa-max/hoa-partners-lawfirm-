@@ -25,6 +25,7 @@ export default function ContactPage({ onBack }) {
     fullName: '',
     phone: '',
     notes: '',
+    consent: false,
     botField: '', // Honeypot anti-bot trap
   });
 
@@ -32,16 +33,30 @@ export default function ContactPage({ onBack }) {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [submitFailed, setSubmitFailed] = useState(false);
+  const [showPrivacyModal, setShowPrivacyModal] = useState(false);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     purgeLegacySensitiveStorage();
   }, []);
 
+  useEffect(() => {
+    if (!showPrivacyModal) return undefined;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setShowPrivacyModal(false);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [showPrivacyModal]);
+
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    const maxLen = name === 'fullName' ? 120 : name === 'phone' ? 20 : name === 'botField' ? 100 : 2000;
-    setFormData((prev) => ({ ...prev, [name]: value.slice(0, maxLen) }));
+    const { name, value, type, checked } = e.target;
+    if (type === 'checkbox') {
+      setFormData((prev) => ({ ...prev, [name]: checked }));
+    } else {
+      const maxLen = name === 'fullName' ? 120 : name === 'phone' ? 20 : name === 'botField' ? 100 : 2000;
+      setFormData((prev) => ({ ...prev, [name]: value.slice(0, maxLen) }));
+    }
     if (errorMessage) setErrorMessage('');
     if (submitFailed) setSubmitFailed(false);
   };
@@ -73,6 +88,11 @@ export default function ContactPage({ onBack }) {
       return;
     }
 
+    if (!formData.consent) {
+      setErrorMessage(formT.errorConsent);
+      return;
+    }
+
     // 2. Rate limit check
     const rateStatus = checkRateLimit();
     if (!rateStatus.allowed) {
@@ -98,6 +118,7 @@ export default function ContactPage({ onBack }) {
         phone: cleanPhone,
         notes: cleanNotes,
         lang,
+        consent: Boolean(formData.consent),
       });
       recordSubmissionTimestamp();
       setIsSubmitted(true);
@@ -119,6 +140,7 @@ export default function ContactPage({ onBack }) {
       fullName: '',
       phone: '',
       notes: '',
+      consent: false,
       botField: '',
     });
     setIsSubmitted(false);
@@ -282,6 +304,35 @@ export default function ContactPage({ onBack }) {
                     ></textarea>
                   </div>
 
+                  {/* 4. Ô đồng ý xử lý dữ liệu cá nhân (mặc định không tick sẵn) */}
+                  <div className="rounded-lg bg-white/80 border border-slate-200/90 p-3.5 sm:p-4">
+                    <div className="flex items-start gap-3">
+                      <input
+                        id="privacyConsent"
+                        type="checkbox"
+                        name="consent"
+                        checked={formData.consent}
+                        onChange={handleChange}
+                        required
+                        className="mt-0.5 h-4 w-4 rounded border-slate-300 text-[#0F2144] focus:ring-[#0F2144] cursor-pointer shrink-0"
+                      />
+                      <label htmlFor="privacyConsent" className="text-xs text-slate-700 leading-relaxed cursor-pointer">
+                        {formT.consentPrefix}
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShowPrivacyModal(true);
+                          }}
+                          className="font-semibold text-[#0F2144] underline underline-offset-2 hover:text-amber-700 cursor-pointer"
+                        >
+                          {formT.consentLinkText}
+                        </button>
+                        {formT.consentSuffix}
+                      </label>
+                    </div>
+                  </div>
+
                   {/* Nút gửi yêu cầu tư vấn hiện đại */}
                   <div className="pt-3">
                     <button
@@ -325,6 +376,76 @@ export default function ContactPage({ onBack }) {
       {/* Footer & Floating Contact Button */}
       <Footer />
       <FloatingContact />
+
+      {showPrivacyModal && (
+        <div
+          className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="privacy-policy-modal-title"
+          onClick={() => setShowPrivacyModal(false)}
+        >
+          <div
+            className="bg-white border border-slate-200 rounded-2xl max-w-2xl w-full max-h-[88vh] overflow-y-auto shadow-2xl p-6 sm:p-8 text-left"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="border-b border-slate-200 pb-4 mb-5 flex items-start justify-between gap-4">
+              <h2
+                id="privacy-policy-modal-title"
+                className="text-lg sm:text-xl font-bold text-[#0F2144] tracking-tight"
+              >
+                {formT.privacyModalTitle}
+              </h2>
+              <button
+                type="button"
+                onClick={() => setShowPrivacyModal(false)}
+                aria-label={formT.privacyModalClose}
+                className="text-slate-400 hover:text-slate-700 text-xl leading-none px-1 cursor-pointer"
+              >
+                ×
+              </button>
+            </div>
+
+            <p className="text-xs sm:text-sm text-slate-700 leading-relaxed mb-4">
+              {formT.privacyModalIntro}
+            </p>
+
+            <div className="space-y-3.5">
+              {formT.privacyModalItems?.map((item) => (
+                <div key={item.title} className="rounded-lg bg-[#FAF9F6] border border-slate-200/80 p-3.5">
+                  <h3 className="text-xs sm:text-sm font-bold text-[#0F2144] mb-1">
+                    {item.title}
+                  </h3>
+                  <p className="text-xs text-slate-600 leading-relaxed">
+                    {item.body}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-6 pt-4 border-t border-slate-200 flex flex-col-reverse sm:flex-row sm:justify-end gap-2.5">
+              <button
+                type="button"
+                onClick={() => setShowPrivacyModal(false)}
+                className="px-4 py-2.5 rounded-lg border border-slate-300 text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer"
+              >
+                {formT.privacyModalClose}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setFormData((prev) => ({ ...prev, consent: true }));
+                  if (errorMessage) setErrorMessage('');
+                  setShowPrivacyModal(false);
+                }}
+                className="px-5 py-2.5 rounded-lg bg-[#0F2144] text-white text-xs sm:text-sm font-semibold hover:bg-[#162A56] transition-colors cursor-pointer"
+              >
+                {formT.privacyModalAgreeBtn}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   );

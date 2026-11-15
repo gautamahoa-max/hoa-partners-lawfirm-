@@ -88,4 +88,8 @@ test('CONSULTATION_STATUSES and submitConsultation validation reject invalid pay
     () => submitConsultation({ fullName: 'Nguyen A', phone: '0988886447', notes: '   ' }),
     { code: 'validation/invalid-input' }
   );
+  await assert.rejects(
+    () => submitConsultation({ fullName: 'Nguyen A', phone: '0988886447', notes: 'Test', consent: false }),
+    { code: 'validation/invalid-input' }
+  );
 });

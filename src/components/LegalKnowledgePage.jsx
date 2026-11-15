@@ -3,10 +3,11 @@ import Navbar from './Navbar';
 import Footer from './Footer';
 import FloatingContact from './FloatingContact';
 import { useLanguage } from '../context/LanguageContext';
+import { LEGAL_KNOWLEDGE } from '../i18n/legalKnowledge';
 
 export default function LegalKnowledgePage({ articleId, onBack }) {
   const { lang, t } = useLanguage();
-  const knowledge = t.legalKnowledge;
+  const knowledge = t.legalKnowledge || LEGAL_KNOWLEDGE[lang] || LEGAL_KNOWLEDGE.vi;
 
   // Filter state for the listing view
   const [searchKeyword, setSearchKeyword] = useState('');
