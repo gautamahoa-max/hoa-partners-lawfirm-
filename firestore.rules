@@ -18,6 +18,8 @@ rules_version = '2';
 //   - topic: string (optional, <= 100 chars) - consultation topic
 //   - service: string (optional, <= 100 chars) - requested legal service
 //   - lang: string (optional, <= 10 chars) - UI language code (e.g. 'vi', 'en')
+//   - consentVersion: string (optional on create, immutable once set, 1..50 chars) - accepted consent document version (e.g. 'HP-PDPL-02/2026')
+//   - consentAcceptedAt: timestamp | string (optional on create, immutable once set, 1..50 chars if string) - timestamp when visitor checked/confirmed consent
 //   - lawyerNotes: string (optional, admin update only, <= 5000 chars)
 //   - updatedAt: timestamp | string (optional, admin update only, <= 50 chars if string)
 //   - updatedBy: string (optional, admin update only, <= 150 chars)
@@ -67,7 +69,9 @@ service cloud.firestore {
           'email',
           'topic',
           'service',
-          'lang'
+          'lang',
+          'consentVersion',
+          'consentAcceptedAt'
         ]) &&
 
         // 2. Strict type safety and character limits
@@ -95,7 +99,13 @@ service cloud.firestore {
         (!('email' in data) || (data.email is string && data.email.size() <= 150)) &&
         (!('topic' in data) || (data.topic is string && data.topic.size() <= 100)) &&
         (!('service' in data) || (data['service'] is string && data['service'].size() <= 100)) &&
-        (!('lang' in data) || (data.lang is string && data.lang.size() <= 10));
+        (!('lang' in data) || (data.lang is string && data.lang.size() <= 10)) &&
+        (!('consentVersion' in data) || (data.consentVersion is string && data.consentVersion.size() >= 1 && data.consentVersion.size() <= 50)) &&
+        (
+          !('consentAcceptedAt' in data) ||
+          data.consentAcceptedAt is timestamp ||
+          (data.consentAcceptedAt is string && data.consentAcceptedAt.size() >= 1 && data.consentAcceptedAt.size() <= 50)
+        );
     }
 
     // Validates consultation inquiry updates performed by authorized admins
@@ -113,6 +123,8 @@ service cloud.firestore {
           'topic',
           'service',
           'lang',
+          'consentVersion',
+          'consentAcceptedAt',
           'lawyerNotes',
           'updatedAt',
           'updatedBy'
@@ -145,7 +157,23 @@ service cloud.firestore {
         (!('service' in data) || (data['service'] is string && data['service'].size() <= 100)) &&
         (!('lang' in data) || (data.lang is string && data.lang.size() <= 10)) &&
 
-        // 4. Admin workflow & audit fields validation
+        // 4. Consent evidence fields are immutable once set (Law 91/2025/QH15 Art. 9.3)
+        (
+          !('consentVersion' in existingData) ||
+          ('consentVersion' in data && data.consentVersion == existingData.consentVersion)
+        ) &&
+        (!('consentVersion' in data) || (data.consentVersion is string && data.consentVersion.size() >= 1 && data.consentVersion.size() <= 50)) &&
+        (
+          !('consentAcceptedAt' in existingData) ||
+          ('consentAcceptedAt' in data && data.consentAcceptedAt == existingData.consentAcceptedAt)
+        ) &&
+        (
+          !('consentAcceptedAt' in data) ||
+          data.consentAcceptedAt is timestamp ||
+          (data.consentAcceptedAt is string && data.consentAcceptedAt.size() >= 1 && data.consentAcceptedAt.size() <= 50)
+        ) &&
+
+        // 5. Admin workflow & audit fields validation
         (!('status' in data) || (data.status is string && data.status in ['new', 'contacted', 'in_progress', 'completed'])) &&
         (!('lawyerNotes' in data) || (data.lawyerNotes is string && data.lawyerNotes.size() <= 5000)) &&
         (

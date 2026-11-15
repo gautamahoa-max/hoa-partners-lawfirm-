@@ -14,7 +14,7 @@ import {
   checkRateLimit,
   recordSubmissionTimestamp,
 } from '../utils/security';
-import { submitConsultation } from '../services/consultations';
+import { submitConsultation, CONSENT_DOCUMENT_VERSION } from '../services/consultations';
 
 const PdfConsentModal = React.lazy(() => import('./PdfConsentModal'));
 
@@ -28,6 +28,7 @@ export default function ContactPage({ onBack }) {
     phone: '',
     notes: '',
     consent: false,
+    consentAcceptedAt: '',
     botField: '', // Honeypot anti-bot trap
   });
 
@@ -54,7 +55,13 @@ export default function ContactPage({ onBack }) {
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     if (type === 'checkbox') {
-      setFormData((prev) => ({ ...prev, [name]: checked }));
+      setFormData((prev) => ({
+        ...prev,
+        [name]: checked,
+        ...(name === 'consent'
+          ? { consentAcceptedAt: checked ? new Date().toISOString() : '' }
+          : {}),
+      }));
     } else {
       const maxLen = name === 'fullName' ? 120 : name === 'phone' ? 20 : name === 'botField' ? 100 : 2000;
       setFormData((prev) => ({ ...prev, [name]: value.slice(0, maxLen) }));
@@ -121,6 +128,8 @@ export default function ContactPage({ onBack }) {
         notes: cleanNotes,
         lang,
         consent: Boolean(formData.consent),
+        consentVersion: CONSENT_DOCUMENT_VERSION,
+        consentAcceptedAt: formData.consentAcceptedAt || new Date().toISOString(),
       });
       recordSubmissionTimestamp();
       setIsSubmitted(true);
@@ -143,6 +152,7 @@ export default function ContactPage({ onBack }) {
       phone: '',
       notes: '',
       consent: false,
+      consentAcceptedAt: '',
       botField: '',
     });
     setIsSubmitted(false);
@@ -394,7 +404,11 @@ export default function ContactPage({ onBack }) {
             formT={formT}
             onClose={() => setShowPrivacyModal(false)}
             onAgree={() => {
-              setFormData((prev) => ({ ...prev, consent: true }));
+              setFormData((prev) => ({
+                ...prev,
+                consent: true,
+                consentAcceptedAt: new Date().toISOString(),
+              }));
               if (errorMessage) setErrorMessage('');
               setShowPrivacyModal(false);
             }}

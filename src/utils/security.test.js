@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import { sanitizeInput, isValidPhone } from './security.js';
 import {
   CONSULTATION_STATUSES,
+  CONSENT_DOCUMENT_VERSION,
+  buildConsentAuditFields,
   escapeCsvField,
   buildConsultationsCsv,
   exportConsultationsCsv,
@@ -46,7 +48,7 @@ test('escapeCsvField handles RFC 4180 quoting and neutralizes formula injection'
   assert.equal(escapeCsvField('@SUM(A1:A2)'), "'@SUM(A1:A2)");
 });
 
-test('buildConsultationsCsv and exportConsultationsCsv produce UTF-8 BOM CSV with escaped rows', () => {
+test('buildConsultationsCsv and exportConsultationsCsv produce UTF-8 BOM CSV with escaped rows and consent audit columns', () => {
   const sample = [
     {
       id: 'c1',
@@ -58,19 +60,41 @@ test('buildConsultationsCsv and exportConsultationsCsv produce UTF-8 BOM CSV wit
       lang: 'vi',
       source: 'web_contact_form',
       createdAt: '2026-11-13T05:00:00.000Z',
+      consentVersion: 'HP-PDPL-02/2026',
+      consentAcceptedAt: '2026-11-13T04:59:50.000Z',
     },
   ];
 
   const csv = buildConsultationsCsv(sample);
   const lines = csv.split('\r\n');
   assert.equal(lines.length, 2);
-  assert.match(lines[0], /^ID,Họ và tên,Số điện thoại/);
+  assert.match(lines[0], /^ID,Họ và tên,Số điện thoại.*Phiên bản chấp thuận,Thời điểm chấp thuận$/);
   assert.ok(lines[1].includes('"Nguyễn ""An"", Jr."'));
   assert.ok(lines[1].includes('"Cần tư vấn\nhợp đồng"'));
   assert.ok(lines[1].includes(`"'=HYPERLINK(""http://bad"")"`));
+  assert.ok(lines[1].includes('HP-PDPL-02/2026,2026-11-13T04:59:50.000Z'));
 
   const bomCsv = exportConsultationsCsv(sample);
   assert.equal(bomCsv.startsWith('\uFEFF'), true);
+});
+
+test('buildConsentAuditFields normalizes version and ISO consentAcceptedAt timestamp', () => {
+  const defaults = buildConsentAuditFields();
+  assert.equal(defaults.consentVersion, CONSENT_DOCUMENT_VERSION);
+  assert.match(defaults.consentAcceptedAt, /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/);
+
+  const custom = buildConsentAuditFields({
+    consentVersion: '<b>HP-PDPL-03/2026</b>',
+    consentAcceptedAt: '2026-11-15T05:10:00.000Z',
+  });
+  assert.equal(custom.consentVersion, 'HP-PDPL-03/2026');
+  assert.equal(custom.consentAcceptedAt, '2026-11-15T05:10:00.000Z');
+
+  const invalidTs = buildConsentAuditFields({
+    consentVersion: 'HP-PDPL-02/2026',
+    consentAcceptedAt: 'not-a-timestamp',
+  });
+  assert.match(invalidTs.consentAcceptedAt, /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/);
 });
 
 test('CONSULTATION_STATUSES and submitConsultation validation reject invalid payloads', async () => {

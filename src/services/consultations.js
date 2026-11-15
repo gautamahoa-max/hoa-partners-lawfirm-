@@ -14,10 +14,12 @@ import { db } from './firebase.js';
 import { sanitizeInput, isValidPhone } from '../utils/security.js';
 
 export const CONSULTATION_STATUSES = ['new', 'contacted', 'in_progress', 'completed'];
+export const CONSENT_DOCUMENT_VERSION = 'HP-PDPL-02/2026';
 
 const COLLECTION_NAME = 'consultations';
 const SUBMIT_TIMEOUT_MS = 10000;
 const RETRY_DELAY_MS = 400;
+const ISO_TIMESTAMP_RE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})?$/;
 const NON_RETRYABLE_CODES = new Set([
   'validation/invalid-input',
   'permission-denied',
@@ -25,6 +27,24 @@ const NON_RETRYABLE_CODES = new Set([
   'unauthenticated',
   'failed-precondition',
 ]);
+
+/**
+ * Normalize consent evidence fields stored alongside a consultation (Law 91/2025/QH15 Art. 9.3).
+ */
+export function buildConsentAuditFields({ consentVersion, consentAcceptedAt } = {}) {
+  const cleanVersion =
+    sanitizeInput(consentVersion || CONSENT_DOCUMENT_VERSION, 50).trim() || CONSENT_DOCUMENT_VERSION;
+  const trimmedTime = typeof consentAcceptedAt === 'string' ? consentAcceptedAt.trim() : '';
+  const cleanAcceptedAt =
+    trimmedTime.length > 0 && trimmedTime.length <= 50 && ISO_TIMESTAMP_RE.test(trimmedTime)
+      ? trimmedTime
+      : new Date().toISOString();
+
+  return {
+    consentVersion: cleanVersion,
+    consentAcceptedAt: cleanAcceptedAt,
+  };
+}
 
 function createValidationError(message) {
   const err = new Error(message);
@@ -51,7 +71,15 @@ function isRetryable(err) {
 /**
  * Sanitize, validate, and submit a consultation inquiry with 10s timeout and 1 transient retry.
  */
-export async function submitConsultation({ fullName, phone, notes, lang, consent } = {}) {
+export async function submitConsultation({
+  fullName,
+  phone,
+  notes,
+  lang,
+  consent,
+  consentVersion,
+  consentAcceptedAt,
+} = {}) {
   if (consent === false) {
     throw createValidationError('Consent to personal data processing is required.');
   }
@@ -71,7 +99,7 @@ export async function submitConsultation({ fullName, phone, notes, lang, consent
     throw createValidationError('Case notes must be between 1 and 2000 characters.');
   }
 
-  const payload = {
+  const basePayload = {
     fullName: cleanName,
     phone: cleanPhone,
     notes: cleanNotes,
@@ -81,10 +109,22 @@ export async function submitConsultation({ fullName, phone, notes, lang, consent
     createdAt: serverTimestamp(),
   };
 
+  let payload = {
+    ...basePayload,
+    ...buildConsentAuditFields({ consentVersion, consentAcceptedAt }),
+  };
+  let usedSchemaFallback = false;
+
   for (let attempt = 0; attempt < 2; attempt += 1) {
     try {
       return await withTimeout(addDoc(collection(db, COLLECTION_NAME), payload), SUBMIT_TIMEOUT_MS);
     } catch (err) {
+      // shortcut: fallback to 10-field payload if remote firestore.rules isn't deployed yet; remove once deployed
+      if (!usedSchemaFallback && err?.code === 'permission-denied') {
+        usedSchemaFallback = true;
+        payload = basePayload;
+        continue;
+      }
       if (attempt === 0 && isRetryable(err)) {
         await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY_MS));
         continue;
@@ -134,8 +174,13 @@ export async function updateConsultation(id, patch, adminEmail) {
     throw createValidationError(`Invalid consultation status: ${patch.status}`);
   }
 
-  // Keep createdAt immutable per firestore.rules
-  const { createdAt: _ignored, ...safePatch } = patch;
+  // Keep createdAt and consent evidence immutable per firestore.rules
+  const {
+    createdAt: _ignoredCreatedAt,
+    consentVersion: _ignoredConsentVersion,
+    consentAcceptedAt: _ignoredConsentAcceptedAt,
+    ...safePatch
+  } = patch;
   return updateDoc(doc(db, COLLECTION_NAME, id), {
     ...safePatch,
     updatedAt: serverTimestamp(),
@@ -192,6 +237,8 @@ export function buildConsultationsCsv(inquiries = []) {
     'Thời gian gửi',
     'Cập nhật lần cuối',
     'Người cập nhật',
+    'Phiên bản chấp thuận',
+    'Thời điểm chấp thuận',
   ];
 
   const rows = inquiries.map((item = {}) => [
@@ -206,6 +253,8 @@ export function buildConsultationsCsv(inquiries = []) {
     formatTimestampForCsv(item.createdAt),
     formatTimestampForCsv(item.updatedAt),
     item.updatedBy || '',
+    item.consentVersion || '',
+    formatTimestampForCsv(item.consentAcceptedAt),
   ]);
 
   return [headers, ...rows]

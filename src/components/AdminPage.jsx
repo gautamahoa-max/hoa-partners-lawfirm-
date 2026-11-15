@@ -21,6 +21,12 @@ const STATUS_META = {
   completed: { label: 'Đã hoàn tất', badgeClass: 'bg-emerald-50 text-emerald-900 border-emerald-300' },
 };
 
+function formatViTimestamp(ts, fallback = '') {
+  if (!ts) return fallback;
+  const date = typeof ts?.toDate === 'function' ? ts.toDate() : new Date(ts);
+  return Number.isNaN(date.getTime()) ? String(ts) : date.toLocaleString('vi-VN');
+}
+
 export default function AdminPage({ onBack }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
@@ -143,7 +149,8 @@ export default function AdminPage({ onBack }) {
       (item.fullName || '').toLowerCase().includes(normalizedSearch) ||
       (item.phone || '').includes(searchTerm) ||
       (item.notes || '').toLowerCase().includes(normalizedSearch) ||
-      (item.lawyerNotes || '').toLowerCase().includes(normalizedSearch);
+      (item.lawyerNotes || '').toLowerCase().includes(normalizedSearch) ||
+      (item.consentVersion || '').toLowerCase().includes(normalizedSearch);
 
     const matchesStatus =
       filterStatus === 'all' ||
@@ -362,12 +369,8 @@ export default function AdminPage({ onBack }) {
               ) : (
                 <div className="divide-y divide-slate-100">
                   {filteredInquiries.map((item) => {
-                    const formattedDate = item.createdAt?.toDate
-                      ? item.createdAt.toDate().toLocaleString('vi-VN')
-                      : typeof item.createdAt === 'string'
-                      ? new Date(item.createdAt).toLocaleString('vi-VN')
-                      : 'Vừa xong';
-
+                    const formattedDate = formatViTimestamp(item.createdAt, 'Vừa xong');
+                    const consentTimeLabel = formatViTimestamp(item.consentAcceptedAt);
                     const status = item.status || 'new';
                     const statusMeta = STATUS_META[status] || STATUS_META.new;
                     const isEditingNote = editingNoteId === item.id;
@@ -382,6 +385,15 @@ export default function AdminPage({ onBack }) {
                                 {statusMeta.label}
                               </span>
                               <span className="text-[11px] text-slate-500">{formattedDate}</span>
+                              {item.consentVersion && (
+                                <span
+                                  className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200"
+                                  title={consentTimeLabel ? `Xác nhận lúc ${consentTimeLabel}` : 'Đã xác nhận Thư chấp thuận'}
+                                >
+                                  Chấp thuận: {item.consentVersion}
+                                  {consentTimeLabel ? ` (${consentTimeLabel})` : ''}
+                                </span>
+                              )}
                             </div>
 
                             <div className="flex items-center gap-4 text-xs">
