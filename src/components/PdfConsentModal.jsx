@@ -233,17 +233,12 @@ export default function PdfConsentModal({ lang, formT, consentAcceptedAt, onClos
         {/* Sticky Viewer Toolbar (No Download / No Print) */}
         <div className="px-4 sm:px-6 py-3.5 border-b border-slate-200 bg-white flex flex-wrap items-center justify-between gap-2.5 shrink-0">
           <div className="min-w-0">
-            <div className="flex flex-wrap items-center gap-2">
-              <h2
-                id="pdf-consent-modal-title"
-                className="text-sm sm:text-base font-bold text-[#0F2144] tracking-tight truncate"
-              >
-                {formT.privacyModalTitle}
-              </h2>
-              <span className="inline-flex items-center px-2 py-0.5 rounded bg-amber-50 border border-amber-200 text-[10px] font-bold uppercase tracking-wider text-amber-800">
-                {formT.privacyViewOnlyBadge}
-              </span>
-            </div>
+            <h2
+              id="pdf-consent-modal-title"
+              className="text-sm sm:text-base font-bold text-[#0F2144] tracking-tight truncate"
+            >
+              {formT.privacyModalTitle}
+            </h2>
             <p className="text-[11px] sm:text-xs text-slate-500 mt-0.5">
               {formT.privacyModalSubtitle} {numPages > 0 ? `(${numPages} ${lang === 'en' ? 'pages' : 'trang'})` : ''}
             </p>
