@@ -3,6 +3,7 @@ import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Services from './components/Services';
+import LegalCalculator from './components/LegalCalculator';
 import LocationSection from './components/LocationSection';
 import Footer from './components/Footer';
 import FloatingContact from './components/FloatingContact';
@@ -142,7 +143,10 @@ function MainContent() {
         {/* 3. Lĩnh Vực Hành Nghề Cốt Lõi (Biểu đồ Donut tương tác) */}
         <Services />
 
-        {/* 4. Địa Điểm Văn Phòng & Bản Đồ Google Maps */}
+        {/* 4. Khối Báo Giá Dịch Vụ Nổi Bật Trên Trang Chủ */}
+        <LegalCalculator />
+
+        {/* 5. Địa Điểm Văn Phòng & Bản Đồ Google Maps */}
         <LocationSection />
       </main>
 
