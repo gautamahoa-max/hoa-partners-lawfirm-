@@ -132,12 +132,6 @@ export default function Footer() {
                 {footer.contact || (lang === 'vi' ? 'LIÊN HỆ TRỰC TIẾP' : 'DIRECT CONTACT')}
               </button>
             </div>
-
-            <div>
-              <span className="text-slate-500 block">
-                {footer.locations}
-              </span>
-            </div>
           </div>
 
         </div>

@@ -433,7 +433,6 @@ export const TRANSLATIONS = {
       dossier: 'DANH SÁCH VỤ ÁN',
       about: 'GIỚI THIỆU',
       knowledge: 'KIẾN THỨC PHÁP LUẬT',
-      locations: 'TP.HCM • ĐẮK LẮK',
       copyright: 'Thông tin hành nghề luật sư. © {year} Công ty Luật TNHH Hòa & Cộng sự.',
     },
     detailPage: {
@@ -968,7 +967,6 @@ export const TRANSLATIONS = {
       dossier: 'CASE DOCKET',
       about: 'ABOUT',
       knowledge: 'LEGAL KNOWLEDGE',
-      locations: 'HCMC • DAK LAK',
       copyright: 'Attorney Advertising. © {year} Hoa & Associates Law Firm LLC.',
     },
     detailPage: {
