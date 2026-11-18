@@ -3,7 +3,6 @@ import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Services from './components/Services';
-import LegalCalculator from './components/LegalCalculator';
 import LocationSection from './components/LocationSection';
 import Footer from './components/Footer';
 import FloatingContact from './components/FloatingContact';
@@ -13,6 +12,7 @@ const ServiceDetailPage = React.lazy(() => import('./components/ServiceDetailPag
 const LawyerBioPage = React.lazy(() => import('./components/LawyerBioPage'));
 const ContactPage = React.lazy(() => import('./components/ContactPage'));
 const LegalKnowledgePage = React.lazy(() => import('./components/LegalKnowledgePage'));
+const FeeSchedulePage = React.lazy(() => import('./components/FeeSchedulePage'));
 const AdminPage = React.lazy(() => import('./components/AdminPage'));
 
 function MainContent() {
@@ -29,15 +29,19 @@ function MainContent() {
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
-  useEffect(() => {
-    if (/^#(?:\/)?(?:bang-gia|phi-dich-vu)(?:\/)?$/.test(currentRoute)) {
-      const timer = setTimeout(() => {
-        document.getElementById('bang-gia')?.scrollIntoView({ behavior: 'smooth' });
-      }, 60);
-      return () => clearTimeout(timer);
-    }
-    return undefined;
-  }, [currentRoute]);
+  // Kiểm tra nếu route là trang bảng giá dịch vụ riêng (#/bang-gia, #/phi-dich-vu hoặc #/fee-schedule)
+  const isFeeScheduleRoute = /^#(?:(?:\/)?(?:bang-gia|phi-dich-vu|fee-schedule))(?:\/)?$/.test(currentRoute);
+  if (isFeeScheduleRoute) {
+    return (
+      <React.Suspense fallback={<div className="min-h-screen bg-white" />}>
+        <FeeSchedulePage
+          onBack={() => {
+            window.location.hash = '';
+          }}
+        />
+      </React.Suspense>
+    );
+  }
 
   // Kiểm tra nếu route là trang quản trị luật sư (#/quan-tri hoặc #/admin)
   const isAdminRoute = /^#(?:(?:\/)?(?:quan-tri|admin))(?:\/)?$/.test(currentRoute);
@@ -138,10 +142,7 @@ function MainContent() {
         {/* 3. Lĩnh Vực Hành Nghề Cốt Lõi (Biểu đồ Donut tương tác) */}
         <Services />
 
-        {/* 4. Bảng Giá Dịch Vụ & Dự Toán Chi Phí Tố Tụng */}
-        <LegalCalculator />
-
-        {/* 5. Địa Điểm Văn Phòng & Bản Đồ Google Maps */}
+        {/* 4. Địa Điểm Văn Phòng & Bản Đồ Google Maps */}
         <LocationSection />
       </main>
 

@@ -91,7 +91,9 @@ export default function Footer() {
 
             <div>
               <button
-                onClick={() => scrollTo('bang-gia')}
+                onClick={() => {
+                  window.location.hash = '#/bang-gia';
+                }}
                 className="hover:underline underline-offset-4 transition-all text-left block"
               >
                 {footer.pricing || (lang === 'vi' ? 'BẢNG GIÁ & THÙ LAO' : 'FEE SCHEDULE')}

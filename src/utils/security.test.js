@@ -17,6 +17,7 @@ import {
   estimateLegalFee,
   LEGAL_SERVICE_SCHEDULE,
 } from './courtFeeCalc.js';
+import { FEE_CATEGORIES, FEE_SCHEDULE_ITEMS } from '../i18n/feeSchedule.js';
 
 test('sanitizeInput strips HTML, control characters, dangerous protocols, and enforces maxLength', () => {
   assert.equal(sanitizeInput('<script>alert(1)</script>Hello'), 'alert(1)Hello');
@@ -220,4 +221,18 @@ test('LEGAL_SERVICE_SCHEDULE, estimateLegalFee, and calculateCourtFee cover 6 pr
   const comm50m = calculateCourtFee(50000000, 'commercial');
   assert.equal(comm50m.courtFee, 3000000);
   assert.equal(comm50m.advanceFee, 1500000);
+});
+
+test('FEE_SCHEDULE_ITEMS contains all 20 Excel rows without template firm names or typos', () => {
+  assert.equal(FEE_SCHEDULE_ITEMS.length, 20);
+  const validCategories = new Set(FEE_CATEGORIES.map((c) => c.id).filter((id) => id !== 'all'));
+
+  FEE_SCHEDULE_ITEMS.forEach((item, idx) => {
+    assert.equal(item.stt, idx + 1);
+    assert.ok(validCategories.has(item.category), `Invalid category on item ${item.stt}`);
+    assert.ok(item.service.vi.length > 0 && item.service.en.length > 0);
+    assert.ok(item.fee.vi.length > 0 && item.fee.en.length > 0);
+    assert.equal(item.service.vi.includes('Mild Sunshine'), false);
+    assert.equal(item.fee.vi.includes('Tổi thiểu'), false);
+  });
 });

@@ -9,7 +9,7 @@ export const TRANSLATIONS = {
       nav: [
         { name: 'Giới thiệu', href: '#/luat-su' },
         { name: 'Lĩnh vực hành nghề', href: '#linh-vuc' },
-        { name: 'Bảng giá dịch vụ', href: '#bang-gia' },
+        { name: 'Bảng giá dịch vụ', href: '#/bang-gia' },
         { name: 'Kiến thức pháp luật', href: '#/kien-thuc-phap-luat' },
         { name: 'Liên hệ', href: '#/lien-he' },
       ],
@@ -544,7 +544,7 @@ export const TRANSLATIONS = {
       nav: [
         { name: 'About', href: '#/luat-su' },
         { name: 'Practice Areas', href: '#linh-vuc' },
-        { name: 'Fee Schedule', href: '#bang-gia' },
+        { name: 'Fee Schedule', href: '#/bang-gia' },
         { name: 'Legal Knowledge', href: '#/kien-thuc-phap-luat' },
         { name: 'Contact', href: '#/lien-he' },
       ],
