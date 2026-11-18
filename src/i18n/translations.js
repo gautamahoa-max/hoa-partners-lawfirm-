@@ -9,6 +9,7 @@ export const TRANSLATIONS = {
       nav: [
         { name: 'Giới thiệu', href: '#/luat-su' },
         { name: 'Lĩnh vực hành nghề', href: '#linh-vuc' },
+        { name: 'Bảng giá dịch vụ', href: '#bang-gia' },
         { name: 'Kiến thức pháp luật', href: '#/kien-thuc-phap-luat' },
         { name: 'Liên hệ', href: '#/lien-he' },
       ],
@@ -428,6 +429,7 @@ export const TRANSLATIONS = {
       repOfficeAddress: '2A đường 33, phường Bình Trưng, TP.HCM',
       call: 'LIÊN HỆ: 098.888.6447',
       practice: 'LĨNH VỰC HÀNH NGHỀ',
+      pricing: 'BẢNG GIÁ & THÙ LAO',
       dossier: 'DANH SÁCH VỤ ÁN',
       about: 'GIỚI THIỆU',
       knowledge: 'KIẾN THỨC PHÁP LUẬT',
@@ -542,6 +544,7 @@ export const TRANSLATIONS = {
       nav: [
         { name: 'About', href: '#/luat-su' },
         { name: 'Practice Areas', href: '#linh-vuc' },
+        { name: 'Fee Schedule', href: '#bang-gia' },
         { name: 'Legal Knowledge', href: '#/kien-thuc-phap-luat' },
         { name: 'Contact', href: '#/lien-he' },
       ],
@@ -961,6 +964,7 @@ export const TRANSLATIONS = {
       repOfficeAddress: '2A 33rd Street, Binh Trung Ward, Ho Chi Minh City',
       call: 'CALL: +84 98.888.6447',
       practice: 'PRACTICE AREAS',
+      pricing: 'FEE SCHEDULE',
       dossier: 'CASE DOCKET',
       about: 'ABOUT',
       knowledge: 'LEGAL KNOWLEDGE',

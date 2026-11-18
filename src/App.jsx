@@ -3,6 +3,7 @@ import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Services from './components/Services';
+import LegalCalculator from './components/LegalCalculator';
 import LocationSection from './components/LocationSection';
 import Footer from './components/Footer';
 import FloatingContact from './components/FloatingContact';
@@ -27,6 +28,16 @@ function MainContent() {
     window.addEventListener('hashchange', handleHashChange);
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
+
+  useEffect(() => {
+    if (/^#(?:\/)?(?:bang-gia|phi-dich-vu)(?:\/)?$/.test(currentRoute)) {
+      const timer = setTimeout(() => {
+        document.getElementById('bang-gia')?.scrollIntoView({ behavior: 'smooth' });
+      }, 60);
+      return () => clearTimeout(timer);
+    }
+    return undefined;
+  }, [currentRoute]);
 
   // Kiểm tra nếu route là trang quản trị luật sư (#/quan-tri hoặc #/admin)
   const isAdminRoute = /^#(?:(?:\/)?(?:quan-tri|admin))(?:\/)?$/.test(currentRoute);
@@ -127,7 +138,10 @@ function MainContent() {
         {/* 3. Lĩnh Vực Hành Nghề Cốt Lõi (Biểu đồ Donut tương tác) */}
         <Services />
 
-        {/* 4. Địa Điểm Văn Phòng & Bản Đồ Google Maps */}
+        {/* 4. Bảng Giá Dịch Vụ & Dự Toán Chi Phí Tố Tụng */}
+        <LegalCalculator />
+
+        {/* 5. Địa Điểm Văn Phòng & Bản Đồ Google Maps */}
         <LocationSection />
       </main>
 

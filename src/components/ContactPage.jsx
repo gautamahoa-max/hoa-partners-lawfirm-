@@ -41,6 +41,18 @@ export default function ContactPage({ onBack }) {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     purgeLegacySensitiveStorage();
+    try {
+      const prefillNotes = sessionStorage.getItem('hp_prefill_notes');
+      if (prefillNotes) {
+        sessionStorage.removeItem('hp_prefill_notes');
+        setFormData((prev) => ({
+          ...prev,
+          notes: prefillNotes.slice(0, 2000),
+        }));
+      }
+    } catch {
+      // Ignore storage read errors in restricted contexts
+    }
   }, []);
 
   useEffect(() => {

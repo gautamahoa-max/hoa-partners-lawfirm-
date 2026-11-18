@@ -12,6 +12,11 @@ import {
 } from '../services/consultations.js';
 import { formatConsentDateLabels } from './formatters.js';
 import { buildPdfFromJpegPages, resolveConsentVersion } from './consentPdf.js';
+import {
+  calculateCourtFee,
+  estimateLegalFee,
+  LEGAL_SERVICE_SCHEDULE,
+} from './courtFeeCalc.js';
 
 test('sanitizeInput strips HTML, control characters, dangerous protocols, and enforces maxLength', () => {
   assert.equal(sanitizeInput('<script>alert(1)</script>Hello'), 'alert(1)Hello');
@@ -176,4 +181,43 @@ test('buildPdfFromJpegPages produces valid multi-page A4 PDF readable by pdfjs-d
   assert.ok(Math.abs(vp.width - 595.28) < 0.05);
   assert.ok(Math.abs(vp.height - 841.99) < 0.2);
   await doc.destroy();
+});
+
+test('LEGAL_SERVICE_SCHEDULE, estimateLegalFee, and calculateCourtFee cover 6 practices & Res. 326 bounds', () => {
+  const ids = LEGAL_SERVICE_SCHEDULE.map((item) => item.id);
+  assert.deepEqual(ids, ['real-estate', 'litigation', 'inheritance', 'family', 'contract', 'retainer']);
+
+  for (const id of ids) {
+    for (const feeOption of ['stage_plus_success', 'lump_sum']) {
+      for (const value of [0, 500000000, 10000000000]) {
+        const std = estimateLegalFee(id, value, { complexity: 'standard', feeOption, lang: 'vi' });
+        const cmp = estimateLegalFee(id, value, { complexity: 'complex', feeOption, lang: 'vi' });
+        const high = estimateLegalFee(id, value, { complexity: 'high_complex', feeOption, lang: 'vi' });
+        assert.ok(
+          std.baseFee < cmp.baseFee && cmp.baseFee < high.baseFee,
+          `Expected monotonic tiers for ${id} (${feeOption}, val=${value}): ${std.baseFee}, ${cmp.baseFee}, ${high.baseFee}`
+        );
+      }
+    }
+  }
+
+  const enEstate = estimateLegalFee('real-estate', 1500000000, {
+    complexity: 'complex',
+    feeOption: 'lump_sum',
+    lang: 'en',
+  });
+  assert.equal(enEstate.name, 'Land & Real Estate Disputes');
+  assert.equal(enEstate.rangeLabel, 'VND 70M – 150M');
+
+  const zeroCourt = calculateCourtFee(0, 'civil');
+  assert.equal(zeroCourt.courtFee, 300000);
+  assert.equal(zeroCourt.advanceFee, 150000);
+
+  const civil600m = calculateCourtFee(600000000, 'civil');
+  assert.equal(civil600m.courtFee, 28000000);
+  assert.equal(civil600m.advanceFee, 14000000);
+
+  const comm50m = calculateCourtFee(50000000, 'commercial');
+  assert.equal(comm50m.courtFee, 3000000);
+  assert.equal(comm50m.advanceFee, 1500000);
 });
