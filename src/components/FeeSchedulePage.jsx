@@ -5,6 +5,20 @@ import FloatingContact from './FloatingContact';
 import { useLanguage } from '../context/LanguageContext';
 import { FEE_CATEGORIES, FEE_SCHEDULE_ITEMS } from '../i18n/feeSchedule';
 
+const CATEGORY_BADGES = {
+  advisory: { vi: 'Tư vấn & Soạn thảo', en: 'Advisory & Drafting' },
+  representation: { vi: 'Đại diện Ngoài tố tụng', en: 'Pre-Litigation' },
+  litigation: { vi: 'Tranh tụng tại Tòa án', en: 'Court Litigation' },
+};
+
+function formatDisplayFee(feeText, locale) {
+  const lower = String(feeText || '').toLowerCase();
+  if (!feeText || lower.includes('thỏa thuận') || lower.includes('agreement')) {
+    return feeText;
+  }
+  return locale === 'vi' ? `${feeText} VNĐ` : `${feeText} VND`;
+}
+
 export default function FeeSchedulePage() {
   const { lang } = useLanguage();
   const locale = lang === 'en' ? 'en' : 'vi';
@@ -37,7 +51,7 @@ export default function FeeSchedulePage() {
         ? [
             '[Yêu cầu tư vấn theo Biểu phí dịch vụ]',
             `- Hạng mục #${item.stt}: ${item.service.vi}`,
-            `- Mức phí niêm yết: ${item.fee.vi} VNĐ`,
+            `- Mức phí niêm yết: ${formatDisplayFee(item.fee.vi, 'vi')}`,
             item.note.vi ? `- Ghi chú áp dụng: ${item.note.vi}` : null,
             '- Mô tả thêm tình tiết hồ sơ của Quý khách: ',
           ]
@@ -46,7 +60,7 @@ export default function FeeSchedulePage() {
         : [
             '[Fee Schedule Consultation Request]',
             `- Item #${item.stt}: ${item.service.en}`,
-            `- Listed Fee: ${item.fee.en} VND`,
+            `- Listed Fee: ${formatDisplayFee(item.fee.en, 'en')}`,
             item.note.en ? `- Applicable Note: ${item.note.en}` : null,
             '- Brief summary of your matter: ',
           ]
@@ -62,12 +76,12 @@ export default function FeeSchedulePage() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-slate-900 flex flex-col font-sans selection:bg-amber-100 selection:text-amber-900 overflow-x-hidden">
+    <div className="min-h-screen bg-[#F5F5F7] text-slate-900 flex flex-col font-sans selection:bg-amber-100 selection:text-amber-900 overflow-x-hidden">
       <Navbar />
 
       <main className="flex-grow">
         {/* Editorial Header Band */}
-        <section className="bg-[#FAF9F6] border-b border-slate-200 py-12 sm:py-16 text-left">
+        <section className="bg-[#FAF9F6] border-b border-slate-200/80 py-12 sm:py-16 text-left">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl">
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-600 mb-3 ykvn-accent-block">
@@ -85,8 +99,8 @@ export default function FeeSchedulePage() {
           </div>
         </section>
 
-        {/* Filter & Search Bar */}
-        <section className="bg-white border-b border-slate-200 py-5 text-left">
+        {/* Pill Filter & Search Bar */}
+        <section className="bg-white border-b border-slate-200/80 py-5 text-left">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
             <div className="flex flex-wrap gap-2">
               {FEE_CATEGORIES.map((cat) => {
@@ -96,10 +110,10 @@ export default function FeeSchedulePage() {
                     key={cat.id}
                     type="button"
                     onClick={() => setActiveCategory(cat.id)}
-                    className={`min-h-[44px] px-4 py-2 text-xs font-semibold border transition-all active:translate-y-[1px] cursor-pointer ${
+                    className={`min-h-[44px] px-4 py-2 rounded-full text-xs font-semibold border transition-all active:scale-[0.98] cursor-pointer ${
                       active
-                        ? 'bg-[#0F2144] text-white border-[#0F2144]'
-                        : 'bg-white text-slate-700 border-slate-200 hover:border-[#0F2144] hover:text-[#0F2144]'
+                        ? 'bg-[#0F2144] text-white border-[#0F2144] shadow-sm'
+                        : 'bg-[#F5F5F7] text-slate-700 border-transparent hover:bg-slate-200/80 hover:text-[#0F2144]'
                     }`}
                   >
                     {cat.label[locale]}
@@ -120,13 +134,13 @@ export default function FeeSchedulePage() {
                 placeholder={
                   locale === 'vi' ? 'Tìm dịch vụ, mức phí...' : 'Search service or fee...'
                 }
-                className="w-full min-h-[44px] px-3.5 pr-16 text-xs sm:text-sm bg-[#FAF9F6] border border-slate-200 text-slate-900 placeholder:text-slate-500 focus:outline-none focus:border-[#0F2144] transition-colors"
+                className="w-full min-h-[44px] px-4 pr-16 rounded-full text-xs sm:text-sm bg-[#F5F5F7] border border-transparent text-slate-900 placeholder:text-slate-500 focus:outline-none focus:bg-white focus:border-slate-300 transition-colors"
               />
               {searchQuery && (
                 <button
                   type="button"
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 px-2 py-1 text-[11px] font-semibold text-slate-500 hover:text-[#0F2144] cursor-pointer"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 px-2 py-1 text-[11px] font-semibold text-slate-500 hover:text-[#0F2144] cursor-pointer"
                 >
                   {locale === 'vi' ? 'Xóa' : 'Clear'}
                 </button>
@@ -135,22 +149,22 @@ export default function FeeSchedulePage() {
           </div>
         </section>
 
-        {/* Detailed Excel-faithful Schedule Table (Desktop) & Single-Column Breakdown (Mobile) */}
-        <section className="py-10 sm:py-14 bg-white text-left">
+        {/* Apple-inspired Spaced Service Blocks Grid */}
+        <section className="py-10 sm:py-14 bg-[#F5F5F7] text-left">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between mb-4 text-xs text-slate-500">
+            <div className="flex items-center justify-between mb-6 text-xs text-slate-500">
               <span>
                 {locale === 'vi'
                   ? `Hiển thị ${filteredItems.length} / ${FEE_SCHEDULE_ITEMS.length} hạng mục dịch vụ`
                   : `Showing ${filteredItems.length} of ${FEE_SCHEDULE_ITEMS.length} service items`}
               </span>
-              <span className="hidden sm:inline font-mono">
+              <span className="font-mono">
                 {locale === 'vi' ? 'Đơn vị: VNĐ' : 'Currency: VND'}
               </span>
             </div>
 
             {filteredItems.length === 0 ? (
-              <div className="border-t-2 border-[#0F2144] border-b border-slate-200 py-14 text-center space-y-4">
+              <div className="rounded-[22px] bg-white border border-slate-200/80 py-14 px-6 text-center space-y-4 shadow-[0_2px_16px_rgba(15,33,68,0.04)]">
                 <p className="text-sm text-slate-600">
                   {locale === 'vi'
                     ? 'Không tìm thấy dịch vụ phù hợp với từ khóa bạn vừa nhập.'
@@ -162,97 +176,63 @@ export default function FeeSchedulePage() {
                     setActiveCategory('all');
                     setSearchQuery('');
                   }}
-                  className="min-h-[44px] px-5 py-2 border border-[#0F2144] text-xs font-bold uppercase tracking-wider text-[#0F2144] hover:bg-[#0F2144] hover:text-white transition-colors cursor-pointer"
+                  className="min-h-[44px] px-6 py-2.5 rounded-full bg-[#0F2144] text-white text-xs font-semibold hover:bg-[#162A56] active:scale-[0.98] transition-all cursor-pointer"
                 >
                   {locale === 'vi' ? 'Hiển thị toàn bộ 20 dịch vụ' : 'Show All 20 Services'}
                 </button>
               </div>
             ) : (
-              <>
-                {/* Desktop High-Density Table (Hairline Dividers) */}
-                <div className="hidden md:block border-t-2 border-[#0F2144] border-b border-slate-200">
-                  <table className="w-full border-collapse text-left">
-                    <thead>
-                      <tr className="bg-[#FAF9F6] border-b border-slate-200 text-[11px] font-bold uppercase tracking-wider text-slate-600">
-                        <th className="py-4 px-4 w-[7%]">STT</th>
-                        <th className="py-4 px-4 w-[37%]">
-                          {locale === 'vi' ? 'Dịch vụ' : 'Legal Service'}
-                        </th>
-                        <th className="py-4 px-4 w-[20%]">
-                          {locale === 'vi' ? 'Mức phí (VNĐ)' : 'Fee Range (VND)'}
-                        </th>
-                        <th className="py-4 px-4 w-[24%]">
-                          {locale === 'vi' ? 'Ghi chú' : 'Notes & Scope'}
-                        </th>
-                        <th className="py-4 px-4 w-[12%] text-right">
-                          {locale === 'vi' ? 'Liên hệ' : 'Action'}
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-200 text-sm">
-                      {filteredItems.map((item) => (
-                        <tr
-                          key={item.stt}
-                          className="hover:bg-[#FAF9F6]/80 transition-colors"
-                        >
-                          <td className="py-5 px-4 align-top font-mono tabular-nums text-xs font-bold text-slate-500">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
+                {filteredItems.map((item) => {
+                  const categoryLabel = CATEGORY_BADGES[item.category]?.[locale] || '';
+                  return (
+                    <article
+                      key={item.stt}
+                      className="rounded-[22px] bg-white p-6 sm:p-8 border border-slate-200/70 shadow-[0_2px_16px_rgba(15,33,68,0.04)] hover:shadow-[0_14px_36px_rgba(15,33,68,0.09)] hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between"
+                    >
+                      <div>
+                        <div className="flex items-center justify-between gap-3">
+                          <span className="text-[11px] font-bold uppercase tracking-wider text-amber-700">
+                            {categoryLabel}
+                          </span>
+                          <span className="font-mono tabular-nums text-xs font-semibold text-slate-400">
                             {String(item.stt).padStart(2, '0')}
-                          </td>
-                          <td className="py-5 px-4 align-top font-semibold text-[#0F2144] leading-relaxed">
-                            {item.service[locale]}
-                          </td>
-                          <td className="py-5 px-4 align-top font-mono tabular-nums font-bold text-[#0F2144] whitespace-nowrap">
-                            {item.fee[locale]}
-                          </td>
-                          <td className="py-5 px-4 align-top text-xs sm:text-[13px] text-slate-600 leading-relaxed">
-                            {item.note[locale] || '—'}
-                          </td>
-                          <td className="py-4 px-4 align-top text-right">
-                            <button
-                              type="button"
-                              onClick={() => handleRequestQuote(item)}
-                              className="min-h-[40px] px-3.5 py-2 text-xs font-semibold border border-slate-300 text-[#0F2144] bg-white hover:bg-[#0F2144] hover:text-white hover:border-[#0F2144] active:translate-y-[1px] transition-all whitespace-nowrap cursor-pointer"
-                            >
-                              {locale === 'vi' ? 'Đăng ký' : 'Inquire'}
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                          </span>
+                        </div>
 
-                {/* Mobile Single-Column Hairline List (Zero Horizontal Scroll) */}
-                <div className="md:hidden border-t-2 border-[#0F2144] border-b border-slate-200 divide-y divide-slate-200">
-                  {filteredItems.map((item) => (
-                    <div key={item.stt} className="py-5 space-y-2.5">
-                      <div className="flex items-baseline justify-between gap-3">
-                        <span className="font-mono tabular-nums text-xs font-bold text-slate-500">
-                          #{String(item.stt).padStart(2, '0')}
-                        </span>
-                        <span className="font-mono tabular-nums text-sm font-bold text-[#0F2144]">
-                          {item.fee[locale]} VNĐ
-                        </span>
+                        <h2 className="mt-3 text-base sm:text-lg font-bold text-[#0F2144] leading-snug tracking-tight">
+                          {item.service[locale]}
+                        </h2>
+
+                        {item.note[locale] && (
+                          <p className="mt-3 text-xs sm:text-[13.5px] text-slate-600 leading-relaxed">
+                            {item.note[locale]}
+                          </p>
+                        )}
                       </div>
-                      <h2 className="text-sm font-bold text-[#0F2144] leading-snug">
-                        {item.service[locale]}
-                      </h2>
-                      {item.note[locale] && (
-                        <p className="text-xs text-slate-600 leading-relaxed">{item.note[locale]}</p>
-                      )}
-                      <div className="pt-1">
+
+                      <div className="mt-6 pt-5 border-t border-slate-100 flex flex-wrap items-center justify-between gap-4">
+                        <div>
+                          <span className="block text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+                            {locale === 'vi' ? 'Mức phí tham khảo' : 'Reference Fee'}
+                          </span>
+                          <span className="mt-0.5 block font-mono tabular-nums text-lg sm:text-xl font-bold text-[#0F2144]">
+                            {formatDisplayFee(item.fee[locale], locale)}
+                          </span>
+                        </div>
+
                         <button
                           type="button"
                           onClick={() => handleRequestQuote(item)}
-                          className="w-full min-h-[44px] px-4 py-2.5 text-xs font-semibold border border-[#0F2144] text-[#0F2144] bg-white hover:bg-[#0F2144] hover:text-white active:translate-y-[1px] transition-all cursor-pointer"
+                          className="min-h-[44px] px-5 py-2.5 rounded-full bg-[#0F2144] hover:bg-[#183161] text-white text-xs font-semibold tracking-wide active:scale-[0.98] transition-all shrink-0 cursor-pointer"
                         >
-                          {locale === 'vi' ? 'Đăng ký tư vấn hạng mục này' : 'Request Quote for This Item'}
+                          {locale === 'vi' ? 'Đăng ký' : 'Inquire'}
                         </button>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              </>
+                    </article>
+                  );
+                })}
+              </div>
             )}
           </div>
         </section>
