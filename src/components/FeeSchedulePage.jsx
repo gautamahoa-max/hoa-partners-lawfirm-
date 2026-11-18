@@ -2,11 +2,10 @@ import React, { useState, useEffect, useMemo } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import FloatingContact from './FloatingContact';
-import { PhoneIcon } from './Icons';
 import { useLanguage } from '../context/LanguageContext';
 import { FEE_CATEGORIES, FEE_SCHEDULE_ITEMS } from '../i18n/feeSchedule';
 
-export default function FeeSchedulePage({ onBack }) {
+export default function FeeSchedulePage() {
   const { lang } = useLanguage();
   const locale = lang === 'en' ? 'en' : 'vi';
 
@@ -67,66 +66,21 @@ export default function FeeSchedulePage({ onBack }) {
       <Navbar />
 
       <main className="flex-grow">
-        {/* Editorial Header Band — asymmetric layout synced with ServiceDetailPage & LegalKnowledgePage */}
+        {/* Editorial Header Band */}
         <section className="bg-[#FAF9F6] border-b border-slate-200 py-12 sm:py-16 text-left">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <nav className="text-xs text-slate-500 mb-6 flex items-center gap-2">
-              <a
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (onBack) onBack();
-                  else window.location.hash = '';
-                }}
-                className="hover:text-[#0F2144] transition-colors"
-              >
-                {locale === 'vi' ? 'Trang chủ' : 'Home'}
-              </a>
-              <span>/</span>
-              <span className="text-[#0F2144] font-semibold">
-                {locale === 'vi' ? 'Bảng giá dịch vụ' : 'Fee Schedule'}
-              </span>
-            </nav>
-
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
-              <div className="lg:col-span-8">
-                <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-600 mb-3 ykvn-accent-block">
-                  {locale === 'vi' ? 'BIỂU PHÍ DỊCH VỤ PHÁP LÝ' : 'ATTORNEY FEE SCHEDULE'}
-                </p>
-                <h1 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-bold text-[#0F2144] tracking-tight leading-[1.2]">
-                  {locale === 'vi' ? 'Bảng giá dịch vụ luật sư' : 'Legal Service Fee Schedule'}
-                </h1>
-                <p className="mt-4 text-sm sm:text-base text-slate-600 leading-relaxed max-w-[65ch]">
-                  {locale === 'vi'
-                    ? 'Biểu phí tham chiếu chi tiết cho 20 hạng mục dịch vụ chuyên sâu Pháp luật Dân sự (Đất đai, Thừa kế, Hợp đồng, Hôn nhân gia đình & Bồi thường thiệt hại) tại Công ty Luật TNHH Hoà và Cộng sự. Mức phí cụ thể được thống nhất minh bạch bằng Hợp đồng dịch vụ pháp lý theo Điều 55 Luật Luật sư.'
-                    : 'Detailed reference fee schedule across 20 specialized Civil Law services (Land, Inheritance, Contracts, Family Law & Civil Torts) at Hoa & Associates Law Firm LLC, formalized in writing under Article 55 of the Vietnam Law on Lawyers.'}
-                </p>
-              </div>
-
-              <div className="lg:col-span-4 bg-white border border-slate-200 p-5 space-y-2.5 text-xs">
-                <div className="flex justify-between gap-3 pb-2.5 border-b border-slate-200/80">
-                  <span className="text-slate-500 font-semibold uppercase tracking-wider">
-                    {locale === 'vi' ? 'Đơn vị tính' : 'Currency'}
-                  </span>
-                  <span className="font-mono font-bold text-[#0F2144]">VNĐ</span>
-                </div>
-                <div className="flex justify-between gap-3 pb-2.5 border-b border-slate-200/80">
-                  <span className="text-slate-500 font-semibold uppercase tracking-wider">
-                    {locale === 'vi' ? 'Địa bàn chính' : 'Jurisdictions'}
-                  </span>
-                  <span className="font-semibold text-[#0F2144] text-right">
-                    {locale === 'vi' ? 'TP.HCM & Đắk Lắk' : 'HCMC & Dak Lak'}
-                  </span>
-                </div>
-                <div className="flex justify-between gap-3">
-                  <span className="text-slate-500 font-semibold uppercase tracking-wider">
-                    {locale === 'vi' ? 'Số hạng mục' : 'Schedule Items'}
-                  </span>
-                  <span className="font-mono font-bold text-[#0F2144] tabular-nums">
-                    {FEE_SCHEDULE_ITEMS.length} {locale === 'vi' ? 'dịch vụ' : 'services'}
-                  </span>
-                </div>
-              </div>
+            <div className="max-w-3xl">
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-600 mb-3 ykvn-accent-block">
+                {locale === 'vi' ? 'BIỂU PHÍ DỊCH VỤ PHÁP LÝ' : 'ATTORNEY FEE SCHEDULE'}
+              </p>
+              <h1 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-bold text-[#0F2144] tracking-tight leading-[1.2]">
+                {locale === 'vi' ? 'Bảng giá dịch vụ luật sư' : 'Legal Service Fee Schedule'}
+              </h1>
+              <p className="mt-4 text-sm sm:text-base text-slate-600 leading-relaxed max-w-[65ch]">
+                {locale === 'vi'
+                  ? 'Biểu phí tham chiếu chi tiết cho 20 hạng mục dịch vụ chuyên sâu Pháp luật Dân sự (Đất đai, Thừa kế, Hợp đồng, Hôn nhân gia đình & Bồi thường thiệt hại) tại Công ty Luật TNHH Hoà và Cộng sự. Mức phí cụ thể được thống nhất minh bạch bằng Hợp đồng dịch vụ pháp lý theo Điều 55 Luật Luật sư.'
+                  : 'Detailed reference fee schedule across 20 specialized Civil Law services (Land, Inheritance, Contracts, Family Law & Civil Torts) at Hoa & Associates Law Firm LLC, formalized in writing under Article 55 of the Vietnam Law on Lawyers.'}
+              </p>
             </div>
           </div>
         </section>
@@ -300,46 +254,6 @@ export default function FeeSchedulePage({ onBack }) {
                 </div>
               </>
             )}
-          </div>
-        </section>
-
-        {/* Bottom Direct Consultation Strip (Consistent with ServiceDetailPage) */}
-        <section className="py-12 sm:py-16 bg-[#FAF9F6] border-t border-slate-200 text-left">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div className="max-w-2xl">
-              <p className="text-xs font-bold uppercase tracking-wider text-amber-700 mb-1.5">
-                {locale === 'vi' ? 'CAM KẾT MINH BẠCH THÙ LAO' : 'TRANSPARENT FEE COMMITMENT'}
-              </p>
-              <h2 className="text-xl sm:text-2xl font-bold text-[#0F2144] tracking-tight">
-                {locale === 'vi'
-                  ? 'Cần báo giá chi tiết cho hồ sơ cụ thể của Quý khách?'
-                  : 'Need a tailored written quote for your specific matter?'}
-              </h2>
-              <p className="text-sm text-slate-600 mt-2 leading-relaxed">
-                {locale === 'vi'
-                  ? 'Toàn bộ chi phí công chứng, lệ phí nhà nước, án phí và chi phí đi lại ngoài khu vực được tách bạch rõ ràng và thỏa thuận trước bằng Hợp đồng dịch vụ pháp lý.'
-                  : 'All notary fees, government statutory charges, court deposits, and out-of-area travel expenses are transparently separated and confirmed upfront in writing.'}
-              </p>
-            </div>
-
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
-              <a
-                href="tel:0988886447"
-                className="min-h-[44px] inline-flex items-center justify-center gap-2 px-5 py-3 border border-slate-300 bg-white hover:border-[#0F2144] text-[#0F2144] text-xs sm:text-sm font-bold transition-colors"
-              >
-                <PhoneIcon className="w-4 h-4 text-amber-600" />
-                <span>098.888.6447</span>
-              </a>
-              <button
-                type="button"
-                onClick={() => {
-                  window.location.hash = '#/lien-he';
-                }}
-                className="min-h-[44px] px-6 py-3 bg-[#0F2144] hover:bg-[#162A56] text-white text-xs sm:text-sm font-bold active:translate-y-[1px] transition-all cursor-pointer"
-              >
-                {locale === 'vi' ? 'Gửi yêu cầu báo giá' : 'Request Consultation'}
-              </button>
-            </div>
           </div>
         </section>
       </main>
