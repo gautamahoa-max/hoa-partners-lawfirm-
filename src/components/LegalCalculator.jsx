@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
+import { FEE_HOMEPAGE_GROUPS } from '../i18n/feeSchedule';
 
 const CARD_WATERMARKS = {
   advisory: (
@@ -49,110 +50,13 @@ const CARD_WATERMARKS = {
   ),
 };
 
-const PRICING_CARDS = {
-  vi: [
-    {
-      id: 'advisory',
-      title: 'Tư vấn & Soạn thảo',
-      fromLabel: 'Từ',
-      priceText: '1.000.000',
-      currency: 'VNĐ',
-      popularLabel: 'Dịch vụ phổ biến',
-      items: [
-        'Tư vấn trực tiếp với Luật sư (khấu trừ 100% khi ký HĐ)',
-        'Soạn thảo Đơn khởi kiện, Đơn kháng cáo, Thư cảnh báo',
-        'Soạn thảo & Rà soát Hợp đồng đặt cọc, mua bán nhà đất',
-        'Tư vấn lập Di chúc hợp pháp & Văn bản khai nhận di sản',
-      ],
-      cta: 'Đăng ký ngay',
-    },
-    {
-      id: 'representation',
-      title: 'Đại diện Ngoài tố tụng',
-      fromLabel: 'Từ',
-      priceText: '8.000.000',
-      currency: 'VNĐ',
-      popularLabel: 'Dịch vụ phổ biến',
-      items: [
-        'Thủ tục Ly hôn thuận tình & Thỏa thuận nuôi con, tài sản',
-        'Đại diện khai nhận thừa kế, sang tên & cấp đổi Sổ đỏ',
-        'Đại diện thương lượng thu hồi công nợ & Hòa giải cơ sở',
-        'Cố vấn pháp lý thường xuyên cho Gia đình & Doanh nghiệp',
-      ],
-      cta: 'Đăng ký ngay',
-    },
-    {
-      id: 'litigation',
-      title: 'Tranh tụng tại Tòa án',
-      fromLabel: 'Từ',
-      priceText: '20.000.000',
-      currency: 'VNĐ',
-      popularLabel: 'Dịch vụ phổ biến',
-      items: [
-        'Tranh tụng vụ án Đất đai, ranh giới & đòi lại nhà đất',
-        'Khởi kiện phân chia Di sản thừa kế tại Tòa án các cấp',
-        'Tranh tụng Hợp đồng vay tài sản, đặt cọc & Bồi thường',
-        'Ly hôn đơn phương tranh chấp quyền nuôi con, tài sản lớn',
-      ],
-      cta: 'Đăng ký ngay',
-    },
-  ],
-  en: [
-    {
-      id: 'advisory',
-      title: 'Advisory & Legal Drafting',
-      fromLabel: 'From',
-      priceText: '1.000.000',
-      currency: 'VNĐ',
-      popularLabel: 'Popular Services',
-      items: [
-        'Direct Partner Consultation (100% credited upon engagement)',
-        'Drafting Statements of Claim, Appeals & Demand Letters',
-        'Real Estate Deposit & Sale-Purchase Contract Review',
-        'Statutory Will Drafting & Estate Inventory Advisory',
-      ],
-      cta: 'Register Now',
-    },
-    {
-      id: 'representation',
-      title: 'Pre-Litigation & Representation',
-      fromLabel: 'From',
-      priceText: '8.000.000',
-      currency: 'VNĐ',
-      popularLabel: 'Popular Services',
-      items: [
-        'Uncontested Divorce, Child Custody & Property Settlement',
-        'Notarized Inheritance Probate & Land Title Registration',
-        'Out-of-Court Debt Recovery Negotiation & Conciliation',
-        'Ongoing Legal Retainer for Families & SMEs',
-      ],
-      cta: 'Register Now',
-    },
-    {
-      id: 'litigation',
-      title: 'Courtroom Litigation',
-      fromLabel: 'From',
-      priceText: '20.000.000',
-      currency: 'VNĐ',
-      popularLabel: 'Popular Services',
-      items: [
-        'Land Disputes, Boundary Claims & Property Restitution',
-        'Contested Inheritance & Estate Division Before Courts',
-        'Loan Contract Enforcement, Deposit Claims & Civil Torts',
-        'Contested Divorce Involving Custody & Major Assets',
-      ],
-      cta: 'Register Now',
-    },
-  ],
-};
-
 /**
- * 3-card Fee Schedule section linking selected packages into the consultation form.
+ * 3-card Fee Overview section on the Homepage synchronized directly with FEE_HOMEPAGE_GROUPS.
  */
 export default function LegalCalculator() {
   const { lang } = useLanguage();
   const locale = lang === 'en' ? 'en' : 'vi';
-  const cards = PRICING_CARDS[locale];
+  const cards = FEE_HOMEPAGE_GROUPS[locale];
 
   const handleSelectPackage = (card) => {
     const summaryText =
