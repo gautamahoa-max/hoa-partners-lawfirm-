@@ -108,8 +108,8 @@ export const FEE_SCHEDULE_ITEMS = [
     stt: 1,
     category: 'advisory',
     service: {
-      vi: 'Tư vấn pháp luật Dân sự trực tiếp với Luật sư tại Công ty Luật TNHH Hoà và Cộng sự (Đắk Lắk / TP.HCM)',
-      en: 'Direct Civil Law Consultation with Licensed Attorney at Hoa & Associates (Dak Lak / HCMC)',
+      vi: 'Tư vấn pháp luật Dân sự trực tiếp với Luật sư',
+      en: 'Direct Civil Law Consultation with Licensed Attorney',
     },
     fee: {
       vi: '1.000.000 – 2.000.000',
