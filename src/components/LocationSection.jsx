@@ -16,7 +16,7 @@ export default function LocationSection() {
     activeOffice.mapUrl || `https://www.google.com/maps/search/?api=1&query=${encodedQuery}`;
 
   return (
-    <section id="dia-diem" className="py-16 sm:py-20 bg-white scroll-mt-16">
+    <section id="dia-diem" className="py-16 sm:py-20 bg-white scroll-mt-16 cv-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-center text-xs sm:text-[13px] font-bold uppercase tracking-[0.22em] text-[#0F2144] mb-8 sm:mb-10">
           {location.heading}

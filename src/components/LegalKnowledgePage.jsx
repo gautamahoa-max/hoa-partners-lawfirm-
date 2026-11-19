@@ -294,11 +294,18 @@ export default function LegalKnowledgePage({ articleId, onBack }) {
                   className="group inline-block text-center focus:outline-none"
                 >
                   <div className="w-32 h-32 sm:w-36 sm:h-36 mx-auto rounded-full overflow-hidden mb-3.5 border border-slate-200/80 shadow-sm">
-                    <img
-                      src="./lawyer-vo-van-hoa.jpg"
-                      alt={knowledge.lawyerName}
-                      className="w-full h-full object-cover object-top grayscale group-hover:grayscale-0 transition-all duration-300"
-                    />
+                    <picture className="w-full h-full block">
+                      <source srcSet="./lawyer-vo-van-hoa.webp" type="image/webp" />
+                      <img
+                        src="./lawyer-vo-van-hoa.jpg"
+                        alt={knowledge.lawyerName}
+                        width="144"
+                        height="144"
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-full object-cover object-top grayscale group-hover:grayscale-0 transition-all duration-300"
+                      />
+                    </picture>
                   </div>
                   <span className="block text-[14px] font-bold text-[#222222] group-hover:text-[#1E345B] transition-colors">
                     {knowledge.lawyerName}
@@ -333,12 +340,19 @@ export default function LegalKnowledgePage({ articleId, onBack }) {
 
       {/* Editorial News Banner (YKVN Style) */}
       <div className="w-full h-44 sm:h-56 md:h-64 lg:h-72 overflow-hidden relative border-b border-slate-200 bg-slate-900">
-        <img
-          src="./news-banner.jpg"
-          alt={knowledge.pageTitle}
-          className="w-full h-full object-cover object-center select-none opacity-90"
-          loading="eager"
-        />
+        <picture className="w-full h-full block">
+          <source srcSet="./news-banner.webp" type="image/webp" />
+          <img
+            src="./news-banner.jpg"
+            alt={knowledge.pageTitle}
+            width="1600"
+            height="585"
+            fetchPriority="high"
+            decoding="async"
+            className="w-full h-full object-cover object-center select-none opacity-90"
+            loading="eager"
+          />
+        </picture>
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent pointer-events-none" />
       </div>
 

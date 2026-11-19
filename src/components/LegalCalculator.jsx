@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { FEE_HOMEPAGE_GROUPS } from '../i18n/feeSchedule';
+import { FEE_HOMEPAGE_GROUPS } from '../i18n/feeHomepageGroups';
 
 const CARD_WATERMARKS = {
   advisory: (
@@ -85,7 +85,7 @@ export default function LegalCalculator() {
   return (
     <section
       id="bao-gia"
-      className="relative py-16 sm:py-24 bg-gradient-to-br from-[#ECF1F8] via-[#F6F8FC] to-[#E6EEF7] border-b border-slate-200/80 scroll-mt-20 overflow-hidden"
+      className="relative py-16 sm:py-24 bg-gradient-to-br from-[#ECF1F8] via-[#F6F8FC] to-[#E6EEF7] border-b border-slate-200/80 scroll-mt-20 overflow-hidden cv-auto"
     >
       {/* Ambient luminous orbs for Liquid Glass refraction */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">

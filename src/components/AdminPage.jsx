@@ -194,7 +194,17 @@ export default function AdminPage({ onBack }) {
       <header className="sticky top-0 z-30 bg-[#0F2144] text-white px-4 sm:px-8 py-3.5 flex items-center justify-between shadow-md">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded bg-white/10 p-1 flex items-center justify-center shrink-0">
-            <img src="./logo-emblem-gold.png" alt="Logo" className="w-full h-full object-contain" />
+            <picture className="w-full h-full block">
+              <source srcSet="./logo-emblem-gold.webp" type="image/webp" />
+              <img
+                src="./logo-emblem-gold.png"
+                alt="Logo"
+                width="36"
+                height="36"
+                decoding="async"
+                className="w-full h-full object-contain"
+              />
+            </picture>
           </div>
           <div>
             <h1 className="text-sm sm:text-base font-bold tracking-tight">HÒA & CỘNG SỰ — CỔNG QUẢN TRỊ NỘI BỘ</h1>
@@ -230,7 +240,17 @@ export default function AdminPage({ onBack }) {
           /* Màn hình đăng nhập dành cho Luật sư */
           <div className="max-w-md mx-auto my-12 bg-white rounded-2xl border border-slate-200 p-8 shadow-sm text-center space-y-6">
             <div className="w-14 h-14 bg-[#0F2144] rounded-2xl p-2.5 mx-auto flex items-center justify-center">
-              <img src="./logo-emblem-gold.png" alt="Emblem" className="w-full h-full object-contain" />
+              <picture className="w-full h-full block">
+                <source srcSet="./logo-emblem-gold.webp" type="image/webp" />
+                <img
+                  src="./logo-emblem-gold.png"
+                  alt="Emblem"
+                  width="48"
+                  height="48"
+                  decoding="async"
+                  className="w-full h-full object-contain"
+                />
+              </picture>
             </div>
 
             <div>

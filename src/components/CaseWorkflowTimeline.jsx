@@ -6,10 +6,14 @@ function WorkflowStepCard({ step, index, isLeft }) {
   const cardRef = useRef(null);
 
   useEffect(() => {
-    // Fallback nếu trình duyệt không hỗ trợ IntersectionObserver
-    if (typeof IntersectionObserver === 'undefined') {
+    // Tôn trọng tùy chọn giảm chuyển động và fallback nếu trình duyệt không hỗ trợ IntersectionObserver
+    if (
+      typeof IntersectionObserver === 'undefined' ||
+      (typeof window !== 'undefined' &&
+        window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches)
+    ) {
       setIsVisible(true);
-      return;
+      return undefined;
     }
 
     const observer = new IntersectionObserver(

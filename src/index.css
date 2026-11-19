@@ -47,19 +47,16 @@
   scrollbar-width: none;
 }
 
-/* YKVN-inspired Ken Burns Slow Breathing Zoom for Hero Banner */
-@keyframes ykvnZoom {
-  0% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(1.09);
-  }
+/* Defer layout & paint for below-the-fold sections until scrolled near */
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
 }
 
-.animate-ykvn-zoom {
-  animation: ykvnZoom 16s ease-in-out infinite alternate;
-  will-change: transform;
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 /* YKVN Signature Geometric Brand Block Accent */

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ScaleIcon, PhoneIcon } from './Icons';
+import { PhoneIcon } from './Icons';
 import { useLanguage } from '../context/LanguageContext';
 import { safeScrollToAnchor } from '../utils/security';
 
@@ -47,17 +47,21 @@ export default function Navbar() {
             <span className="text-slate-600">|</span>
             <div className="flex items-center gap-2 text-xs font-semibold">
               <button
+                type="button"
                 onClick={() => setLang('vi')}
                 className={`transition-colors ${lang === 'vi' ? 'text-amber-400 font-bold' : 'text-slate-300 hover:text-white'}`}
                 title="Tiếng Việt"
+                aria-label="Tiếng Việt"
               >
                 VI
               </button>
               <span className="text-slate-600">/</span>
               <button
+                type="button"
                 onClick={() => setLang('en')}
                 className={`transition-colors ${lang === 'en' ? 'text-amber-400 font-bold' : 'text-slate-300 hover:text-white'}`}
                 title="English"
+                aria-label="English"
               >
                 EN
               </button>
@@ -81,11 +85,17 @@ export default function Navbar() {
             className="flex items-center gap-2.5 sm:gap-3 text-left group min-w-0 flex-1 max-w-[210px] sm:max-w-none pr-1"
           >
             <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-lg bg-[#0F2144] p-1.5 flex items-center justify-center shrink-0 shadow-sm border border-slate-700/20 transition-transform group-hover:scale-105">
-              <img 
-                src="./logo-emblem-gold.png" 
-                alt="Logo Công ty Luật TNHH Hoà & Cộng sự" 
-                className="w-full h-full object-contain" 
-              />
+              <picture className="w-full h-full block">
+                <source srcSet="./logo-emblem-gold.webp" type="image/webp" />
+                <img
+                  src="./logo-emblem-gold.png"
+                  alt="Logo Công ty Luật TNHH Hoà & Cộng sự"
+                  width="44"
+                  height="44"
+                  decoding="async"
+                  className="w-full h-full object-contain"
+                />
+              </picture>
             </div>
             <div className="min-w-0">
               <span className="text-lg sm:text-xl font-extrabold tracking-tight text-[#0F2144] block leading-snug">
@@ -118,14 +128,18 @@ export default function Navbar() {
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <div className="lg:hidden flex items-center gap-1.5 text-xs font-semibold px-2 py-1 bg-slate-100 rounded">
               <button
+                type="button"
                 onClick={() => setLang('vi')}
+                aria-label="Tiếng Việt"
                 className={lang === 'vi' ? 'text-[#0F2144] font-bold' : 'text-slate-500 hover:text-slate-900'}
               >
                 VI
               </button>
               <span className="text-slate-300">/</span>
               <button
+                type="button"
                 onClick={() => setLang('en')}
+                aria-label="English"
                 className={lang === 'en' ? 'text-[#0F2144] font-bold' : 'text-slate-500 hover:text-slate-900'}
               >
                 EN
@@ -135,8 +149,9 @@ export default function Navbar() {
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-expanded={mobileMenuOpen}
               className="lg:hidden p-2 rounded text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
-              aria-label="Mở menu"
+              aria-label={mobileMenuOpen ? 'Đóng menu' : 'Mở menu'}
             >
               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 {mobileMenuOpen ? (

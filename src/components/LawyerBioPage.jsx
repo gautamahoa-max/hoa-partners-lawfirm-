@@ -49,14 +49,23 @@ export default function LawyerBioPage({ onBack }) {
               <div className="lg:col-span-8 p-6 sm:p-8 lg:p-10 flex flex-col sm:flex-row items-start gap-6 sm:gap-8 bg-white">
                 
                 {/* Ảnh chân dung luật sư */}
-                <img
-                  src={bio.avatar || './lawyer-vo-van-hoa.jpg'}
-                  alt={bio.fullNameWithTitle || bio.name}
-                  className="w-40 h-48 sm:w-48 sm:h-56 lg:w-52 lg:h-60 object-cover object-top shrink-0 border border-slate-200/60 shadow-sm bg-slate-100"
-                  onError={(e) => {
-                    e.target.src = './client-1.jpg';
-                  }}
-                />
+                <picture className="shrink-0">
+                  {(!bio.avatar || bio.avatar.includes('lawyer-vo-van-hoa')) && (
+                    <source srcSet="./lawyer-vo-van-hoa.webp" type="image/webp" />
+                  )}
+                  <img
+                    src={bio.avatar || './lawyer-vo-van-hoa.jpg'}
+                    alt={bio.fullNameWithTitle || bio.name}
+                    width="512"
+                    height="512"
+                    fetchPriority="high"
+                    decoding="async"
+                    className="w-40 h-48 sm:w-48 sm:h-56 lg:w-52 lg:h-60 object-cover object-top shrink-0 border border-slate-200/60 shadow-sm bg-slate-100"
+                    onError={(e) => {
+                      e.target.src = './client-1.jpg';
+                    }}
+                  />
+                </picture>
 
                 {/* Thông tin chức danh & Liên hệ */}
                 <div className="flex-1 min-w-0 flex flex-col justify-between self-stretch text-left">

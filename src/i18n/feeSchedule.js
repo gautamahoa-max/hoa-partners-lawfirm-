@@ -1,106 +1,11 @@
+export { FEE_HOMEPAGE_GROUPS } from './feeHomepageGroups.js';
+
 export const FEE_CATEGORIES = [
   { id: 'all', label: { vi: 'Tất cả (20)', en: 'All (20)' } },
   { id: 'advisory', label: { vi: 'Tư vấn & Soạn thảo (6)', en: 'Advisory & Drafting (6)' } },
   { id: 'representation', label: { vi: 'Đại diện Ngoài tố tụng (6)', en: 'Pre-Litigation & Representation (6)' } },
   { id: 'litigation', label: { vi: 'Tranh tụng tại Tòa án (8)', en: 'Courtroom Litigation (8)' } },
 ];
-
-export const FEE_HOMEPAGE_GROUPS = {
-  vi: [
-    {
-      id: 'advisory',
-      title: 'Tư vấn & Soạn thảo',
-      fromLabel: 'Từ',
-      priceText: '1.000.000',
-      currency: 'VNĐ',
-      popularLabel: 'Dịch vụ phổ biến',
-      items: [
-        'Tư vấn trực tiếp với Luật sư (khấu trừ 100% khi ký HĐ)',
-        'Soạn Đơn khởi kiện, Đơn kháng cáo, Bản tự bảo vệ',
-        'Soạn thảo & Rà soát Hợp đồng đặt cọc, mua bán nhà đất',
-        'Soạn thảo Di chúc hợp pháp & Văn bản chia di sản',
-      ],
-      cta: 'Đăng ký ngay',
-    },
-    {
-      id: 'representation',
-      title: 'Đại diện Ngoài tố tụng',
-      fromLabel: 'Từ',
-      priceText: '8.000.000',
-      currency: 'VNĐ',
-      popularLabel: 'Dịch vụ phổ biến',
-      items: [
-        'Thủ tục Ly hôn thuận tình & Thỏa thuận nuôi con, tài sản',
-        'Đại diện khai nhận thừa kế, sang tên & cấp đổi Sổ đỏ',
-        'Đại diện hòa giải đất đai, đàm phán & thu hồi công nợ',
-        'Cố vấn pháp lý thường xuyên cho Gia đình & Doanh nghiệp',
-      ],
-      cta: 'Đăng ký ngay',
-    },
-    {
-      id: 'litigation',
-      title: 'Tranh tụng tại Tòa án',
-      fromLabel: 'Từ',
-      priceText: '20.000.000',
-      currency: 'VNĐ',
-      popularLabel: 'Dịch vụ phổ biến',
-      items: [
-        'Tranh tụng vụ án Đất đai, ranh giới & đòi lại nhà đất',
-        'Khởi kiện phân chia Di sản thừa kế tại Tòa án các cấp',
-        'Tranh tụng Hợp đồng vay, đặt cọc & Bồi thường thiệt hại',
-        'Ly hôn đơn phương tranh chấp quyền nuôi con, tài sản lớn',
-      ],
-      cta: 'Đăng ký ngay',
-    },
-  ],
-  en: [
-    {
-      id: 'advisory',
-      title: 'Advisory & Legal Drafting',
-      fromLabel: 'From',
-      priceText: '1.000.000',
-      currency: 'VNĐ',
-      popularLabel: 'Popular Services',
-      items: [
-        'Direct Partner Consultation (100% credited upon engagement)',
-        'Drafting Statements of Claim, Appeals & Defense Briefs',
-        'Real Estate Deposit & Sale-Purchase Contract Review',
-        'Statutory Will Drafting & Estate Division Instruments',
-      ],
-      cta: 'Register Now',
-    },
-    {
-      id: 'representation',
-      title: 'Pre-Litigation & Representation',
-      fromLabel: 'From',
-      priceText: '8.000.000',
-      currency: 'VNĐ',
-      popularLabel: 'Popular Services',
-      items: [
-        'Uncontested Divorce, Child Custody & Property Settlement',
-        'Notarized Inheritance Probate & Land Title Registration',
-        'Land Mediation, Out-of-Court Negotiation & Debt Recovery',
-        'Ongoing Legal Retainer for Families & SMEs',
-      ],
-      cta: 'Register Now',
-    },
-    {
-      id: 'litigation',
-      title: 'Courtroom Litigation',
-      fromLabel: 'From',
-      priceText: '20.000.000',
-      currency: 'VNĐ',
-      popularLabel: 'Popular Services',
-      items: [
-        'Land Disputes, Boundary Claims & Property Restitution',
-        'Contested Inheritance & Estate Division Before Courts',
-        'Loan Contract Enforcement, Deposits & Civil Tort Claims',
-        'Contested Divorce Involving Custody & Major Assets',
-      ],
-      cta: 'Register Now',
-    },
-  ],
-};
 
 export const FEE_SCHEDULE_ITEMS = [
   // Nhóm 1: Tư vấn & Soạn thảo (Từ 1.000.000 VNĐ)

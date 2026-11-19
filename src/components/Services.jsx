@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { GavelIcon, BriefcaseIcon, FileTextIcon, LandmarkIcon, ShieldCheckIcon, ScaleIcon, CloseIcon, CheckCircleIcon, HeartHandshakeIcon } from './Icons';
 import { useLanguage } from '../context/LanguageContext';
-import { TRANSLATIONS } from '../i18n/translations';
 import CaseWorkflowTimeline from './CaseWorkflowTimeline';
 
 export const ICON_MAP = {
@@ -132,13 +131,6 @@ export const PRACTICE_COLOR_MAP = {
     accentColor: '#86EFAC',
   },
 };
-
-// Mảng mặc định cho backwards-compatibility
-export const PRACTICE_AREAS = TRANSLATIONS.vi.services.items.map((item) => ({
-  ...item,
-  icon: ICON_MAP[item.id] || ScaleIcon,
-  ...(PRACTICE_COLOR_MAP[item.id] || PRACTICE_COLOR_MAP.litigation),
-}));
 
 // Hàm chuyển đổi tọa độ cực sang Descartes
 function polarToCartesian(cx, cy, r, angleInDegrees) {

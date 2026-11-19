@@ -22,7 +22,7 @@ export default function Footer() {
   const copyrightText = footer.copyright.replace('{year}', currentYear);
 
   return (
-    <footer id="lien-he" className="bg-white text-slate-900 pt-16 pb-12 border-t border-slate-200/90 scroll-mt-10">
+    <footer id="lien-he" className="bg-white text-slate-900 pt-16 pb-12 border-t border-slate-200/90 scroll-mt-10 cv-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Phần trên: Thương hiệu bên trái & Các liên kết tối giản bên phải kiểu Cravath */}
@@ -32,11 +32,18 @@ export default function Footer() {
           <div className="max-w-xl">
             <div className="flex items-center gap-3.5 mb-3">
               <div className="w-12 h-12 rounded-lg bg-[#0F2144] p-2 flex items-center justify-center shrink-0 shadow-sm border border-slate-700/20">
-                <img 
-                  src="./logo-emblem-gold.png" 
-                  alt="Biểu trưng Công ty Luật TNHH Hoà & Cộng sự" 
-                  className="w-full h-full object-contain" 
-                />
+                <picture className="w-full h-full block">
+                  <source srcSet="./logo-emblem-gold.webp" type="image/webp" />
+                  <img
+                    src="./logo-emblem-gold.png"
+                    alt="Biểu trưng Công ty Luật TNHH Hoà & Cộng sự"
+                    width="44"
+                    height="44"
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-contain"
+                  />
+                </picture>
               </div>
               <div>
                 <h2 className="text-2xl sm:text-[1.75rem] font-bold text-[#0F2144] tracking-tight leading-snug">
