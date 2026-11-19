@@ -34,6 +34,7 @@ export default function ContactPage({ onBack }) {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submittedConsentNumber, setSubmittedConsentNumber] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [submitFailed, setSubmitFailed] = useState(false);
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
@@ -134,7 +135,7 @@ export default function ContactPage({ onBack }) {
     setSubmitFailed(false);
 
     try {
-      await submitConsultation({
+      const submissionResult = await submitConsultation({
         fullName: cleanName,
         phone: cleanPhone,
         notes: cleanNotes,
@@ -143,6 +144,7 @@ export default function ContactPage({ onBack }) {
         consentVersion: CONSENT_DOCUMENT_VERSION,
         consentAcceptedAt: formData.consentAcceptedAt || new Date().toISOString(),
       });
+      setSubmittedConsentNumber(submissionResult?.consentNumber || '');
       recordSubmissionTimestamp();
       setIsSubmitted(true);
     } catch (err) {
@@ -168,6 +170,7 @@ export default function ContactPage({ onBack }) {
       botField: '',
     });
     setIsSubmitted(false);
+    setSubmittedConsentNumber('');
     setErrorMessage('');
     setSubmitFailed(false);
   };
@@ -207,6 +210,12 @@ export default function ContactPage({ onBack }) {
                 <p className="mt-2.5 text-sm text-slate-600 leading-relaxed max-w-md mx-auto">
                   {formT.successSubtitle}
                 </p>
+                {submittedConsentNumber && (
+                  <p className="mt-3 inline-block px-3.5 py-1.5 rounded-lg bg-slate-50 border border-slate-200 text-xs font-mono font-semibold text-[#0F2144]">
+                    {lang === 'en' ? 'Consent Letter Ref. No.: ' : 'Số Thư chấp thuận: '}
+                    {submittedConsentNumber}
+                  </p>
+                )}
 
                 {/* Thanh liên hệ khẩn cấp & thao tác gọn gàng */}
                 <div className="mt-7 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-center gap-3">

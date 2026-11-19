@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   signInWithPopup,
   signOut,
@@ -11,7 +11,9 @@ import {
   updateConsultation,
   deleteConsultation,
   exportConsultationsCsv,
+  syncConsentCounterFloor,
 } from '../services/consultations';
+import { deriveFallbackConsentNumber } from '../utils/formatters';
 import { PhoneIcon } from './Icons';
 
 const STATUS_META = {
@@ -40,6 +42,7 @@ export default function AdminPage({ onBack }) {
   const [noteDraft, setNoteDraft] = useState('');
   const [isSavingNote, setIsSavingNote] = useState(false);
   const [exportingPdfId, setExportingPdfId] = useState(null);
+  const hasSyncedCounterRef = useRef(false);
 
   // Lắng nghe trạng thái đăng nhập
   useEffect(() => {
@@ -71,6 +74,10 @@ export default function AdminPage({ onBack }) {
         setInquiries(list);
         setIsDataLoading(false);
         setDataError('');
+        if (list.length > 0 && !hasSyncedCounterRef.current) {
+          hasSyncedCounterRef.current = true;
+          syncConsentCounterFloor(list).catch(() => {});
+        }
       },
       (error) => {
         console.error('Lỗi tải dữ liệu Firestore:', error);
@@ -144,13 +151,16 @@ export default function AdminPage({ onBack }) {
     }
   };
 
-  const handleExportConsentPdf = async (item) => {
+  const handleExportConsentPdf = async (item, resolvedConsentNumber) => {
     if (!item || exportingPdfId) return;
     setExportingPdfId(item.id);
     try {
       setDataError('');
       const { downloadClientConsentPdf } = await import('../utils/consentArchive');
-      await downloadClientConsentPdf(item);
+      await downloadClientConsentPdf({
+        ...item,
+        consentNumber: resolvedConsentNumber || item.consentNumber || '',
+      });
     } catch (err) {
       console.error('Lỗi xuất PDF Thư chấp thuận:', err);
       setDataError(`Không thể xuất file PDF chấp thuận: ${err?.message || 'Vui lòng thử lại.'}`);
@@ -161,12 +171,14 @@ export default function AdminPage({ onBack }) {
 
   const normalizedSearch = searchTerm.toLowerCase();
   const filteredInquiries = inquiries.filter((item) => {
+    const resolvedNumber = deriveFallbackConsentNumber(item, inquiries);
     const matchesSearch =
       (item.fullName || '').toLowerCase().includes(normalizedSearch) ||
       (item.phone || '').includes(searchTerm) ||
       (item.notes || '').toLowerCase().includes(normalizedSearch) ||
       (item.lawyerNotes || '').toLowerCase().includes(normalizedSearch) ||
-      (item.consentVersion || '').toLowerCase().includes(normalizedSearch);
+      (item.consentVersion || '').toLowerCase().includes(normalizedSearch) ||
+      resolvedNumber.toLowerCase().includes(normalizedSearch);
 
     const matchesStatus =
       filterStatus === 'all' ||
@@ -357,7 +369,14 @@ export default function AdminPage({ onBack }) {
                 </select>
                 <button
                   type="button"
-                  onClick={() => exportConsultationsCsv(filteredInquiries)}
+                  onClick={() =>
+                    exportConsultationsCsv(
+                      filteredInquiries.map((row) => ({
+                        ...row,
+                        consentNumber: deriveFallbackConsentNumber(row, inquiries),
+                      }))
+                    )
+                  }
                   disabled={filteredInquiries.length === 0}
                   className="px-3.5 py-2 rounded-lg bg-[#0F2144] hover:bg-[#162A56] disabled:opacity-40 disabled:cursor-not-allowed text-white text-xs font-semibold transition-colors shrink-0"
                 >
@@ -387,6 +406,7 @@ export default function AdminPage({ onBack }) {
                   {filteredInquiries.map((item) => {
                     const formattedDate = formatViTimestamp(item.createdAt, 'Vừa xong');
                     const consentTimeLabel = formatViTimestamp(item.consentAcceptedAt);
+                    const resolvedConsentNumber = deriveFallbackConsentNumber(item, inquiries);
                     const status = item.status || 'new';
                     const statusMeta = STATUS_META[status] || STATUS_META.new;
                     const isEditingNote = editingNoteId === item.id;
@@ -401,6 +421,14 @@ export default function AdminPage({ onBack }) {
                                 {statusMeta.label}
                               </span>
                               <span className="text-[11px] text-slate-500">{formattedDate}</span>
+                              {resolvedConsentNumber && (
+                                <span
+                                  className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-[#0F2144]/5 text-[#0F2144] border border-[#0F2144]/20"
+                                  title="Số Thư chấp thuận cấp tự động theo khách hàng"
+                                >
+                                  Số: {resolvedConsentNumber}
+                                </span>
+                              )}
                               {item.consentVersion ? (
                                 <span
                                   className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200"
@@ -509,11 +537,11 @@ export default function AdminPage({ onBack }) {
                               ))}
                             </select>
 
-                            {(item.consentVersion || item.consentAcceptedAt) && (
+                            {(item.consentVersion || item.consentAcceptedAt || item.consentNumber) && (
                               <button
                                 type="button"
                                 disabled={exportingPdfId === item.id}
-                                onClick={() => handleExportConsentPdf(item)}
+                                onClick={() => handleExportConsentPdf(item, resolvedConsentNumber)}
                                 className="text-xs font-semibold text-[#0F2144] bg-slate-100 hover:bg-slate-200 disabled:opacity-50 px-2.5 py-1.5 rounded border border-slate-300 transition-colors cursor-pointer"
                               >
                                 {exportingPdfId === item.id ? 'Đang xuất PDF...' : 'Tải PDF Chấp thuận'}

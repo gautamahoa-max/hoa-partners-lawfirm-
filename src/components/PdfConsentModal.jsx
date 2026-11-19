@@ -1,15 +1,20 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { getConsentArchiveEntry, pdfjsLib } from '../utils/consentArchive';
-import { renderConsentPdfPage } from '../utils/consentPdf';
+import { buildConsentPageOverlays, renderConsentPdfPage } from '../utils/consentPdf';
+import { fetchNextConsentNumber } from '../services/consultations';
 import { formatConsentDateLabels } from '../utils/formatters';
 
-function PdfPageCanvas({ pdfDoc, pageNumber, zoom, baseWidth, watermarkLabel, dateLabel }) {
+const EMPTY_OVERLAYS = [];
+
+function PdfPageCanvas({ pdfDoc, pageNumber, zoom, baseWidth, watermarkLabel, overlays }) {
   const canvasRef = useRef(null);
+  const overlaysKey = JSON.stringify(overlays || EMPTY_OVERLAYS);
 
   useEffect(() => {
     if (!pdfDoc || !canvasRef.current) return undefined;
     let cancelled = false;
     let renderTask = null;
+    const parsedOverlays = JSON.parse(overlaysKey);
 
     (async () => {
       try {
@@ -29,7 +34,7 @@ function PdfPageCanvas({ pdfDoc, pageNumber, zoom, baseWidth, watermarkLabel, da
           canvas,
           scale,
           dpr,
-          dateLabel,
+          overlays: parsedOverlays,
           pdfjsLib,
           isCancelled: () => cancelled,
           onTaskCreated: (task) => {
@@ -49,7 +54,7 @@ function PdfPageCanvas({ pdfDoc, pageNumber, zoom, baseWidth, watermarkLabel, da
         renderTask.cancel();
       }
     };
-  }, [pdfDoc, pageNumber, zoom, baseWidth, dateLabel]);
+  }, [pdfDoc, pageNumber, zoom, baseWidth, overlaysKey]);
 
   return (
     <div
@@ -74,11 +79,20 @@ function PdfPageCanvas({ pdfDoc, pageNumber, zoom, baseWidth, watermarkLabel, da
 /**
  * View-only PDF modal rendered strictly onto protected canvases (no download/print toolbar).
  */
-export default function PdfConsentModal({ lang, formT, consentAcceptedAt, onClose, onAgree }) {
+export default function PdfConsentModal({
+  lang,
+  formT,
+  consentAcceptedAt,
+  consentNumber = '',
+  onClose,
+  onAgree,
+}) {
   const scrollRef = useRef(null);
   const pageRefs = useRef({});
   const hasAutoJumpedRef = useRef(false);
   const dateLabels = useMemo(() => formatConsentDateLabels(consentAcceptedAt), [consentAcceptedAt]);
+  const archiveEntry = useMemo(() => getConsentArchiveEntry(), []);
+  const [previewConsentNumber, setPreviewConsentNumber] = useState(consentNumber);
 
   const [pdfDoc, setPdfDoc] = useState(null);
   const [numPages, setNumPages] = useState(0);
@@ -86,6 +100,22 @@ export default function PdfConsentModal({ lang, formT, consentAcceptedAt, onClos
   const [baseWidth, setBaseWidth] = useState(720);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState('');
+
+  useEffect(() => {
+    if (consentNumber) {
+      setPreviewConsentNumber(consentNumber);
+      return undefined;
+    }
+    let active = true;
+    fetchNextConsentNumber(consentAcceptedAt).then((res) => {
+      if (active && res?.consentNumber) {
+        setPreviewConsentNumber(res.consentNumber);
+      }
+    });
+    return () => {
+      active = false;
+    };
+  }, [consentNumber, consentAcceptedAt]);
 
   useEffect(() => {
     const updateWidth = () => {
@@ -122,7 +152,6 @@ export default function PdfConsentModal({ lang, formT, consentAcceptedAt, onClos
       try {
         setLoading(true);
         setLoadError('');
-        const archiveEntry = getConsentArchiveEntry();
         const response = await fetch(archiveEntry.pdfUrl, { signal: abortController.signal });
         if (!response.ok) {
           throw new Error(`HTTP ${response.status}`);
@@ -159,17 +188,17 @@ export default function PdfConsentModal({ lang, formT, consentAcceptedAt, onClos
         loadedDoc.destroy().catch(() => {});
       }
     };
-  }, [lang]);
+  }, [lang, archiveEntry]);
 
   useEffect(() => {
-    if (!pdfDoc || numPages < 6 || hasAutoJumpedRef.current) return;
+    if (!pdfDoc || archiveEntry.layout !== 'split' || numPages < 6 || hasAutoJumpedRef.current) return;
     hasAutoJumpedRef.current = true;
     if (lang === 'en') {
       requestAnimationFrame(() => {
         pageRefs.current[6]?.scrollIntoView({ behavior: 'auto', block: 'start' });
       });
     }
-  }, [pdfDoc, numPages, lang]);
+  }, [pdfDoc, numPages, lang, archiveEntry]);
 
   const jumpToPage = (pageNum) => {
     pageRefs.current[pageNum]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -205,7 +234,7 @@ export default function PdfConsentModal({ lang, formT, consentAcceptedAt, onClos
           </div>
 
           <div className="flex items-center gap-1.5 sm:gap-2">
-            {numPages >= 6 && (
+            {archiveEntry.layout === 'split' && numPages >= 6 && (
               <div className="hidden md:flex items-center rounded-lg border border-slate-200 bg-slate-50 p-0.5 text-[11px] font-semibold">
                 <button
                   type="button"
@@ -280,6 +309,13 @@ export default function PdfConsentModal({ lang, formT, consentAcceptedAt, onClos
             pdfDoc &&
             Array.from({ length: numPages }, (_, idx) => {
               const pageNumber = idx + 1;
+              const pageOverlays = buildConsentPageOverlays({
+                pageNumber,
+                archiveEntry,
+                dateLabels,
+                consentNumber: previewConsentNumber,
+                isoTimestamp: consentAcceptedAt,
+              });
               return (
                 <div
                   key={pageNumber}
@@ -294,7 +330,7 @@ export default function PdfConsentModal({ lang, formT, consentAcceptedAt, onClos
                     zoom={zoom}
                     baseWidth={baseWidth}
                     watermarkLabel={formT.privacyWatermark}
-                    dateLabel={pageNumber === 1 ? dateLabels.vi : pageNumber === 6 ? dateLabels.en : ''}
+                    overlays={pageOverlays}
                   />
                   <p className="text-center text-[11px] text-slate-500 font-medium">
                     {lang === 'en' ? `Page ${pageNumber} / ${numPages}` : `Trang ${pageNumber} / ${numPages}`}

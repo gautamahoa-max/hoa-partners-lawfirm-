@@ -1,9 +1,11 @@
 import {
   collection,
-  addDoc,
   doc,
+  getDoc,
+  setDoc,
   updateDoc,
   deleteDoc,
+  runTransaction,
   query,
   orderBy,
   limit,
@@ -12,11 +14,13 @@ import {
 } from 'firebase/firestore';
 import { db } from './firebase.js';
 import { sanitizeInput, isValidPhone } from '../utils/security.js';
+import { getConsentYear, formatConsentDocumentNumber } from '../utils/formatters.js';
 
 export const CONSULTATION_STATUSES = ['new', 'contacted', 'in_progress', 'completed'];
-export const CONSENT_DOCUMENT_VERSION = 'HP-PDPL-02/2026';
+export const CONSENT_DOCUMENT_VERSION = 'HP-PDPL-03/2026';
 
 const COLLECTION_NAME = 'consultations';
+const COUNTERS_COLLECTION = 'counters';
 const SUBMIT_TIMEOUT_MS = 10000;
 const RETRY_DELAY_MS = 400;
 const ISO_TIMESTAMP_RE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})?$/;
@@ -69,7 +73,57 @@ function isRetryable(err) {
 }
 
 /**
- * Sanitize, validate, and submit a consultation inquiry with 10s timeout and 1 transient retry.
+ * Read current annual consent sequence from Firestore to preview the next automatic document number.
+ */
+export async function fetchNextConsentNumber(isoTimestamp) {
+  const year = getConsentYear(isoTimestamp);
+  try {
+    const snap = await getDoc(doc(db, COUNTERS_COLLECTION, `consent_${year}`));
+    const currentCount = snap.exists() ? Number(snap.data()?.count || 0) : 0;
+    const seq = Number.isInteger(currentCount) && currentCount >= 0 ? currentCount + 1 : 1;
+    return {
+      seq,
+      year,
+      consentNumber: formatConsentDocumentNumber(seq, year),
+    };
+  } catch {
+    return { seq: null, year, consentNumber: '' };
+  }
+}
+
+/**
+ * Ensure the Firestore counter floor matches existing consultation records in the current year.
+ */
+export async function syncConsentCounterFloor(inquiries = []) {
+  const year = getConsentYear();
+  const sameYear = (Array.isArray(inquiries) ? inquiries : []).filter(
+    (item) => getConsentYear(item?.consentAcceptedAt || item?.createdAt) === year
+  );
+
+  let maxSeq = sameYear.length;
+  for (const item of sameYear) {
+    if (Number.isInteger(item?.consentSeq) && item.consentSeq > maxSeq) {
+      maxSeq = item.consentSeq;
+    } else if (typeof item?.consentNumber === 'string' && item.consentNumber.trim()) {
+      const parsed = Number.parseInt(item.consentNumber.split('/')[0], 10);
+      if (Number.isInteger(parsed) && parsed > maxSeq) maxSeq = parsed;
+    }
+  }
+
+  if (maxSeq <= 0) return null;
+
+  const counterRef = doc(db, COUNTERS_COLLECTION, `consent_${year}`);
+  const snap = await getDoc(counterRef);
+  const currentCount = snap.exists() ? Number(snap.data()?.count || 0) : 0;
+  if (!snap.exists() || !Number.isInteger(currentCount) || currentCount < maxSeq) {
+    await setDoc(counterRef, { count: maxSeq }, { merge: true });
+    return maxSeq;
+  }
+  return currentCount;
+}
+
+/**
+ * Sanitize, validate, and submit a consultation inquiry with atomic per-client Consent Letter numbering.
  */
 export async function submitConsultation({
   fullName,
@@ -99,6 +153,9 @@ export async function submitConsultation({
     throw createValidationError('Case notes must be between 1 and 2000 characters.');
   }
 
+  const consentAudit = buildConsentAuditFields({ consentVersion, consentAcceptedAt });
+  const year = getConsentYear(consentAudit.consentAcceptedAt);
+
   const basePayload = {
     fullName: cleanName,
     phone: cleanPhone,
@@ -109,14 +166,36 @@ export async function submitConsultation({
     createdAt: serverTimestamp(),
   };
 
-  const payload = {
-    ...basePayload,
-    ...buildConsentAuditFields({ consentVersion, consentAcceptedAt }),
-  };
-
   for (let attempt = 0; attempt < 2; attempt += 1) {
     try {
-      return await withTimeout(addDoc(collection(db, COLLECTION_NAME), payload), SUBMIT_TIMEOUT_MS);
+      return await withTimeout(
+        runTransaction(db, async (tx) => {
+          const counterRef = doc(db, COUNTERS_COLLECTION, `consent_${year}`);
+          const counterSnap = await tx.get(counterRef);
+          const prevCount = counterSnap.exists() ? Number(counterSnap.data()?.count || 0) : 0;
+          const nextSeq = Number.isInteger(prevCount) && prevCount >= 0 ? prevCount + 1 : 1;
+          const consentNumber = formatConsentDocumentNumber(nextSeq, year);
+
+          const consultationRef = doc(collection(db, COLLECTION_NAME));
+          tx.set(counterRef, {
+            count: nextSeq,
+            lastConsultationId: consultationRef.id,
+          });
+          tx.set(consultationRef, {
+            ...basePayload,
+            ...consentAudit,
+            consentSeq: nextSeq,
+            consentNumber,
+          });
+
+          return {
+            id: consultationRef.id,
+            consentSeq: nextSeq,
+            consentNumber,
+          };
+        }),
+        SUBMIT_TIMEOUT_MS
+      );
     } catch (err) {
       if (attempt === 0 && isRetryable(err)) {
         await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY_MS));
@@ -172,6 +251,8 @@ export async function updateConsultation(id, patch, adminEmail) {
     createdAt: _ignoredCreatedAt,
     consentVersion: _ignoredConsentVersion,
     consentAcceptedAt: _ignoredConsentAcceptedAt,
+    consentSeq: _ignoredConsentSeq,
+    consentNumber: _ignoredConsentNumber,
     ...safePatch
   } = patch;
   return updateDoc(doc(db, COLLECTION_NAME, id), {
@@ -230,6 +311,7 @@ export function buildConsultationsCsv(inquiries = []) {
     'Thời gian gửi',
     'Cập nhật lần cuối',
     'Người cập nhật',
+    'Số Thư chấp thuận',
     'Phiên bản chấp thuận',
     'Thời điểm chấp thuận',
   ];
@@ -246,6 +328,7 @@ export function buildConsultationsCsv(inquiries = []) {
     formatTimestampForCsv(item.createdAt),
     formatTimestampForCsv(item.updatedAt),
     item.updatedBy || '',
+    item.consentNumber || '',
     item.consentVersion || '',
     formatTimestampForCsv(item.consentAcceptedAt),
   ]);

@@ -1,9 +1,91 @@
-import { formatConsentDateLabels } from './formatters.js';
+import { formatConsentDateLabels, formatConsentNumberLines } from './formatters.js';
 
 export const PAGE_DATE_PLACEHOLDERS = {
   1: 'Đắk Lắk, năm 2026',
   6: 'Dak Lak, 2026',
 };
+
+/**
+ * Build the per-page dynamic text overlays (document number & NĐ 30 date) for a given PDF archive version.
+ */
+export function buildConsentPageOverlays({
+  pageNumber,
+  archiveEntry,
+  dateLabels,
+  consentNumber,
+  isoTimestamp,
+} = {}) {
+  const layout =
+    archiveEntry?.layout ||
+    (archiveEntry?.version === 'HP-PDPL-02/2026' ? 'split' : 'interleaved');
+  const cleanNumber = typeof consentNumber === 'string' ? consentNumber.trim() : '';
+  const numberLines = formatConsentNumberLines(cleanNumber, isoTimestamp);
+  const overlays = [];
+
+  if (layout === 'interleaved') {
+    if (pageNumber === 1) {
+      overlays.push({
+        placeholder: 'Số: 00/2026/TCT-HCS',
+        text: numberLines.vi,
+        fontStyle: 'normal',
+      });
+      overlays.push({
+        placeholder: 'Ref. No.: 00/2026/TCT-HCS',
+        text: numberLines.en,
+        fontStyle: 'italic',
+      });
+      if (dateLabels?.vi) {
+        overlays.push({
+          placeholder: 'Đắk Lắk, năm 2026',
+          text: dateLabels.vi,
+          fontStyle: 'italic',
+        });
+      }
+      if (dateLabels?.en) {
+        overlays.push({
+          placeholder: 'Dak Lak, 2026',
+          text: dateLabels.en,
+          fontStyle: 'italic',
+        });
+      }
+    }
+    return overlays;
+  }
+
+  // Legacy split bilingual version (HP-PDPL-02/2026): Page 1 = VN, Page 6 = EN
+  if (pageNumber === 1) {
+    if (cleanNumber) {
+      overlays.push({
+        placeholder: 'Số: 02/2026/TCT-HCS',
+        text: numberLines.vi,
+        fontStyle: 'normal',
+      });
+    }
+    if (dateLabels?.vi) {
+      overlays.push({
+        placeholder: 'Đắk Lắk, năm 2026',
+        text: dateLabels.vi,
+        fontStyle: 'italic',
+      });
+    }
+  } else if (pageNumber === 6) {
+    if (cleanNumber) {
+      overlays.push({
+        placeholder: 'Ref. No. 02/2026/TCT-HCS',
+        text: numberLines.legacyEn,
+        fontStyle: 'italic',
+      });
+    }
+    if (dateLabels?.en) {
+      overlays.push({
+        placeholder: 'Dak Lak, 2026',
+        text: dateLabels.en,
+        fontStyle: 'italic',
+      });
+    }
+  }
+  return overlays;
+}
 
 const A4_WIDTH_PT = 595.28;
 const COVER_WIDTH_PX = 1240;
@@ -25,7 +107,7 @@ export function resolveConsentVersion(registry = {}, requestedVersion, defaultVe
 }
 
 /**
- * Render a PDF.js page onto a canvas and overlay the NĐ 30 date line when present.
+ * Render a PDF.js page onto a canvas and overlay dynamic document number & NĐ 30 date lines.
  */
 export async function renderConsentPdfPage({
   page,
@@ -33,6 +115,7 @@ export async function renderConsentPdfPage({
   scale,
   dpr = 1,
   dateLabel = '',
+  overlays = null,
   pdfjsLib,
   isCancelled = () => false,
   onTaskCreated,
@@ -58,32 +141,45 @@ export async function renderConsentPdfPage({
   await renderTask.promise;
   if (isCancelled()) return;
 
-  const targetText = PAGE_DATE_PLACEHOLDERS[page.pageNumber];
-  if (targetText && dateLabel) {
+  const fallbackTarget = PAGE_DATE_PLACEHOLDERS[page.pageNumber];
+  const resolvedOverlays = Array.isArray(overlays)
+    ? overlays
+    : fallbackTarget && dateLabel
+      ? [{ placeholder: fallbackTarget, text: dateLabel, fontStyle: 'italic' }]
+      : [];
+
+  const activeOverlays = resolvedOverlays.filter((o) => o?.placeholder && o?.text);
+  if (activeOverlays.length > 0) {
     const textContent = await page.getTextContent();
     if (isCancelled()) return;
-    const dateItem = textContent.items.find((item) => item.str?.trim() === targetText);
-    if (dateItem) {
-      const [a, b, , , vx, vy] = pdfjsLib.Util.transform(viewport.transform, dateItem.transform);
+
+    for (const overlay of activeOverlays) {
+      const targetItem = textContent.items.find((item) => item.str?.trim() === overlay.placeholder);
+      if (!targetItem) continue;
+
+      const [a, b, , , vx, vy] = pdfjsLib.Util.transform(viewport.transform, targetItem.transform);
       const fontPx = Math.hypot(a, b);
-      const origWidthPx = dateItem.width * scale;
+      const origWidthPx = targetItem.width * scale;
       const centerX = vx + origWidthPx / 2;
-      const clearWidth = origWidthPx + fontPx * 0.9;
+      const stylePrefix = overlay.fontStyle === 'italic' ? 'italic ' : '';
 
       context.save();
       context.setTransform(dpr, 0, 0, dpr, 0, 0);
+      context.font = `${stylePrefix}${fontPx}px "Times New Roman", "Liberation Serif", Times, serif`;
+      const measuredWidth = context.measureText(overlay.text).width;
+      const clearWidth = Math.max(origWidthPx, measuredWidth) + fontPx * 0.6;
+
       context.fillStyle = '#ffffff';
       context.fillRect(
         centerX - clearWidth / 2,
-        vy - fontPx * 1.05,
+        vy - fontPx * 0.92,
         clearWidth,
-        fontPx * 1.4
+        fontPx * 1.24
       );
-      context.font = `italic ${fontPx}px "Times New Roman", "Liberation Serif", Times, serif`;
       context.fillStyle = '#000000';
       context.textAlign = 'center';
       context.textBaseline = 'alphabetic';
-      context.fillText(dateLabel, centerX, vy);
+      context.fillText(overlay.text, centerX, vy);
       context.restore();
     }
   }
@@ -216,6 +312,7 @@ export function drawConfirmationCoverCanvas(canvas, inquiry = {}, archiveEntry =
 
   const rows = [
     ['Mã hồ sơ (Firestore ID)', inquiry.id || 'Không xác định'],
+    ['Số Thư chấp thuận', inquiry.consentNumber || 'Chưa cấp số'],
     ['Chủ thể dữ liệu / Khách hàng', inquiry.fullName || 'Không xác định'],
     ['Số điện thoại liên hệ', inquiry.phone || 'Không xác định'],
     [
@@ -317,9 +414,10 @@ export function drawConfirmationCoverCanvas(canvas, inquiry = {}, archiveEntry =
   const footerTop = notesBoxTop + notesBoxHeight + 44;
   ctx.fillStyle = '#334155';
   ctx.font = `italic 19px ${serif}`;
+  const numberNote = inquiry.consentNumber ? `, Số ${inquiry.consentNumber}` : '';
   const noteText =
-    `Đính kèm ngay sau trang này là toàn văn Thư chấp thuận phiên bản ${versionCode} ` +
-    '(song ngữ Việt – Anh, giữ nguyên thể thức theo Nghị định 30/2020/NĐ-CP) hiển thị đúng ngày khách hàng xác nhận.';
+    `Đính kèm ngay sau trang này là toàn văn Thư chấp thuận phiên bản ${versionCode}${numberNote} ` +
+    '(song ngữ Việt – Anh, giữ nguyên thể thức theo Nghị định 30/2020/NĐ-CP) hiển thị đúng số và ngày khách hàng xác nhận.';
   wrapTextLines(ctx, noteText, usableWidth).forEach((line, idx) => {
     ctx.fillText(line, marginX, footerTop + idx * 28);
   });
@@ -486,14 +584,20 @@ export async function exportClientConsentPdf({ inquiry, archiveEntry, pdfjsLib }
       const page = await pdfDoc.getPage(pageNumber);
       const unscaled = page.getViewport({ scale: 1 });
       const scale = COVER_WIDTH_PX / unscaled.width;
-      const dateLabel = pageNumber === 1 ? dateLabels.vi : pageNumber === 6 ? dateLabels.en : '';
+      const overlays = buildConsentPageOverlays({
+        pageNumber,
+        archiveEntry,
+        dateLabels,
+        consentNumber: inquiry.consentNumber,
+        isoTimestamp: acceptedIso,
+      });
 
       await renderConsentPdfPage({
         page,
         canvas: pageCanvas,
         scale,
         dpr: 1,
-        dateLabel,
+        overlays,
         pdfjsLib,
       });
 
@@ -507,9 +611,12 @@ export async function exportClientConsentPdf({ inquiry, archiveEntry, pdfjsLib }
     const pdfBytes = buildPdfFromJpegPages(pages);
     const blob = new Blob([pdfBytes], { type: 'application/pdf' });
     const url = URL.createObjectURL(blob);
+    const numSlug = inquiry.consentNumber ? toSafeFilenameSlug(inquiry.consentNumber) : '';
     const slug = toSafeFilenameSlug(inquiry.fullName);
     const docId = toSafeFilenameSlug(inquiry.id || 'hoso');
-    const filename = `thu-chap-thuan-${slug}-${docId}.pdf`;
+    const filename = numSlug
+      ? `thu-chap-thuan-${numSlug}-${slug}-${docId}.pdf`
+      : `thu-chap-thuan-${slug}-${docId}.pdf`;
 
     const link = document.createElement('a');
     link.href = url;

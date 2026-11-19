@@ -20,9 +20,17 @@ rules_version = '2';
 //   - lang: string (optional, <= 10 chars) - UI language code (e.g. 'vi', 'en')
 //   - consentVersion: string (optional on create, immutable once set, 1..50 chars) - accepted consent document version (e.g. 'HP-PDPL-02/2026')
 //   - consentAcceptedAt: timestamp | string (optional on create, immutable once set, 1..50 chars if string) - timestamp when visitor checked/confirmed consent
+//   - consentSeq: int (optional on create, paired with consentNumber, immutable once set, 1..1000000) - sequential consent number for the year
+//   - consentNumber: string (optional on create, paired with consentSeq, immutable once set, 1..50 chars, matches '^[0-9]{2,6}/20[2-9][0-9]/TCT-HCS$') - formatted consent reference number (e.g. '01/2026/TCT-HCS')
 //   - lawyerNotes: string (optional, admin update only, <= 5000 chars)
 //   - updatedAt: timestamp | string (optional, admin update only, <= 50 chars if string)
 //   - updatedBy: string (optional, admin update only, <= 150 chars)
+//
+// Collection: counters
+// Document ID: consent_YYYY (matches '^consent_20[2-9][0-9]$', e.g. 'consent_2026')
+// Fields:
+//   - count: int (required; == 1 on visitor create, == prev + 1 on visitor update, 0..1000000; admin syncConsentCounterFloor may write partial { count: int }) - sequential counter value
+//   - lastConsultationId: string (required for visitor create/update, optional for admin writes, 1..128 chars; must reference a new consultation created in the same transaction) - ID of the consultation that incremented the counter
 //
 // =========================================================================
 
@@ -51,11 +59,36 @@ service cloud.firestore {
     }
 
     // =========================================================================
-    // CONSULTATION INQUIRIES DOMAIN VALIDATORS
+    // CONSULTATION INQUIRIES & CONSENT COUNTER DOMAIN VALIDATORS
     // =========================================================================
 
+    // Verify counter document ID matches yearly consent counter pattern (consent_YYYY)
+    function isValidConsentCounterId(counterId) {
+      return counterId.matches('^consent_20[2-9][0-9]$');
+    }
+
+    // Verify post-transaction counter state matches the consultation's claimed sequence and ID
+    function isMatchingCounterState(afterCounter, seq, consultationId) {
+      return afterCounter != null &&
+        'count' in afterCounter &&
+        'lastConsultationId' in afterCounter &&
+        afterCounter.count == seq &&
+        afterCounter.lastConsultationId == consultationId;
+    }
+
+    // Bind consultation consentSeq/consentNumber atomically to counters/consent_YYYY via getAfter
+    function hasValidAtomicConsentCounter(data, consultationId) {
+      let year = data.consentNumber.split('/')[1];
+      return existsAfter(/databases/$(database)/documents/counters/$('consent_' + year)) &&
+        isMatchingCounterState(
+          getAfter(/databases/$(database)/documents/counters/$('consent_' + year)).data,
+          data.consentSeq,
+          consultationId
+        );
+    }
+
     // Validates consultation inquiry documents created by unauthenticated visitors
-    function isValidConsultationCreate(data) {
+    function isValidConsultationCreate(data, consultationId) {
       return
         // 1. Mandatory schema bounds & required fields
         data.keys().hasAll(['fullName', 'phone', 'notes', 'createdAt']) &&
@@ -71,7 +104,9 @@ service cloud.firestore {
           'service',
           'lang',
           'consentVersion',
-          'consentAcceptedAt'
+          'consentAcceptedAt',
+          'consentSeq',
+          'consentNumber'
         ]) &&
 
         // 2. Strict type safety and character limits
@@ -105,6 +140,22 @@ service cloud.firestore {
           !('consentAcceptedAt' in data) ||
           data.consentAcceptedAt is timestamp ||
           (data.consentAcceptedAt is string && data.consentAcceptedAt.size() >= 1 && data.consentAcceptedAt.size() <= 50)
+        ) &&
+
+        // 5. Optional consent numbering fields must appear together and bind atomically to counters/consent_YYYY
+        (('consentSeq' in data) == ('consentNumber' in data)) &&
+        (
+          !('consentSeq' in data) ||
+          (
+            data.consentSeq is int &&
+            data.consentSeq >= 1 &&
+            data.consentSeq <= 1000000 &&
+            data.consentNumber is string &&
+            data.consentNumber.size() >= 1 &&
+            data.consentNumber.size() <= 50 &&
+            data.consentNumber.matches('^[0-9]{2,6}/20[2-9][0-9]/TCT-HCS$') &&
+            hasValidAtomicConsentCounter(data, consultationId)
+          )
         );
     }
 
@@ -125,6 +176,8 @@ service cloud.firestore {
           'lang',
           'consentVersion',
           'consentAcceptedAt',
+          'consentSeq',
+          'consentNumber',
           'lawyerNotes',
           'updatedAt',
           'updatedBy'
@@ -172,6 +225,27 @@ service cloud.firestore {
           data.consentAcceptedAt is timestamp ||
           (data.consentAcceptedAt is string && data.consentAcceptedAt.size() >= 1 && data.consentAcceptedAt.size() <= 50)
         ) &&
+        (
+          !('consentSeq' in existingData) ||
+          ('consentSeq' in data && data.consentSeq == existingData.consentSeq)
+        ) &&
+        (
+          !('consentSeq' in data) ||
+          (data.consentSeq is int && data.consentSeq >= 1 && data.consentSeq <= 1000000)
+        ) &&
+        (
+          !('consentNumber' in existingData) ||
+          ('consentNumber' in data && data.consentNumber == existingData.consentNumber)
+        ) &&
+        (
+          !('consentNumber' in data) ||
+          (
+            data.consentNumber is string &&
+            data.consentNumber.size() >= 1 &&
+            data.consentNumber.size() <= 50 &&
+            data.consentNumber.matches('^[0-9]{2,6}/20[2-9][0-9]/TCT-HCS$')
+          )
+        ) &&
 
         // 5. Admin workflow & audit fields validation
         (!('status' in data) || (data.status is string && data.status in ['new', 'contacted', 'in_progress', 'completed'])) &&
@@ -184,6 +258,70 @@ service cloud.firestore {
         (!('updatedBy' in data) || (data.updatedBy is string && data.updatedBy.size() <= 150));
     }
 
+    // Validates admin counter synchronization writes (allows partial { count: int } such as syncConsentCounterFloor)
+    function isValidAdminCounterWrite(data) {
+      return data.keys().hasAll(['count']) &&
+        data.keys().hasOnly(['count', 'lastConsultationId']) &&
+        data.count is int &&
+        data.count >= 0 &&
+        data.count <= 1000000 &&
+        (
+          !('lastConsultationId' in data) ||
+          (
+            data.lastConsultationId is string &&
+            data.lastConsultationId.size() >= 1 &&
+            data.lastConsultationId.size() <= 128
+          )
+        );
+    }
+
+    // Validates visitor counter payload shape and verifies lastConsultationId is a newly created consultation
+    function isValidVisitorCounterPayload(data) {
+      return data.keys().hasOnly(['count', 'lastConsultationId']) &&
+        data.keys().hasAll(['count', 'lastConsultationId']) &&
+        data.count is int &&
+        data.count >= 1 &&
+        data.count <= 1000000 &&
+        data.lastConsultationId is string &&
+        data.lastConsultationId.size() >= 1 &&
+        data.lastConsultationId.size() <= 128 &&
+        data.lastConsultationId != '.' &&
+        data.lastConsultationId != '..' &&
+        data.lastConsultationId.split('/').size() == 1 &&
+        !exists(/databases/$(database)/documents/consultations/$(data.lastConsultationId)) &&
+        existsAfter(/databases/$(database)/documents/consultations/$(data.lastConsultationId));
+    }
+
+    // Validates counter document creation scoped strictly to consent_YYYY
+    function isValidCounterCreate(counterId, data) {
+      return isValidConsentCounterId(counterId) &&
+        (
+          (isAdmin() && isValidAdminCounterWrite(data)) ||
+          (
+            'count' in data &&
+            data.count is int &&
+            data.count == 1 &&
+            isValidVisitorCounterPayload(data)
+          )
+        );
+    }
+
+    // Validates counter document update scoped strictly to consent_YYYY
+    function isValidCounterUpdate(counterId, data, existingData) {
+      return isValidConsentCounterId(counterId) &&
+        (
+          (isAdmin() && isValidAdminCounterWrite(data)) ||
+          (
+            'count' in data &&
+            data.count is int &&
+            'count' in existingData &&
+            existingData.count is int &&
+            data.count == existingData.count + 1 &&
+            isValidVisitorCounterPayload(data)
+          )
+        );
+    }
+
     // =========================================================================
     // COLLECTION RULES
     // =========================================================================
@@ -191,7 +329,7 @@ service cloud.firestore {
     // Consultations collection (Legal consultation inquiries from website visitors)
     match /consultations/{consultationId} {
       // Public visitors can submit inquiries subject to strict payload validation
-      allow create: if isValidConsultationCreate(request.resource.data);
+      allow create: if isValidConsultationCreate(request.resource.data, consultationId);
 
       // Only authenticated admin lawyers can read (list & get inquiries)
       allow read: if isAdmin();
@@ -201,6 +339,24 @@ service cloud.firestore {
 
       // Only authenticated admin lawyers can delete consultation records
       allow delete: if isAdmin();
+    }
+
+    // Counters collection (Atomic sequential numbering for Consent Letters: consent_YYYY)
+    match /counters/{counterId} {
+      // Single-document read allowed for matching consent_YYYY counters so visitors
+      // can preview the next reference number and execute atomic counter transactions
+      allow get: if isValidConsentCounterId(counterId) || isAdmin();
+
+      // Collection queries restricted to authorized admin lawyers
+      allow list: if isAdmin();
+
+      // Scoped to consent_YYYY: visitors initialize/increment atomically with a new consultation;
+      // admins may also sync floor counts via partial { count: int } writes
+      allow create: if isValidCounterCreate(counterId, request.resource.data);
+      allow update: if isValidCounterUpdate(counterId, request.resource.data, resource.data);
+
+      // Counter documents cannot be deleted from client SDKs
+      allow delete: if false;
     }
 
     // =========================================================================

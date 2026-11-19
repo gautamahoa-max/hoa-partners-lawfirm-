@@ -10,8 +10,18 @@ import {
   exportConsultationsCsv,
   submitConsultation,
 } from '../services/consultations.js';
-import { formatConsentDateLabels } from './formatters.js';
-import { buildPdfFromJpegPages, resolveConsentVersion } from './consentPdf.js';
+import {
+  formatConsentDateLabels,
+  getConsentYear,
+  formatConsentDocumentNumber,
+  formatConsentNumberLines,
+  deriveFallbackConsentNumber,
+} from './formatters.js';
+import {
+  buildPdfFromJpegPages,
+  resolveConsentVersion,
+  buildConsentPageOverlays,
+} from './consentPdf.js';
 import {
   calculateCourtFee,
   estimateLegalFee,
@@ -72,6 +82,7 @@ test('buildConsultationsCsv and exportConsultationsCsv produce UTF-8 BOM CSV wit
       lang: 'vi',
       source: 'web_contact_form',
       createdAt: '2026-11-13T05:00:00.000Z',
+      consentNumber: '03/2026/TCT-HCS',
       consentVersion: 'HP-PDPL-02/2026',
       consentAcceptedAt: '2026-11-13T04:59:50.000Z',
     },
@@ -80,11 +91,11 @@ test('buildConsultationsCsv and exportConsultationsCsv produce UTF-8 BOM CSV wit
   const csv = buildConsultationsCsv(sample);
   const lines = csv.split('\r\n');
   assert.equal(lines.length, 2);
-  assert.match(lines[0], /^ID,Họ và tên,Số điện thoại.*Phiên bản chấp thuận,Thời điểm chấp thuận$/);
+  assert.match(lines[0], /^ID,Họ và tên,Số điện thoại.*Số Thư chấp thuận,Phiên bản chấp thuận,Thời điểm chấp thuận$/);
   assert.ok(lines[1].includes('"Nguyễn ""An"", Jr."'));
   assert.ok(lines[1].includes('"Cần tư vấn\nhợp đồng"'));
   assert.ok(lines[1].includes(`"'=HYPERLINK(""http://bad"")"`));
-  assert.ok(lines[1].includes('HP-PDPL-02/2026,2026-11-13T04:59:50.000Z'));
+  assert.ok(lines[1].includes('03/2026/TCT-HCS,HP-PDPL-02/2026,2026-11-13T04:59:50.000Z'));
 
   const bomCsv = exportConsultationsCsv(sample);
   assert.equal(bomCsv.startsWith('\uFEFF'), true);
@@ -253,4 +264,107 @@ test('FEE_SCHEDULE_ITEMS contains 20 civil-law rows synced in content and floor 
       `Expected homepage floor ${group.priceText} to appear in ${group.id} detailed schedule`
     );
   }
+});
+
+test('Consent numbering formatters and legacy chronological fallback avoid collisions', () => {
+  // Dec 31 2026 18:00 UTC is Jan 1 2027 01:00 in GMT+7
+  assert.equal(getConsentYear('2026-12-31T18:00:00.000Z'), '2027');
+  assert.equal(getConsentYear('2026-11-19T01:00:00.000Z'), '2026');
+
+  assert.equal(formatConsentDocumentNumber(1, '2026'), '01/2026/TCT-HCS');
+  assert.equal(formatConsentDocumentNumber(12, '2026'), '12/2026/TCT-HCS');
+  assert.equal(formatConsentDocumentNumber(105, '2026'), '105/2026/TCT-HCS');
+  assert.equal(formatConsentDocumentNumber(0, '2026'), '');
+  assert.equal(formatConsentDocumentNumber(-2, '2026'), '');
+
+  const lines = formatConsentNumberLines('07/2026/TCT-HCS', '2026-11-19T01:00:00.000Z');
+  assert.deepEqual(lines, {
+    vi: 'Số: 07/2026/TCT-HCS',
+    en: 'Ref. No.: 07/2026/TCT-HCS',
+    legacyEn: 'Ref. No. 07/2026/TCT-HCS',
+  });
+
+  const placeholderLines = formatConsentNumberLines('', '2026-11-19T01:00:00.000Z');
+  assert.equal(placeholderLines.vi, 'Số: ....../2026/TCT-HCS');
+  assert.equal(placeholderLines.en, 'Ref. No.: ....../2026/TCT-HCS');
+
+  const inquiries = [
+    { id: 'c3', createdAt: '2026-11-18T00:00:00.000Z', consentSeq: 2 },
+    { id: 'c1', createdAt: '2026-11-15T00:00:00.000Z' },
+    { id: 'c2', createdAt: '2026-11-16T00:00:00.000Z' },
+    { id: 'c4', createdAt: '2026-11-19T00:00:00.000Z', consentNumber: '04/2026/TCT-HCS' },
+  ];
+  assert.equal(deriveFallbackConsentNumber(inquiries[1], inquiries), '01/2026/TCT-HCS');
+  assert.equal(deriveFallbackConsentNumber(inquiries[0], inquiries), '02/2026/TCT-HCS');
+  // c2 skips seq 2 because c3 already claimed 2, gets 03/2026/TCT-HCS
+  assert.equal(deriveFallbackConsentNumber(inquiries[2], inquiries), '03/2026/TCT-HCS');
+  assert.equal(deriveFallbackConsentNumber(inquiries[3], inquiries), '04/2026/TCT-HCS');
+});
+
+test('buildConsentPageOverlays builds interleaved Page 1 and legacy split Page 1/6 overlays', () => {
+  const dateLabels = formatConsentDateLabels('2026-11-19T01:00:00.000Z');
+  const interleavedEntry = { version: 'HP-PDPL-03/2026', layout: 'interleaved' };
+
+  const p1 = buildConsentPageOverlays({
+    pageNumber: 1,
+    archiveEntry: interleavedEntry,
+    dateLabels,
+    consentNumber: '05/2026/TCT-HCS',
+    isoTimestamp: '2026-11-19T01:00:00.000Z',
+  });
+  assert.equal(p1.length, 4);
+  assert.deepEqual(p1[0], { placeholder: 'Số: 00/2026/TCT-HCS', text: 'Số: 05/2026/TCT-HCS', fontStyle: 'normal' });
+  assert.deepEqual(p1[1], { placeholder: 'Ref. No.: 00/2026/TCT-HCS', text: 'Ref. No.: 05/2026/TCT-HCS', fontStyle: 'italic' });
+  assert.equal(p1[2].placeholder, 'Đắk Lắk, năm 2026');
+  assert.equal(p1[3].placeholder, 'Dak Lak, 2026');
+
+  assert.deepEqual(
+    buildConsentPageOverlays({ pageNumber: 2, archiveEntry: interleavedEntry, dateLabels, consentNumber: '05/2026/TCT-HCS' }),
+    []
+  );
+
+  const splitEntry = { version: 'HP-PDPL-02/2026', layout: 'split' };
+  const legacyP1 = buildConsentPageOverlays({ pageNumber: 1, archiveEntry: splitEntry, dateLabels, consentNumber: '05/2026/TCT-HCS' });
+  assert.equal(legacyP1.length, 2);
+  assert.equal(legacyP1[0].placeholder, 'Số: 02/2026/TCT-HCS');
+  const legacyP6 = buildConsentPageOverlays({ pageNumber: 6, archiveEntry: splitEntry, dateLabels, consentNumber: '05/2026/TCT-HCS' });
+  assert.equal(legacyP6.length, 2);
+  assert.deepEqual(legacyP6[0], { placeholder: 'Ref. No. 02/2026/TCT-HCS', text: 'Ref. No. 05/2026/TCT-HCS', fontStyle: 'italic' });
+});
+
+test('HP-PDPL-03-2026.pdf contains single unified interleaved bilingual content and Page 1 placeholders', async () => {
+  const fs = await import('node:fs');
+  const pdfjsLib = await import('pdfjs-dist/legacy/build/pdf.mjs');
+  const data = new Uint8Array(fs.readFileSync(new URL('../assets/consent/HP-PDPL-03-2026.pdf', import.meta.url)));
+  const doc = await pdfjsLib.getDocument({ data, verbosity: 0 }).promise;
+  assert.ok(doc.numPages >= 6);
+
+  const pageTexts = [];
+  for (let p = 1; p <= doc.numPages; p += 1) {
+    const page = await doc.getPage(p);
+    const tc = await page.getTextContent();
+    if (p === 1) {
+      for (const expectedPlaceholder of ['Số: 00/2026/TCT-HCS', 'Ref. No.: 00/2026/TCT-HCS', 'Đắk Lắk, năm 2026', 'Dak Lak, 2026']) {
+        assert.ok(
+          tc.items.some((item) => item.str?.trim() === expectedPlaceholder),
+          `Expected exact single text item ${expectedPlaceholder} on Page 1`
+        );
+      }
+    }
+    pageTexts.push(tc.items.map((i) => i.str).join(' '));
+  }
+  await doc.destroy();
+
+  const normalize = (s) => s.replace(/\s+/g, ' ');
+  const p1Text = normalize(pageTexts[0]);
+  assert.ok(p1Text.includes('THƯ CHẤP THUẬN') && p1Text.includes('LETTER OF CONSENT'));
+
+  const allText = normalize(pageTexts.join(' '));
+  assert.ok(allText.includes('Điều 2.') && allText.includes('Article 2.'));
+  assert.ok(allText.includes('Điều 5.') && allText.includes('Article 5.'));
+  // Ensure unified bilingual text: only ONE LETTER OF CONSENT heading across the whole PDF
+  assert.equal(allText.match(/LETTER OF CONSENT/g)?.length, 1);
+  // Single signature block at end has both VN & EN party headers together
+  const lastPageText = normalize(pageTexts[pageTexts.length - 1]);
+  assert.ok(lastPageText.includes('KHÁCH HÀNG /') && lastPageText.includes('HOA & ASSOCIATES LAW FIRM LLC'));
 });
