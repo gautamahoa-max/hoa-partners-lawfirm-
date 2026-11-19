@@ -85,12 +85,15 @@ export default function LegalCalculator() {
   return (
     <section
       id="bao-gia"
-      className="relative py-16 sm:py-24 bg-gradient-to-b from-white via-[#F8F9FA] to-white border-b border-slate-200 scroll-mt-20 overflow-hidden"
+      className="relative py-16 sm:py-24 bg-gradient-to-br from-[#ECF1F8] via-[#F6F8FC] to-[#E6EEF7] border-b border-slate-200/80 scroll-mt-20 overflow-hidden"
     >
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-44 bg-gradient-to-tr from-slate-100/90 via-slate-50/40 to-transparent -skew-y-2 origin-bottom-left"
-      />
+      {/* Ambient luminous orbs for Liquid Glass refraction */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute -top-24 -left-16 w-96 h-96 rounded-full bg-sky-300/30 blur-3xl" />
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[34rem] h-80 rounded-full bg-indigo-200/30 blur-3xl" />
+        <div className="absolute -bottom-24 -right-12 w-96 h-96 rounded-full bg-blue-200/35 blur-3xl" />
+        <div className="absolute bottom-10 left-1/4 w-72 h-72 rounded-full bg-amber-100/40 blur-3xl" />
+      </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center mb-12 sm:mb-14">
@@ -108,38 +111,44 @@ export default function LegalCalculator() {
           {cards.map((card) => (
             <article
               key={card.id}
-              className="bg-white rounded-2xl border border-slate-100 shadow-[0_12px_36px_rgba(15,33,68,0.08)] hover:shadow-[0_18px_48px_rgba(15,33,68,0.14)] pt-9 pb-8 px-7 sm:px-8 flex flex-col justify-between relative overflow-hidden transition-shadow duration-300"
+              className="group bg-white/55 hover:bg-white/68 backdrop-blur-2xl backdrop-saturate-150 rounded-[28px] border border-white/80 shadow-[0_18px_48px_rgba(15,33,68,0.08),inset_0_1px_1px_rgba(255,255,255,0.95),inset_0_-1px_2px_rgba(15,33,68,0.04)] hover:shadow-[0_26px_60px_rgba(15,33,68,0.12),inset_0_1px_1px_rgba(255,255,255,1)] hover:-translate-y-1 pt-9 pb-8 px-7 sm:px-8 flex flex-col justify-between relative overflow-hidden transition-all duration-300"
             >
+              {/* Specular liquid-glass sheen */}
               <div
                 aria-hidden="true"
-                className="absolute top-4 right-4 w-20 h-20 text-amber-400/25 pointer-events-none"
+                className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/55 via-white/10 to-sky-100/20"
+              />
+
+              <div
+                aria-hidden="true"
+                className="absolute top-4 right-4 w-20 h-20 text-[#0F2144]/[0.07] pointer-events-none"
               >
                 {CARD_WATERMARKS[card.id]}
               </div>
 
-              <div>
-                <h3 className="text-lg sm:text-[20px] font-bold text-slate-800 text-left mt-2 mb-5 pr-8">
+              <div className="relative z-10">
+                <h3 className="text-lg sm:text-[20px] font-bold text-[#0F2144] text-left mt-2 mb-5 pr-8">
                   {card.title}
                 </h3>
 
-                <div className="-ml-7 sm:-ml-8 pl-7 sm:pl-8 pr-6 py-3 rounded-r-full bg-[#FFF8EB] w-[92%] mb-7 text-left flex items-baseline gap-1.5">
-                  <span className="text-xs font-bold uppercase text-[#1D5B9B]">
+                <div className="-ml-7 sm:-ml-8 pl-7 sm:pl-8 pr-6 py-3 rounded-r-full bg-white/65 backdrop-blur-md border-y border-r border-white/90 shadow-[inset_0_1px_1px_rgba(255,255,255,0.95),0_4px_14px_rgba(15,33,68,0.05)] w-[92%] mb-7 text-left flex items-baseline gap-1.5">
+                  <span className="text-xs font-bold uppercase tracking-wide text-slate-500">
                     {card.fromLabel}
                   </span>
-                  <span className="text-2xl sm:text-[26px] font-extrabold text-[#185ADB] tracking-tight">
+                  <span className="text-2xl sm:text-[26px] font-extrabold text-[#0F2144] tracking-tight tabular-nums">
                     {card.priceText}
                   </span>
-                  <span className="text-xs font-bold text-[#1D5B9B]">{card.currency}</span>
+                  <span className="text-xs font-bold text-slate-500">{card.currency}</span>
                 </div>
 
-                <p className="text-sm font-bold text-slate-700 mb-4 text-left">
+                <p className="text-sm font-bold text-[#0F2144]/85 mb-4 text-left">
                   {card.popularLabel}
                 </p>
 
                 <ul className="space-y-3 text-left mb-8">
                   {card.items.map((item) => (
-                    <li key={item} className="flex items-start gap-2.5 text-sm text-slate-600 leading-relaxed">
-                      <span aria-hidden="true" className="text-sky-500 font-bold text-xs mt-1 shrink-0">
+                    <li key={item} className="flex items-start gap-2.5 text-sm text-slate-700 leading-relaxed">
+                      <span aria-hidden="true" className="text-[#0F2144]/45 font-bold text-xs mt-1 shrink-0">
                         ▸
                       </span>
                       <span>{item}</span>
@@ -151,7 +160,7 @@ export default function LegalCalculator() {
               <button
                 type="button"
                 onClick={() => handleSelectPackage(card)}
-                className="w-[82%] mx-auto py-3 px-6 rounded-md bg-[#F7B500] hover:bg-[#E0A300] active:translate-y-[1px] text-white font-bold text-sm shadow-[0_4px_14px_rgba(247,181,0,0.35)] transition-all cursor-pointer text-center"
+                className="relative z-10 w-[82%] mx-auto py-3 px-6 rounded-full bg-[#0F2144]/90 hover:bg-[#0F2144] backdrop-blur-md border border-white/25 text-white font-semibold text-sm shadow-[0_8px_24px_rgba(15,33,68,0.22),inset_0_1px_1px_rgba(255,255,255,0.28)] hover:shadow-[0_12px_28px_rgba(15,33,68,0.3),inset_0_1px_1px_rgba(255,255,255,0.38)] active:scale-[0.98] transition-all cursor-pointer text-center"
               >
                 {card.cta}
               </button>
