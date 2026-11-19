@@ -102,8 +102,8 @@ export default function LegalCalculator() {
           </h2>
           <p className="mt-4 text-sm sm:text-base text-slate-600 leading-relaxed">
             {locale === 'vi'
-              ? 'Hoà & Cộng sự đồng hành cùng thân chủ từ bước đầu tư vấn chiến lược, rà soát hợp đồng, đại diện hòa giải tiền tố tụng cho đến trực tiếp tranh tụng bảo vệ quyền lợi tại Tòa án nhân dân các cấp tại TP.HCM và Đắk Lắk.'
-              : 'Hoa & Associates partners with clients from strategic legal assessment, contract review, and pre-trial representation to full courtroom advocacy across HCMC and Dak Lak.'}
+              ? 'Hoà & Cộng sự đồng hành cùng thân chủ từ bước đầu tư vấn chiến lược, rà soát hợp đồng, đại diện hòa giải tiền tố tụng cho đến trực tiếp tranh tụng bảo vệ quyền lợi tại Tòa án nhân dân các cấp.'
+              : 'Hoa & Associates partners with clients from strategic legal assessment, contract review, and pre-trial representation to full courtroom advocacy.'}
           </p>
         </div>
 
