@@ -229,7 +229,7 @@ export default function PdfConsentModal({
               {formT.privacyModalTitle}
             </h2>
             <p className="text-[11px] sm:text-xs text-slate-500 mt-0.5">
-              {formT.privacyModalSubtitle} {numPages > 0 ? `(${numPages} ${lang === 'en' ? 'pages' : 'trang'})` : ''}
+              {formT.privacyModalSubtitle}
             </p>
           </div>
 
