@@ -90,11 +90,6 @@ export default function FeeSchedulePage() {
               <h1 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-bold text-[#0F2144] tracking-tight leading-[1.2]">
                 {locale === 'vi' ? 'Bảng giá dịch vụ luật sư' : 'Legal Service Fee Schedule'}
               </h1>
-              <p className="mt-4 text-sm sm:text-base text-slate-600 leading-relaxed max-w-[65ch]">
-                {locale === 'vi'
-                  ? 'Biểu phí tham chiếu chi tiết cho 20 hạng mục dịch vụ chuyên sâu Pháp luật Dân sự (Đất đai, Thừa kế, Hợp đồng, Hôn nhân gia đình & Bồi thường thiệt hại) tại Công ty Luật TNHH Hoà và Cộng sự. Mức phí cụ thể được thống nhất minh bạch bằng Hợp đồng dịch vụ pháp lý theo Điều 55 Luật Luật sư.'
-                  : 'Detailed reference fee schedule across 20 specialized Civil Law services (Land, Inheritance, Contracts, Family Law & Civil Torts) at Hoa & Associates Law Firm LLC, formalized in writing under Article 55 of the Vietnam Law on Lawyers.'}
-              </p>
             </div>
           </div>
         </section>
