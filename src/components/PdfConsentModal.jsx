@@ -129,6 +129,8 @@ export default function PdfConsentModal({
   }, []);
 
   useEffect(() => {
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
         onClose();
@@ -140,7 +142,10 @@ export default function PdfConsentModal({
       }
     };
     window.addEventListener('keydown', handleKeyDown, true);
-    return () => window.removeEventListener('keydown', handleKeyDown, true);
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.removeEventListener('keydown', handleKeyDown, true);
+    };
   }, [onClose]);
 
   useEffect(() => {
@@ -206,7 +211,7 @@ export default function PdfConsentModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 select-none print:hidden"
+      className="fixed inset-0 h-dvh z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-2.5 sm:p-4 select-none print:hidden"
       role="dialog"
       aria-modal="true"
       aria-labelledby="pdf-consent-modal-title"
@@ -216,11 +221,11 @@ export default function PdfConsentModal({
       onDragStart={(e) => e.preventDefault()}
     >
       <div
-        className="bg-slate-100 border border-slate-300 rounded-2xl max-w-4xl w-full h-[92vh] flex flex-col shadow-2xl overflow-hidden text-left"
+        className="bg-slate-100 border border-slate-300 rounded-2xl max-w-4xl w-full h-full max-h-full sm:h-[90vh] flex flex-col shadow-2xl overflow-hidden text-left"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Sticky Viewer Toolbar (No Download / No Print) */}
-        <div className="px-4 sm:px-6 py-3.5 border-b border-slate-200 bg-white flex flex-wrap items-center justify-between gap-2.5 shrink-0">
+        <div className="px-3.5 sm:px-6 py-2.5 sm:py-3.5 border-b border-slate-200 bg-white flex items-center justify-between gap-2 shrink-0">
           <div className="min-w-0">
             <h2
               id="pdf-consent-modal-title"
@@ -228,12 +233,12 @@ export default function PdfConsentModal({
             >
               {formT.privacyModalTitle}
             </h2>
-            <p className="text-[11px] sm:text-xs text-slate-500 mt-0.5">
+            <p className="text-[11px] sm:text-xs text-slate-500 mt-0.5 truncate">
               {formT.privacyModalSubtitle}
             </p>
           </div>
 
-          <div className="flex items-center gap-1.5 sm:gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             {archiveEntry.layout === 'split' && numPages >= 6 && (
               <div className="hidden md:flex items-center rounded-lg border border-slate-200 bg-slate-50 p-0.5 text-[11px] font-semibold">
                 <button
@@ -258,18 +263,18 @@ export default function PdfConsentModal({
                 type="button"
                 onClick={() => setZoom((z) => Math.max(0.75, Number((z - 0.15).toFixed(2))))}
                 aria-label="Thu nhỏ"
-                className="px-2.5 py-1 hover:bg-slate-50 cursor-pointer"
+                className="min-h-[36px] px-2 sm:px-2.5 py-1 hover:bg-slate-50 cursor-pointer"
               >
                 −
               </button>
-              <span className="px-1.5 text-[11px] tabular-nums min-w-[3.1rem] text-center">
+              <span className="px-1 text-[11px] tabular-nums min-w-[2.7rem] text-center">
                 {Math.round(zoom * 100)}%
               </span>
               <button
                 type="button"
                 onClick={() => setZoom((z) => Math.min(1.6, Number((z + 0.15).toFixed(2))))}
                 aria-label="Phóng to"
-                className="px-2.5 py-1 hover:bg-slate-50 cursor-pointer"
+                className="min-h-[36px] px-2 sm:px-2.5 py-1 hover:bg-slate-50 cursor-pointer"
               >
                 +
               </button>
@@ -279,9 +284,10 @@ export default function PdfConsentModal({
               type="button"
               onClick={onClose}
               aria-label={formT.privacyModalClose}
-              className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-700 hover:bg-slate-100 text-xl leading-none cursor-pointer transition-colors"
+              className="min-h-[40px] px-2.5 sm:px-3 rounded-lg inline-flex items-center gap-1 bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-950 text-xs font-semibold cursor-pointer transition-colors"
             >
-              ×
+              <span aria-hidden="true" className="text-base leading-none">×</span>
+              <span>{lang === 'en' ? 'Close' : 'Đóng'}</span>
             </button>
           </div>
         </div>
@@ -289,7 +295,7 @@ export default function PdfConsentModal({
         {/* Scrollable PDF Pages */}
         <div
           ref={scrollRef}
-          className="flex-1 overflow-auto p-3 sm:p-6 space-y-4 sm:space-y-5 bg-slate-200/70"
+          className="flex-1 min-h-0 overflow-auto overscroll-contain p-3 sm:p-6 space-y-4 sm:space-y-5 bg-slate-200/70"
         >
           {loading && (
             <div className="h-full min-h-[240px] flex flex-col items-center justify-center gap-2 text-xs sm:text-sm text-slate-600">
@@ -341,22 +347,22 @@ export default function PdfConsentModal({
         </div>
 
         {/* Sticky Footer */}
-        <div className="px-4 sm:px-6 py-3.5 border-t border-slate-200 bg-white flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-2.5 shrink-0">
-          <span className="text-[11px] text-slate-500 text-center sm:text-left">
+        <div className="px-3.5 sm:px-6 py-2.5 sm:py-3.5 border-t border-slate-200 bg-white flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5 shrink-0">
+          <span className="hidden sm:inline text-[11px] text-slate-500 text-left">
             {formT.privacyFooterHint}
           </span>
-          <div className="flex flex-col-reverse sm:flex-row gap-2">
+          <div className="flex items-center gap-2 w-full sm:w-auto">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-lg border border-slate-300 text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer"
+              className="min-h-[44px] px-4 py-2 rounded-lg border border-slate-300 text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors shrink-0 cursor-pointer"
             >
-              {formT.privacyModalClose}
+              {lang === 'en' ? 'Close' : 'Đóng'}
             </button>
             <button
               type="button"
               onClick={onAgree}
-              className="px-5 py-2 rounded-lg bg-[#0F2144] text-white text-xs sm:text-sm font-semibold hover:bg-[#162A56] transition-colors cursor-pointer"
+              className="flex-1 sm:flex-initial min-h-[44px] px-4 sm:px-5 py-2 rounded-lg bg-[#0F2144] text-white text-xs sm:text-sm font-semibold hover:bg-[#162A56] transition-colors cursor-pointer"
             >
               {formT.privacyModalAgreeBtn}
             </button>
