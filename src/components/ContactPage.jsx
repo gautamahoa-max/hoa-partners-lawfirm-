@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { 
   PhoneIcon, 
-  CheckCircleIcon 
+  CheckCircleIcon,
+  ZaloIcon,
 } from './Icons';
 import Navbar from './Navbar';
 import Footer from './Footer';
@@ -14,6 +15,7 @@ import {
   checkRateLimit,
   recordSubmissionTimestamp,
 } from '../utils/security';
+import { buildZaloContextMessage } from '../utils/formatters';
 import { submitConsultation, CONSENT_DOCUMENT_VERSION } from '../services/consultations';
 
 const PdfConsentModal = React.lazy(() => import('./PdfConsentModal'));
@@ -32,9 +34,12 @@ export default function ContactPage({ onBack }) {
     botField: '', // Honeypot anti-bot trap
   });
 
+  const [leadSource, setLeadSource] = useState('web_contact_form');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submittedConsentNumber, setSubmittedConsentNumber] = useState('');
+  const [submittedSummary, setSubmittedSummary] = useState({ fullName: '', notes: '' });
+  const [zaloCopied, setZaloCopied] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [submitFailed, setSubmitFailed] = useState(false);
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
@@ -50,6 +55,12 @@ export default function ContactPage({ onBack }) {
           ...prev,
           notes: prefillNotes.slice(0, 2000),
         }));
+      }
+      const prefillSource = sessionStorage.getItem('hp_prefill_source');
+      if (prefillSource) {
+        sessionStorage.removeItem('hp_prefill_source');
+        const cleanSource = sanitizeInput(prefillSource, 100).trim();
+        if (cleanSource) setLeadSource(cleanSource);
       }
     } catch {
       // Ignore storage read errors in restricted contexts
@@ -140,11 +151,14 @@ export default function ContactPage({ onBack }) {
         phone: cleanPhone,
         notes: cleanNotes,
         lang,
+        source: leadSource,
         consent: Boolean(formData.consent),
         consentVersion: CONSENT_DOCUMENT_VERSION,
         consentAcceptedAt: formData.consentAcceptedAt || new Date().toISOString(),
       });
       setSubmittedConsentNumber(submissionResult?.consentNumber || '');
+      setSubmittedSummary({ fullName: cleanName, notes: cleanNotes });
+      setZaloCopied(false);
       recordSubmissionTimestamp();
       setIsSubmitted(true);
     } catch (err) {
@@ -160,6 +174,24 @@ export default function ContactPage({ onBack }) {
     }
   };
 
+  const handleOpenZalo = async () => {
+    const summary = buildZaloContextMessage({
+      fullName: submittedSummary.fullName,
+      consentNumber: submittedConsentNumber,
+      notes: submittedSummary.notes,
+      lang,
+    });
+    if (navigator.clipboard?.writeText) {
+      try {
+        await navigator.clipboard.writeText(summary);
+        setZaloCopied(true);
+      } catch {
+        // Ignore clipboard errors in restricted contexts
+      }
+    }
+    window.open('https://zalo.me/0988886447', '_blank', 'noopener,noreferrer');
+  };
+
   const handleReset = () => {
     setFormData({
       fullName: '',
@@ -169,8 +201,11 @@ export default function ContactPage({ onBack }) {
       consentAcceptedAt: '',
       botField: '',
     });
+    setLeadSource('web_contact_form');
     setIsSubmitted(false);
     setSubmittedConsentNumber('');
+    setSubmittedSummary({ fullName: '', notes: '' });
+    setZaloCopied(false);
     setErrorMessage('');
     setSubmitFailed(false);
   };
@@ -217,8 +252,25 @@ export default function ContactPage({ onBack }) {
                   </p>
                 )}
 
-                {/* Thanh liên hệ khẩn cấp & thao tác gọn gàng */}
-                <div className="mt-7 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-center gap-3">
+                {/* Thanh liên hệ khẩn cấp & chuyển nhanh Zalo kèm tóm tắt */}
+                <div className="mt-7 pt-6 border-t border-slate-100 flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3">
+                  <button
+                    type="button"
+                    onClick={handleOpenZalo}
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#0068FF] text-white text-xs sm:text-sm font-semibold hover:bg-blue-600 transition-all shadow-sm cursor-pointer"
+                  >
+                    <ZaloIcon className="w-4 h-4 text-white" />
+                    <span>
+                      {zaloCopied
+                        ? lang === 'en'
+                          ? 'Summary Copied • Open Zalo'
+                          : 'Đã chép tóm tắt • Mở Zalo'
+                        : lang === 'en'
+                          ? 'Copy Summary & Open Zalo'
+                          : 'Sao chép tóm tắt & Mở Zalo'}
+                    </span>
+                  </button>
+
                   <a
                     href="tel:0988886447"
                     className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#0F2144] text-white text-xs sm:text-sm font-semibold hover:bg-[#162A56] transition-all shadow-sm"

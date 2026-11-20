@@ -79,10 +79,82 @@ export const formatConsentNumberLines = (consentNumber, isoTimestamp) => {
   };
 };
 
+export const OFFLINE_MANUAL_SOURCES = ['zalo', 'hotline', 'office'];
+
+const SOURCE_LABELS = {
+  web_contact_form: 'Form liên hệ',
+  zalo: 'Zalo',
+  hotline: 'Hotline',
+  office: 'Trực tiếp VP',
+  'trang_chu:advisory': 'Trang chủ • Tư vấn',
+  'trang_chu:representation': 'Trang chủ • Ngoài tố tụng',
+  'trang_chu:litigation': 'Trang chủ • Tranh tụng',
+};
+
+/**
+ * Identify whether a consultation source represents an offline/manual channel.
+ */
+export const isOfflineManualSource = (source) =>
+  Boolean(source && OFFLINE_MANUAL_SOURCES.includes(String(source).trim()));
+
+/**
+ * Check if a record is an offline/manual lead without any web PDPL consent fields.
+ */
+export const isUnconsentedManualLead = (item = {}) =>
+  isOfflineManualSource(item?.source) &&
+  !String(item?.consentNumber || '').trim() &&
+  !(Number.isInteger(item?.consentSeq) && item.consentSeq >= 1) &&
+  !String(item?.consentVersion || '').trim() &&
+  !item?.consentAcceptedAt;
+
+/**
+ * Map a stored consultation source slug into a concise Vietnamese label for CRM display.
+ */
+export const formatConsultationSource = (source) => {
+  const clean = typeof source === 'string' ? source.trim() : '';
+  if (!clean) return 'Form liên hệ';
+  if (SOURCE_LABELS[clean]) return SOURCE_LABELS[clean];
+  const feeMatch = clean.match(/^bang_gia:#(\d+)$/);
+  if (feeMatch) return `Bảng giá #${feeMatch[1]}`;
+  return clean;
+};
+
+/**
+ * Build a concise plain-text summary (<= 350 chars) ready to copy into Zalo after form submission.
+ */
+export const buildZaloContextMessage = ({ fullName = '', consentNumber = '', notes = '', lang = 'vi' } = {}) => {
+  const isEn = lang === 'en';
+  const cleanName = String(fullName || '').replace(/\s+/g, ' ').trim();
+  const cleanConsent = String(consentNumber || '').trim();
+  const cleanNotes = String(notes || '').replace(/\s+/g, ' ').trim();
+
+  const headerParts = [
+    isEn
+      ? `Hello Hoa & Associates Law Firm${cleanName ? ` (${cleanName})` : ''}.`
+      : `Xin chào Luật Hoà & Cộng sự${cleanName ? ` (${cleanName})` : ''}.`,
+  ];
+  if (cleanConsent) {
+    headerParts.push(isEn ? `Ref: ${cleanConsent}.` : `Số hồ sơ: ${cleanConsent}.`);
+  }
+
+  const prefix = headerParts.join(' ');
+  if (!cleanNotes) return prefix.slice(0, 350);
+
+  const label = isEn ? ' Summary: ' : ' Nội dung: ';
+  const budget = 350 - prefix.length - label.length;
+  if (budget <= 10) return prefix.slice(0, 350);
+
+  const excerpt =
+    cleanNotes.length > budget ? `${cleanNotes.slice(0, budget - 3).trimEnd()}...` : cleanNotes;
+  return `${prefix}${label}${excerpt}`;
+};
+
 /**
  * Resolve stored per-client Consent Letter number or assign chronological fallback for legacy rows.
  */
 export const deriveFallbackConsentNumber = (inquiry = {}, allInquiries = []) => {
+  if (isUnconsentedManualLead(inquiry)) return '';
+
   const storedNumber = typeof inquiry?.consentNumber === 'string' ? inquiry.consentNumber.trim() : '';
   if (storedNumber) return storedNumber;
 
@@ -93,7 +165,7 @@ export const deriveFallbackConsentNumber = (inquiry = {}, allInquiries = []) => 
   }
 
   const sameYear = (Array.isArray(allInquiries) ? allInquiries : []).filter(
-    (item) => getConsentYear(item?.consentAcceptedAt || item?.createdAt) === year
+    (item) => !isUnconsentedManualLead(item) && getConsentYear(item?.consentAcceptedAt || item?.createdAt) === year
   );
   if (sameYear.length === 0) return formatConsentDocumentNumber(1, year);
 

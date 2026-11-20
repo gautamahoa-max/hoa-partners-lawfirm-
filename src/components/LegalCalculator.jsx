@@ -76,6 +76,7 @@ export default function LegalCalculator() {
 
     try {
       sessionStorage.setItem('hp_prefill_notes', summaryText.slice(0, 2000));
+      sessionStorage.setItem('hp_prefill_source', `trang_chu:${card.id}`);
     } catch {
       // Ignore storage failures in restricted contexts
     }

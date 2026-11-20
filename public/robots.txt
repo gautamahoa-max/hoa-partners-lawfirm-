@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://gautamahoa-max.github.io/hoa-partners-lawfirm-/sitemap.xml

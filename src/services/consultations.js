@@ -13,8 +13,13 @@ import {
   serverTimestamp,
 } from 'firebase/firestore';
 import { db } from './firebase.js';
-import { sanitizeInput, isValidPhone } from '../utils/security.js';
-import { getConsentYear, formatConsentDocumentNumber } from '../utils/formatters.js';
+import { sanitizeInput, isValidPhone, normalizePhone } from '../utils/security.js';
+import {
+  getConsentYear,
+  formatConsentDocumentNumber,
+  OFFLINE_MANUAL_SOURCES,
+  isUnconsentedManualLead,
+} from '../utils/formatters.js';
 
 export const CONSULTATION_STATUSES = ['new', 'contacted', 'in_progress', 'completed'];
 export const CONSENT_DOCUMENT_VERSION = 'HP-PDPL-03/2026';
@@ -97,7 +102,9 @@ export async function fetchNextConsentNumber(isoTimestamp) {
 export async function syncConsentCounterFloor(inquiries = []) {
   const year = getConsentYear();
   const sameYear = (Array.isArray(inquiries) ? inquiries : []).filter(
-    (item) => getConsentYear(item?.consentAcceptedAt || item?.createdAt) === year
+    (item) =>
+      !isUnconsentedManualLead(item) &&
+      getConsentYear(item?.consentAcceptedAt || item?.createdAt) === year
   );
 
   let maxSeq = sameYear.length;
@@ -130,6 +137,7 @@ export async function submitConsultation({
   phone,
   notes,
   lang,
+  source,
   consent,
   consentVersion,
   consentAcceptedAt,
@@ -142,6 +150,7 @@ export async function submitConsultation({
   const cleanPhone = sanitizeInput(phone, 25).trim();
   const cleanNotes = sanitizeInput(notes, 2000).trim();
   const cleanLang = sanitizeInput(lang || 'vi', 10).trim() || 'vi';
+  const cleanSource = sanitizeInput(source || 'web_contact_form', 100).trim() || 'web_contact_form';
 
   if (cleanName.length < 1 || cleanName.length > 120) {
     throw createValidationError('Full name must be between 1 and 120 characters.');
@@ -153,15 +162,16 @@ export async function submitConsultation({
     throw createValidationError('Case notes must be between 1 and 2000 characters.');
   }
 
+  const normalizedPhone = normalizePhone(cleanPhone);
   const consentAudit = buildConsentAuditFields({ consentVersion, consentAcceptedAt });
   const year = getConsentYear(consentAudit.consentAcceptedAt);
 
   const basePayload = {
     fullName: cleanName,
-    phone: cleanPhone,
+    phone: normalizedPhone,
     notes: cleanNotes,
     status: 'new',
-    source: 'web_contact_form',
+    source: cleanSource,
     lang: cleanLang,
     createdAt: serverTimestamp(),
   };
@@ -204,6 +214,58 @@ export async function submitConsultation({
       throw err;
     }
   }
+}
+
+/**
+ * Record an offline/manual consultation lead (Zalo, Hotline, Office) directly from Admin without incrementing web consent counters.
+ */
+export async function createManualConsultation({
+  fullName,
+  phone,
+  notes,
+  source = 'zalo',
+  lang = 'vi',
+} = {}) {
+  const cleanName = sanitizeInput(fullName, 120).trim();
+  const cleanPhone = sanitizeInput(phone, 25).trim();
+  const cleanNotes = sanitizeInput(notes, 2000).trim();
+  const cleanSource = sanitizeInput(source || 'zalo', 100).trim();
+  const cleanLang = sanitizeInput(lang || 'vi', 10).trim() || 'vi';
+
+  if (cleanName.length < 1 || cleanName.length > 120) {
+    throw createValidationError('Full name must be between 1 and 120 characters.');
+  }
+  if (!isValidPhone(cleanPhone)) {
+    throw createValidationError('Invalid phone number.');
+  }
+  if (cleanNotes.length < 1 || cleanNotes.length > 2000) {
+    throw createValidationError('Case notes must be between 1 and 2000 characters.');
+  }
+  if (!OFFLINE_MANUAL_SOURCES.includes(cleanSource)) {
+    throw createValidationError(`Invalid manual consultation source: ${cleanSource}`);
+  }
+
+  const normalizedPhone = normalizePhone(cleanPhone);
+  const consultationRef = doc(collection(db, COLLECTION_NAME));
+
+  await withTimeout(
+    setDoc(consultationRef, {
+      fullName: cleanName,
+      phone: normalizedPhone,
+      notes: cleanNotes,
+      status: 'new',
+      source: cleanSource,
+      lang: cleanLang,
+      createdAt: serverTimestamp(),
+    }),
+    SUBMIT_TIMEOUT_MS
+  );
+
+  return {
+    id: consultationRef.id,
+    phone: normalizedPhone,
+    source: cleanSource,
+  };
 }
 
 /**

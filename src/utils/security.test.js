@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { sanitizeInput, isValidPhone } from './security.js';
+import { sanitizeInput, isValidPhone, normalizePhone } from './security.js';
 import {
   CONSULTATION_STATUSES,
   CONSENT_DOCUMENT_VERSION,
@@ -9,6 +9,7 @@ import {
   buildConsultationsCsv,
   exportConsultationsCsv,
   submitConsultation,
+  createManualConsultation,
 } from '../services/consultations.js';
 import {
   formatConsentDateLabels,
@@ -16,7 +17,11 @@ import {
   formatConsentDocumentNumber,
   formatConsentNumberLines,
   deriveFallbackConsentNumber,
+  isOfflineManualSource,
+  formatConsultationSource,
+  buildZaloContextMessage,
 } from './formatters.js';
+import { FAQ_ITEMS } from '../i18n/faq.js';
 import {
   buildPdfFromJpegPages,
   resolveConsentVersion,
@@ -367,4 +372,132 @@ test('HP-PDPL-03-2026.pdf contains single unified interleaved bilingual content 
   // Single signature block at end has both VN & EN party headers together
   const lastPageText = normalize(pageTexts[pageTexts.length - 1]);
   assert.ok(lastPageText.includes('KHÁCH HÀNG /') && lastPageText.includes('HOA & ASSOCIATES LAW FIRM LLC'));
+});
+
+test('normalizePhone canonicalizes Vietnamese and international phone formats', () => {
+  assert.equal(normalizePhone('098.888.6447'), '0988886447');
+  assert.equal(normalizePhone('+84 988 886 447'), '0988886447');
+  assert.equal(normalizePhone('84988886447'), '0988886447');
+  assert.equal(normalizePhone('0084988886447'), '0988886447');
+  assert.equal(normalizePhone('+1 (415) 555-2671'), '+14155552671');
+  assert.equal(normalizePhone('0014155552671'), '+14155552671');
+  assert.equal(normalizePhone(null), '');
+});
+
+test('Offline manual sources, source labels, Zalo summary builder, and consent number skipping', () => {
+  assert.equal(isOfflineManualSource('zalo'), true);
+  assert.equal(isOfflineManualSource('hotline'), true);
+  assert.equal(isOfflineManualSource('office'), true);
+  assert.equal(isOfflineManualSource('web_contact_form'), false);
+  assert.equal(isOfflineManualSource('bang_gia:#01'), false);
+
+  assert.equal(formatConsultationSource(''), 'Form liên hệ');
+  assert.equal(formatConsultationSource('web_contact_form'), 'Form liên hệ');
+  assert.equal(formatConsultationSource('zalo'), 'Zalo');
+  assert.equal(formatConsultationSource('hotline'), 'Hotline');
+  assert.equal(formatConsultationSource('office'), 'Trực tiếp VP');
+  assert.equal(formatConsultationSource('bang_gia:#01'), 'Bảng giá #01');
+  assert.equal(formatConsultationSource('trang_chu:advisory'), 'Trang chủ • Tư vấn');
+  assert.equal(formatConsultationSource('trang_chu:representation'), 'Trang chủ • Ngoài tố tụng');
+  assert.equal(formatConsultationSource('trang_chu:litigation'), 'Trang chủ • Tranh tụng');
+
+  const msgVi = buildZaloContextMessage({
+    fullName: 'Nguyễn Văn A',
+    consentNumber: '08/2026/TCT-HCS',
+    notes: 'A'.repeat(400),
+    lang: 'vi',
+  });
+  assert.ok(msgVi.length <= 350);
+  assert.ok(msgVi.includes('Nguyễn Văn A'));
+  assert.ok(msgVi.includes('08/2026/TCT-HCS'));
+  assert.ok(msgVi.endsWith('...'));
+
+  const msgEn = buildZaloContextMessage({
+    fullName: 'Jane Doe',
+    notes: 'Boundary claim inquiry',
+    lang: 'en',
+  });
+  assert.ok(msgEn.includes('Hello Hoa & Associates Law Firm (Jane Doe)'));
+  assert.ok(msgEn.includes('Boundary claim inquiry'));
+
+  const mixedInquiries = [
+    { id: 'w1', createdAt: '2026-11-15T00:00:00.000Z', source: 'web_contact_form' },
+    { id: 'm1', createdAt: '2026-11-14T00:00:00.000Z', source: 'zalo' },
+    { id: 'm2', createdAt: '2026-11-16T00:00:00.000Z', source: 'hotline' },
+    { id: 'w2', createdAt: '2026-11-17T00:00:00.000Z', source: 'bang_gia:#01' },
+  ];
+  assert.equal(deriveFallbackConsentNumber(mixedInquiries[1], mixedInquiries), '');
+  assert.equal(deriveFallbackConsentNumber(mixedInquiries[2], mixedInquiries), '');
+  assert.equal(deriveFallbackConsentNumber(mixedInquiries[0], mixedInquiries), '01/2026/TCT-HCS');
+  assert.equal(deriveFallbackConsentNumber(mixedInquiries[3], mixedInquiries), '02/2026/TCT-HCS');
+});
+
+test('createManualConsultation rejects invalid inputs and disallowed sources', async () => {
+  await assert.rejects(
+    () => createManualConsultation({ fullName: '  ', phone: '0988886447', notes: 'Tư vấn', source: 'zalo' }),
+    { code: 'validation/invalid-input' }
+  );
+  await assert.rejects(
+    () => createManualConsultation({ fullName: 'Trần Văn B', phone: '123', notes: 'Tư vấn', source: 'zalo' }),
+    { code: 'validation/invalid-input' }
+  );
+  await assert.rejects(
+    () => createManualConsultation({ fullName: 'Trần Văn B', phone: '0988886447', notes: '', source: 'hotline' }),
+    { code: 'validation/invalid-input' }
+  );
+  await assert.rejects(
+    () => createManualConsultation({ fullName: 'Trần Văn B', phone: '0988886447', notes: 'Hồ sơ', source: 'web_contact_form' }),
+    { code: 'validation/invalid-input' }
+  );
+});
+
+test('GEO/AEO artifacts (index.html JSON-LD, llms.txt, robots.txt, sitemap.xml) stay in sync', async () => {
+  const fs = await import('node:fs');
+  const baseUrl = 'https://gautamahoa-max.github.io/hoa-partners-lawfirm-/';
+
+  const indexHtml = fs.readFileSync(new URL('../../index.html', import.meta.url), 'utf8');
+  const ldMatch = indexHtml.match(/<script type="application\/ld\+json">\s*([\s\S]*?)\s*<\/script>/);
+  assert.ok(ldMatch, 'Expected application/ld+json script in index.html');
+  const jsonLd = JSON.parse(ldMatch[1]);
+  const graph = jsonLd['@graph'];
+  assert.ok(Array.isArray(graph));
+
+  const firm = graph.find((node) => node['@type'] === 'LegalService');
+  const lawyer = graph.find((node) => node['@type'] === 'Person');
+  const faq = graph.find((node) => node['@type'] === 'FAQPage');
+  assert.ok(firm && lawyer && faq);
+
+  assert.equal(firm.hasOfferCatalog.itemListElement.length, FEE_SCHEDULE_ITEMS.length);
+  for (const item of FEE_SCHEDULE_ITEMS) {
+    assert.ok(
+      firm.hasOfferCatalog.itemListElement.some((offer) => offer.itemOffered?.name === item.service.vi),
+      `Missing service in JSON-LD OfferCatalog: ${item.service.vi}`
+    );
+  }
+
+  assert.equal(FAQ_ITEMS.vi.length, 6);
+  assert.equal(FAQ_ITEMS.en.length, 6);
+  assert.equal(faq.mainEntity.length, FAQ_ITEMS.vi.length);
+  faq.mainEntity.forEach((qNode, idx) => {
+    assert.equal(qNode.name, FAQ_ITEMS.vi[idx].q);
+    assert.equal(qNode.acceptedAnswer?.text, FAQ_ITEMS.vi[idx].a);
+  });
+
+  const llmsTxt = fs.readFileSync(new URL('../../public/llms.txt', import.meta.url), 'utf8');
+  assert.ok(llmsTxt.includes(baseUrl));
+  assert.ok(llmsTxt.includes('098.888.6447'));
+  for (const item of FEE_SCHEDULE_ITEMS) {
+    assert.ok(llmsTxt.includes(item.service.vi), `Missing fee item in llms.txt: ${item.service.vi}`);
+  }
+  for (const qa of FAQ_ITEMS.vi) {
+    assert.ok(llmsTxt.includes(qa.q), `Missing FAQ question in llms.txt: ${qa.q}`);
+  }
+
+  const robotsTxt = fs.readFileSync(new URL('../../public/robots.txt', import.meta.url), 'utf8');
+  assert.ok(robotsTxt.includes(`Sitemap: ${baseUrl}sitemap.xml`));
+
+  const sitemapXml = fs.readFileSync(new URL('../../public/sitemap.xml', import.meta.url), 'utf8');
+  assert.ok(sitemapXml.includes(`<loc>${baseUrl}</loc>`));
+  assert.ok(sitemapXml.includes(`<loc>${baseUrl}llms.txt</loc>`));
+  assert.equal(sitemapXml.includes('#/'), false);
 });

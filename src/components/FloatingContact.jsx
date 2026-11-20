@@ -6,18 +6,8 @@ export default function FloatingContact() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPosition = window.scrollY + window.innerHeight;
-      const totalHeight = document.documentElement.scrollHeight;
-      const contactEl = document.getElementById('lien-he');
-
-      if (contactEl) {
-        const rect = contactEl.getBoundingClientRect();
-        // Hiện ra khi kéo gần tới phần chân trang (cách 500px) hoặc đã vào phần chân trang
-        setIsVisible(rect.top <= window.innerHeight + 500);
-      } else {
-        // Dự phòng khi chưa mount DOM id: khi cuộn qua 70% chiều dài trang hoặc cách đáy dưới 1000px
-        setIsVisible(totalHeight - scrollPosition < 1000 || (scrollPosition / totalHeight) > 0.7);
-      }
+      const isShortPage = document.documentElement.scrollHeight <= window.innerHeight * 1.3;
+      setIsVisible(isShortPage || window.scrollY > 240);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });

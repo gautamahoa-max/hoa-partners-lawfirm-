@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import FloatingContact from './FloatingContact';
+import FaqSection from './FaqSection';
 import { useLanguage } from '../context/LanguageContext';
 import { FEE_CATEGORIES, FEE_SCHEDULE_ITEMS } from '../i18n/feeSchedule';
 
@@ -69,6 +70,7 @@ export default function FeeSchedulePage() {
 
     try {
       sessionStorage.setItem('hp_prefill_notes', prefill.slice(0, 2000));
+      sessionStorage.setItem('hp_prefill_source', `bang_gia:#${String(item.stt).padStart(2, '0')}`);
     } catch {
       // Ignore storage failures in restricted contexts
     }
@@ -231,6 +233,8 @@ export default function FeeSchedulePage() {
             )}
           </div>
         </section>
+
+        <FaqSection compact />
       </main>
 
       <Footer />

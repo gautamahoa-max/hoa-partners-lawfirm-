@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Services from './components/Services';
 import LegalCalculator from './components/LegalCalculator';
+import FaqSection from './components/FaqSection';
 import LocationSection from './components/LocationSection';
 import Footer from './components/Footer';
 import FloatingContact from './components/FloatingContact';
@@ -146,7 +147,10 @@ function MainContent() {
         {/* 4. Khối Báo Giá Dịch Vụ Nổi Bật Trên Trang Chủ */}
         <LegalCalculator />
 
-        {/* 5. Địa Điểm Văn Phòng & Bản Đồ Google Maps */}
+        {/* 5. Câu Hỏi Thường Gặp (GEO / AEO) */}
+        <FaqSection />
+
+        {/* 6. Địa Điểm Văn Phòng & Bản Đồ Google Maps */}
         <LocationSection />
       </main>
 

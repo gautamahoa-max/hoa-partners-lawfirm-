@@ -49,6 +49,20 @@ export function isValidPhone(phone) {
 }
 
 /**
+ * Normalize phone numbers to canonical form for consistent CRM deduplication
+ */
+export function normalizePhone(phone) {
+  if (typeof phone !== 'string') return '';
+  const cleaned = phone.replace(/[\s.()-]/g, '');
+  if (!cleaned) return '';
+  const vnMatch = cleaned.match(/^(?:\+?84|0084)([35789]\d{8})$/);
+  if (vnMatch) return `0${vnMatch[1]}`;
+  const intlDoubleZero = cleaned.match(/^00(\d{9,15})$/);
+  if (intlDoubleZero) return `+${intlDoubleZero[1]}`;
+  return cleaned;
+}
+
+/**
  * Check if form submission is allowed under session rate limiting
  */
 export function checkRateLimit() {
