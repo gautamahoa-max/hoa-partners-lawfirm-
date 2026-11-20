@@ -401,7 +401,7 @@ export default function ContactPage({ onBack }) {
                         required
                         className="mt-1 h-4 w-4 rounded border-slate-300 text-[#0F2144] focus:ring-[#0F2144] cursor-pointer shrink-0"
                       />
-                      <label htmlFor="privacyConsent" className="text-xs text-slate-700 leading-relaxed cursor-pointer">
+                      <label htmlFor="privacyConsent" className="text-xs text-slate-700 leading-relaxed text-left cursor-pointer">
                         {formT.consentPrefix}
                         <button
                           type="button"
@@ -409,7 +409,7 @@ export default function ContactPage({ onBack }) {
                             e.preventDefault();
                             setShowPrivacyModal(true);
                           }}
-                          className="font-semibold text-[#0F2144] underline underline-offset-2 hover:text-amber-700 cursor-pointer"
+                          className="inline text-left font-semibold text-[#0F2144] underline underline-offset-2 hover:text-amber-700 cursor-pointer"
                         >
                           {formT.consentLinkText}
                         </button>
