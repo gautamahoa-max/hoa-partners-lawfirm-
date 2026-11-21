@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  ArrowRightIcon,
   BriefcaseIcon,
   FileTextIcon,
   GavelIcon,
@@ -141,11 +140,8 @@ export const PRACTICE_COLOR_MAP = {
 };
 
 export default function Services() {
-  const { t, lang } = useLanguage();
-  const isEn = lang === 'en';
+  const { t } = useLanguage();
   const servicesText = t.services;
-  const basisLabel = isEn ? 'Legal basis' : 'Căn cứ';
-  const actionLabel = isEn ? 'View Practice Profile' : 'Xem hồ sơ năng lực';
 
   return (
     <section id="linh-vuc" className="border-b border-slate-200/80 overflow-x-clip">
@@ -171,38 +167,24 @@ export default function Services() {
                 <a
                   key={item.id}
                   href={`#/linh-vuc/${item.id}`}
-                  className="group shrink-0 w-[83vw] max-w-[360px] md:w-auto md:max-w-none snap-start rounded-[22px] bg-white p-6 sm:p-8 border border-slate-200/70 shadow-[0_2px_16px_rgba(15,33,68,0.04)] hover:shadow-[0_14px_36px_rgba(15,33,68,0.09)] hover:border-[#0F2144]/25 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] flex flex-col justify-between text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0F2144]"
+                  className="group shrink-0 w-[83vw] max-w-[360px] md:w-auto md:max-w-none snap-start rounded-[22px] bg-white p-6 sm:p-8 border border-slate-200/70 shadow-[0_2px_16px_rgba(15,33,68,0.04)] hover:shadow-[0_14px_36px_rgba(15,33,68,0.09)] hover:border-[#0F2144]/25 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] flex flex-col text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0F2144]"
                 >
-                  <div>
-                    <div className="flex items-center justify-between gap-3">
-                      <div className="w-11 h-11 rounded-xl bg-[#0F2144]/5 border border-[#0F2144]/10 text-[#0F2144] group-hover:bg-[#0F2144] group-hover:text-amber-300 transition-colors flex items-center justify-center shrink-0">
-                        <Icon className="w-5 h-5" />
-                      </div>
-                      <span className="font-mono tabular-nums text-xs font-bold text-slate-400 group-hover:text-amber-700 transition-colors">
-                        {item.num}
-                      </span>
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="w-11 h-11 rounded-xl bg-[#0F2144]/5 border border-[#0F2144]/10 text-[#0F2144] group-hover:bg-[#0F2144] group-hover:text-amber-300 transition-colors flex items-center justify-center shrink-0">
+                      <Icon className="w-5 h-5" />
                     </div>
-
-                    <h3 className="mt-5 text-lg sm:text-xl font-bold text-[#0F2144] leading-snug tracking-tight">
-                      {item.title}
-                    </h3>
-
-                    <p className="mt-2.5 text-sm text-slate-600 leading-relaxed">
-                      {item.shortDesc}
-                    </p>
-                  </div>
-
-                  <div className="mt-6 pt-4 border-t border-slate-100 space-y-3">
-                    <p className="text-xs text-slate-500 leading-relaxed">
-                      <span className="font-semibold text-[#0F2144]">{basisLabel}: </span>
-                      {item.basis}
-                    </p>
-
-                    <span className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[#0F2144] group-hover:text-amber-700 min-h-[28px] transition-colors">
-                      <span>{actionLabel}</span>
-                      <ArrowRightIcon className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
+                    <span className="font-mono tabular-nums text-xs font-bold text-slate-400 group-hover:text-amber-700 transition-colors">
+                      {item.num}
                     </span>
                   </div>
+
+                  <h3 className="mt-5 text-lg sm:text-xl font-bold text-[#0F2144] leading-snug tracking-tight">
+                    {item.title}
+                  </h3>
+
+                  <p className="mt-2.5 text-sm text-slate-600 leading-relaxed">
+                    {item.shortDesc}
+                  </p>
                 </a>
               );
             })}
