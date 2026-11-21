@@ -91,6 +91,39 @@ const A4_WIDTH_PT = 595.28;
 const COVER_WIDTH_PX = 1240;
 const COVER_HEIGHT_PX = 1754;
 
+export const CONSENT_ZOOM_MIN = 0.75;
+export const CONSENT_ZOOM_MAX = 2.5;
+
+/**
+ * Clamp consent PDF zoom factor into supported interactive bounds rounded to 2 decimals.
+ */
+export function clampConsentZoom(zoom) {
+  const numeric = Number(zoom);
+  if (!Number.isFinite(numeric)) return 1;
+  return Number(Math.min(CONSENT_ZOOM_MAX, Math.max(CONSENT_ZOOM_MIN, numeric)).toFixed(2));
+}
+
+/**
+ * Compute target zoom and scroll offsets so two-finger pinch zooming stays centered on the focal point.
+ */
+export function computePinchZoomScroll({
+  startZoom = 1,
+  targetZoom = 1,
+  startScrollLeft = 0,
+  startScrollTop = 0,
+  focalX = 0,
+  focalY = 0,
+} = {}) {
+  const safeStartZoom = clampConsentZoom(startZoom);
+  const zoom = clampConsentZoom(targetZoom);
+  const ratio = zoom / safeStartZoom;
+  return {
+    zoom,
+    scrollLeft: Math.max(0, Math.round((Math.max(0, startScrollLeft) + focalX) * ratio - focalX)),
+    scrollTop: Math.max(0, Math.round((Math.max(0, startScrollTop) + focalY) * ratio - focalY)),
+  };
+}
+
 /**
  * Resolve the immutable consent archive entry matching a stored version code.
  */

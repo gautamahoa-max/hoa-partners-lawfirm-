@@ -1,6 +1,13 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { getConsentArchiveEntry, pdfjsLib } from '../utils/consentArchive';
-import { buildConsentPageOverlays, renderConsentPdfPage } from '../utils/consentPdf';
+import {
+  CONSENT_ZOOM_MAX,
+  CONSENT_ZOOM_MIN,
+  buildConsentPageOverlays,
+  clampConsentZoom,
+  computePinchZoomScroll,
+  renderConsentPdfPage,
+} from '../utils/consentPdf';
 import { fetchNextConsentNumber } from '../services/consultations';
 import { formatConsentDateLabels } from '../utils/formatters';
 
@@ -56,14 +63,16 @@ function PdfPageCanvas({ pdfDoc, pageNumber, zoom, baseWidth, watermarkLabel, ov
     };
   }, [pdfDoc, pageNumber, zoom, baseWidth, overlaysKey]);
 
+  const targetCssWidth = Math.floor(Math.max(260, baseWidth) * zoom);
+
   return (
     <div
       className="relative mx-auto bg-white shadow-[0_6px_28px_rgba(15,23,42,0.22)] border border-slate-200 overflow-hidden select-none"
-      style={{ WebkitTouchCallout: 'none', WebkitUserSelect: 'none' }}
+      style={{ width: `${targetCssWidth}px`, WebkitTouchCallout: 'none', WebkitUserSelect: 'none' }}
       onContextMenu={(e) => e.preventDefault()}
     >
       {/* pointer-events-none ngăn lưu ảnh / kéo thả trực tiếp từ canvas trên cả desktop và mobile */}
-      <canvas ref={canvasRef} className="block pointer-events-none" />
+      <canvas ref={canvasRef} className="block w-full h-auto pointer-events-none" />
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden"
@@ -97,9 +106,116 @@ export default function PdfConsentModal({
   const [pdfDoc, setPdfDoc] = useState(null);
   const [numPages, setNumPages] = useState(0);
   const [zoom, setZoom] = useState(1);
+  const [pinchPreview, setPinchPreview] = useState(null);
   const [baseWidth, setBaseWidth] = useState(720);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState('');
+
+  const zoomRef = useRef(1);
+  zoomRef.current = zoom;
+  const pinchStateRef = useRef({
+    active: false,
+    startDist: 0,
+    startZoom: 1,
+    latestZoom: 1,
+    focalX: 0,
+    focalY: 0,
+    startScrollLeft: 0,
+    startScrollTop: 0,
+  });
+  const pendingScrollRef = useRef(null);
+
+  useEffect(() => {
+    const pending = pendingScrollRef.current;
+    if (!pending || !scrollRef.current) return;
+    pendingScrollRef.current = null;
+    scrollRef.current.scrollLeft = pending.scrollLeft;
+    scrollRef.current.scrollTop = pending.scrollTop;
+  }, [zoom]);
+
+  useEffect(() => {
+    const container = scrollRef.current;
+    if (!container) return undefined;
+
+    const getTouchDist = (t1, t2) => Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
+
+    const handleTouchStart = (e) => {
+      if (e.touches.length !== 2) return;
+      const dist = getTouchDist(e.touches[0], e.touches[1]);
+      if (dist <= 0) return;
+      const rect = container.getBoundingClientRect();
+      const focalX = (e.touches[0].clientX + e.touches[1].clientX) / 2 - rect.left;
+      const focalY = (e.touches[0].clientY + e.touches[1].clientY) / 2 - rect.top;
+      const startZoom = zoomRef.current;
+      pinchStateRef.current = {
+        active: true,
+        startDist: dist,
+        startZoom,
+        latestZoom: startZoom,
+        focalX,
+        focalY,
+        startScrollLeft: container.scrollLeft,
+        startScrollTop: container.scrollTop,
+      };
+    };
+
+    const handleTouchMove = (e) => {
+      if (e.touches.length !== 2 || !pinchStateRef.current.active) return;
+      e.preventDefault();
+      const dist = getTouchDist(e.touches[0], e.touches[1]);
+      const state = pinchStateRef.current;
+      if (state.startDist <= 0) return;
+      const nextZoom = clampConsentZoom(state.startZoom * (dist / state.startDist));
+      state.latestZoom = nextZoom;
+      setPinchPreview({
+        scale: nextZoom / state.startZoom,
+        originX: state.startScrollLeft + state.focalX,
+        originY: state.startScrollTop + state.focalY,
+      });
+    };
+
+    const finishPinch = (e) => {
+      const state = pinchStateRef.current;
+      if (!state.active || (e.touches && e.touches.length >= 2)) return;
+      state.active = false;
+      const committed = computePinchZoomScroll({
+        startZoom: state.startZoom,
+        targetZoom: state.latestZoom,
+        startScrollLeft: state.startScrollLeft,
+        startScrollTop: state.startScrollTop,
+        focalX: state.focalX,
+        focalY: state.focalY,
+      });
+      setPinchPreview(null);
+      if (committed.zoom !== zoomRef.current) {
+        pendingScrollRef.current = {
+          scrollLeft: committed.scrollLeft,
+          scrollTop: committed.scrollTop,
+        };
+        setZoom(committed.zoom);
+      }
+    };
+
+    const preventSafariGesture = (e) => {
+      e.preventDefault();
+    };
+
+    container.addEventListener('touchstart', handleTouchStart, { passive: true });
+    container.addEventListener('touchmove', handleTouchMove, { passive: false });
+    container.addEventListener('touchend', finishPinch, { passive: true });
+    container.addEventListener('touchcancel', finishPinch, { passive: true });
+    container.addEventListener('gesturestart', preventSafariGesture, { passive: false });
+    container.addEventListener('gesturechange', preventSafariGesture, { passive: false });
+
+    return () => {
+      container.removeEventListener('touchstart', handleTouchStart);
+      container.removeEventListener('touchmove', handleTouchMove);
+      container.removeEventListener('touchend', finishPinch);
+      container.removeEventListener('touchcancel', finishPinch);
+      container.removeEventListener('gesturestart', preventSafariGesture);
+      container.removeEventListener('gesturechange', preventSafariGesture);
+    };
+  }, []);
 
   useEffect(() => {
     if (consentNumber) {
@@ -261,20 +377,27 @@ export default function PdfConsentModal({
             <div className="flex items-center rounded-lg border border-slate-200 bg-white text-xs font-semibold text-slate-700">
               <button
                 type="button"
-                onClick={() => setZoom((z) => Math.max(0.75, Number((z - 0.15).toFixed(2))))}
+                onClick={() => setZoom((z) => clampConsentZoom(z - 0.15))}
+                disabled={zoom <= CONSENT_ZOOM_MIN}
                 aria-label="Thu nhỏ"
-                className="min-h-[36px] px-2 sm:px-2.5 py-1 hover:bg-slate-50 cursor-pointer"
+                className="min-h-[36px] px-2 sm:px-2.5 py-1 hover:bg-slate-50 disabled:opacity-40 cursor-pointer"
               >
                 −
               </button>
-              <span className="px-1 text-[11px] tabular-nums min-w-[2.7rem] text-center">
-                {Math.round(zoom * 100)}%
-              </span>
               <button
                 type="button"
-                onClick={() => setZoom((z) => Math.min(1.6, Number((z + 0.15).toFixed(2))))}
+                onClick={() => setZoom(1)}
+                title={lang === 'en' ? 'Reset zoom to 100%' : 'Đặt lại tỷ lệ 100%'}
+                className="px-1 text-[11px] tabular-nums min-w-[2.7rem] text-center hover:text-[#0F2144] cursor-pointer"
+              >
+                {Math.round(zoom * (pinchPreview?.scale || 1) * 100)}%
+              </button>
+              <button
+                type="button"
+                onClick={() => setZoom((z) => clampConsentZoom(z + 0.15))}
+                disabled={zoom >= CONSENT_ZOOM_MAX}
                 aria-label="Phóng to"
-                className="min-h-[36px] px-2 sm:px-2.5 py-1 hover:bg-slate-50 cursor-pointer"
+                className="min-h-[36px] px-2 sm:px-2.5 py-1 hover:bg-slate-50 disabled:opacity-40 cursor-pointer"
               >
                 +
               </button>
@@ -295,7 +418,8 @@ export default function PdfConsentModal({
         {/* Scrollable PDF Pages */}
         <div
           ref={scrollRef}
-          className="flex-1 min-h-0 overflow-auto overscroll-contain p-3 sm:p-6 space-y-4 sm:space-y-5 bg-slate-200/70"
+          style={{ touchAction: 'pan-x pan-y' }}
+          className="flex-1 min-h-0 overflow-auto overscroll-contain p-3 sm:p-6 bg-slate-200/70"
         >
           {loading && (
             <div className="h-full min-h-[240px] flex flex-col items-center justify-center gap-2 text-xs sm:text-sm text-slate-600">
@@ -310,40 +434,51 @@ export default function PdfConsentModal({
             </div>
           )}
 
-          {!loading &&
-            !loadError &&
-            pdfDoc &&
-            Array.from({ length: numPages }, (_, idx) => {
-              const pageNumber = idx + 1;
-              const pageOverlays = buildConsentPageOverlays({
-                pageNumber,
-                archiveEntry,
-                dateLabels,
-                consentNumber: previewConsentNumber,
-                isoTimestamp: consentAcceptedAt,
-              });
-              return (
-                <div
-                  key={pageNumber}
-                  ref={(el) => {
-                    pageRefs.current[pageNumber] = el;
-                  }}
-                  className="space-y-1.5"
-                >
-                  <PdfPageCanvas
-                    pdfDoc={pdfDoc}
-                    pageNumber={pageNumber}
-                    zoom={zoom}
-                    baseWidth={baseWidth}
-                    watermarkLabel={formT.privacyWatermark}
-                    overlays={pageOverlays}
-                  />
-                  <p className="text-center text-[11px] text-slate-500 font-medium">
-                    {lang === 'en' ? `Page ${pageNumber} / ${numPages}` : `Trang ${pageNumber} / ${numPages}`}
-                  </p>
-                </div>
-              );
-            })}
+          {!loading && !loadError && pdfDoc && (
+            <div
+              className="min-w-full w-fit mx-auto space-y-4 sm:space-y-5 will-change-transform"
+              style={
+                pinchPreview
+                  ? {
+                      transform: `scale(${pinchPreview.scale})`,
+                      transformOrigin: `${pinchPreview.originX}px ${pinchPreview.originY}px`,
+                    }
+                  : undefined
+              }
+            >
+              {Array.from({ length: numPages }, (_, idx) => {
+                const pageNumber = idx + 1;
+                const pageOverlays = buildConsentPageOverlays({
+                  pageNumber,
+                  archiveEntry,
+                  dateLabels,
+                  consentNumber: previewConsentNumber,
+                  isoTimestamp: consentAcceptedAt,
+                });
+                return (
+                  <div
+                    key={pageNumber}
+                    ref={(el) => {
+                      pageRefs.current[pageNumber] = el;
+                    }}
+                    className="space-y-1.5"
+                  >
+                    <PdfPageCanvas
+                      pdfDoc={pdfDoc}
+                      pageNumber={pageNumber}
+                      zoom={zoom}
+                      baseWidth={baseWidth}
+                      watermarkLabel={formT.privacyWatermark}
+                      overlays={pageOverlays}
+                    />
+                    <p className="text-center text-[11px] text-slate-500 font-medium">
+                      {lang === 'en' ? `Page ${pageNumber} / ${numPages}` : `Trang ${pageNumber} / ${numPages}`}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         {/* Sticky Footer */}

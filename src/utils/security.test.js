@@ -26,6 +26,8 @@ import {
   buildPdfFromJpegPages,
   resolveConsentVersion,
   buildConsentPageOverlays,
+  clampConsentZoom,
+  computePinchZoomScroll,
 } from './consentPdf.js';
 import {
   calculateCourtFee,
@@ -500,4 +502,31 @@ test('GEO/AEO artifacts (index.html JSON-LD, llms.txt, robots.txt, sitemap.xml) 
   assert.ok(sitemapXml.includes(`<loc>${baseUrl}</loc>`));
   assert.ok(sitemapXml.includes(`<loc>${baseUrl}llms.txt</loc>`));
   assert.equal(sitemapXml.includes('#/'), false);
+});
+
+test('Consent modal zoom clamping and pinch focal-point scroll calculation', () => {
+  assert.equal(clampConsentZoom(0.2), 0.75);
+  assert.equal(clampConsentZoom(4.5), 2.5);
+  assert.equal(clampConsentZoom(1.456), 1.46);
+  assert.equal(clampConsentZoom('invalid'), 1);
+
+  const zoomedIn = computePinchZoomScroll({
+    startZoom: 1,
+    targetZoom: 2,
+    startScrollLeft: 0,
+    startScrollTop: 100,
+    focalX: 150,
+    focalY: 200,
+  });
+  assert.deepEqual(zoomedIn, { zoom: 2, scrollLeft: 150, scrollTop: 400 });
+
+  const zoomedOutFloor = computePinchZoomScroll({
+    startZoom: 1,
+    targetZoom: 0.5,
+    startScrollLeft: 0,
+    startScrollTop: 0,
+    focalX: 200,
+    focalY: 200,
+  });
+  assert.deepEqual(zoomedOutFloor, { zoom: 0.75, scrollLeft: 0, scrollTop: 0 });
 });

@@ -1,5 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { GavelIcon, BriefcaseIcon, FileTextIcon, LandmarkIcon, ShieldCheckIcon, ScaleIcon, CloseIcon, CheckCircleIcon, HeartHandshakeIcon } from './Icons';
+import React from 'react';
+import {
+  ArrowRightIcon,
+  BriefcaseIcon,
+  FileTextIcon,
+  GavelIcon,
+  HeartHandshakeIcon,
+  LandmarkIcon,
+  ScaleIcon,
+  ShieldCheckIcon,
+} from './Icons';
 import { useLanguage } from '../context/LanguageContext';
 import CaseWorkflowTimeline from './CaseWorkflowTimeline';
 
@@ -17,11 +26,11 @@ export const ICON_MAP = {
   corporate: ShieldCheckIcon,
 };
 
-// Bảng màu sắc tương ứng cho từng lĩnh vực chuyên môn
+// Retained for ServiceDetailPage accent theming across practice detail routes
 export const PRACTICE_COLOR_MAP = {
   litigation: {
-    color: '#1E3A8A', // Xanh dương đậm / Tranh tụng Tòa án
-    activeColor: '#2563EB', // Sapphire Blue
+    color: '#1E3A8A',
+    activeColor: '#2563EB',
     glowColor: 'rgba(37, 99, 235, 0.45)',
     gradStart: '#1E3A8A',
     gradEnd: '#1D4ED8',
@@ -31,8 +40,8 @@ export const PRACTICE_COLOR_MAP = {
     accentColor: '#93C5FD',
   },
   'real-estate': {
-    color: '#166534', // Xanh lá cây / Đất đai & Bất động sản
-    activeColor: '#059669', // Emerald Green
+    color: '#166534',
+    activeColor: '#059669',
     glowColor: 'rgba(5, 150, 105, 0.45)',
     gradStart: '#14532D',
     gradEnd: '#166534',
@@ -42,8 +51,8 @@ export const PRACTICE_COLOR_MAP = {
     accentColor: '#86EFAC',
   },
   inheritance: {
-    color: '#92400E', // Vàng hổ phách / Thừa kế & Di sản
-    activeColor: '#D97706', // Vibrant Amber Gold
+    color: '#92400E',
+    activeColor: '#D97706',
     glowColor: 'rgba(217, 119, 6, 0.45)',
     gradStart: '#78350F',
     gradEnd: '#92400E',
@@ -53,8 +62,8 @@ export const PRACTICE_COLOR_MAP = {
     accentColor: '#FCD34D',
   },
   contract: {
-    color: '#3730A3', // Tím than Indigo / Hợp đồng Dân sự
-    activeColor: '#4F46E5', // Vibrant Indigo
+    color: '#3730A3',
+    activeColor: '#4F46E5',
     glowColor: 'rgba(79, 70, 229, 0.45)',
     gradStart: '#312E81',
     gradEnd: '#3730A3',
@@ -64,8 +73,8 @@ export const PRACTICE_COLOR_MAP = {
     accentColor: '#A5B4FC',
   },
   family: {
-    color: '#9F1239', // Đỏ hồng Ruby / Hôn nhân & Gia đình
-    activeColor: '#E11D48', // Vibrant Rose Ruby
+    color: '#9F1239',
+    activeColor: '#E11D48',
     glowColor: 'rgba(225, 29, 72, 0.45)',
     gradStart: '#881337',
     gradEnd: '#9F1239',
@@ -75,8 +84,8 @@ export const PRACTICE_COLOR_MAP = {
     accentColor: '#FDA4AF',
   },
   tort: {
-    color: '#115E59', // Xanh mòng két Teal / Bồi thường Dân sự
-    activeColor: '#0D9488', // Vibrant Teal Aqua
+    color: '#115E59',
+    activeColor: '#0D9488',
     glowColor: 'rgba(13, 148, 136, 0.45)',
     gradStart: '#134E4A',
     gradEnd: '#115E59',
@@ -85,7 +94,6 @@ export const PRACTICE_COLOR_MAP = {
     numberColor: '#A5F3FC',
     accentColor: '#5EEAD4',
   },
-  // Fallbacks backwards compatibility
   arbitration: {
     color: '#1E3A8A',
     activeColor: '#2563EB',
@@ -132,242 +140,81 @@ export const PRACTICE_COLOR_MAP = {
   },
 };
 
-// Hàm chuyển đổi tọa độ cực sang Descartes
-function polarToCartesian(cx, cy, r, angleInDegrees) {
-  const angleInRadians = ((angleInDegrees - 90) * Math.PI) / 180.0;
-  return {
-    x: cx + r * Math.cos(angleInRadians),
-    y: cy + r * Math.sin(angleInRadians),
-  };
-}
-
-// Hàm vẽ cung tròn bánh Donut (Annular Sector)
-function describeDonutSlice(cx, cy, rInner, rOuter, startAngle, endAngle) {
-  const oStart = polarToCartesian(cx, cy, rOuter, startAngle);
-  const oEnd = polarToCartesian(cx, cy, rOuter, endAngle);
-  const iStart = polarToCartesian(cx, cy, rInner, startAngle);
-  const iEnd = polarToCartesian(cx, cy, rInner, endAngle);
-
-  const arcSweep = endAngle - startAngle <= 180 ? '0' : '1';
-
-  return [
-    'M', oStart.x.toFixed(2), oStart.y.toFixed(2),
-    'A', rOuter, rOuter, 0, arcSweep, 1, oEnd.x.toFixed(2), oEnd.y.toFixed(2),
-    'L', iEnd.x.toFixed(2), iEnd.y.toFixed(2),
-    'A', rInner, rInner, 0, arcSweep, 0, iStart.x.toFixed(2), iStart.y.toFixed(2),
-    'Z',
-  ].join(' ');
-}
-
 export default function Services() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
+  const isEn = lang === 'en';
   const servicesText = t.services;
-
-  const practiceAreas = servicesText.items.map((item) => ({
-    ...item,
-    icon: ICON_MAP[item.id] || ScaleIcon,
-    ...(PRACTICE_COLOR_MAP[item.id] || PRACTICE_COLOR_MAP.litigation),
-  }));
-
-  const [hoveredIndex, setHoveredIndex] = useState(null);
-  const [selectedIndex, setSelectedIndex] = useState(null);
-
-  const cx = 200;
-  const cy = 200;
-  const baseInnerRadius = 104;
-  const baseOuterRadius = 172;
-
-  const handleSliceClick = (index) => {
-    // Nhấp vào phân khúc: chỉ đơn giản là sáng lên và to lên (toggle hoặc chọn)
-    setSelectedIndex((prev) => (prev === index ? null : index));
-  };
+  const basisLabel = isEn ? 'Legal basis' : 'Căn cứ';
+  const actionLabel = isEn ? 'View Practice Profile' : 'Xem hồ sơ năng lực';
 
   return (
-    <section id="linh-vuc" className="py-20 sm:py-24 bg-white border-b border-slate-200/80 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Header danh mục chuyên môn tối giản, trang trọng */}
-        <div className="max-w-3xl mx-auto text-center mb-14">
-          <p className="text-xs font-semibold text-slate-500 mb-2.5 uppercase tracking-[0.2em]">
-            {servicesText.eyebrow}
-          </p>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0F2144] tracking-tight leading-[1.35] sm:leading-[1.3]">
-            {servicesText.title}
-          </h2>
-          <p className="mt-3.5 text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl mx-auto">
-            {servicesText.desc}
-          </p>
-        </div>
-
-        {/* ================= BIỂU ĐỒ VÒNG TRÒN TƯƠNG TÁC CAO CẤP ================= */}
-        <div className="flex flex-col items-center">
-          
-          {/* Vòng tròn tương tác 6 phân khúc chuẩn Precision Dial (Monochrome Luxury) */}
-          <div className="relative w-full max-w-[340px] sm:max-w-[440px] aspect-square flex items-center justify-center my-2">
-            
-            <svg
-              viewBox="0 0 400 400"
-              className="w-full h-full overflow-visible drop-shadow-sm select-none"
-              onMouseLeave={() => setHoveredIndex(null)}
-            >
-              <defs>
-                {practiceAreas.map((item) => (
-                  <React.Fragment key={item.id}>
-                    {/* Gradient trạng thái nghỉ */}
-                    <linearGradient id={`slice-grad-${item.id}`} x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor={item.gradStart} />
-                      <stop offset="100%" stopColor={item.gradEnd} />
-                    </linearGradient>
-
-                    {/* Gradient rực rỡ khi hover/active */}
-                    <linearGradient id={`slice-grad-active-${item.id}`} x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor={item.activeGradStart} />
-                      <stop offset="100%" stopColor={item.activeGradEnd} />
-                    </linearGradient>
-
-                    {/* Bộ lọc bóng đổ theo màu sắc đặc trưng */}
-                    <filter id={`slice-glow-${item.id}`} x="-30%" y="-30%" width="160%" height="160%">
-                      <feDropShadow dx="0" dy="8" stdDeviation="12" floodColor={item.glowColor} />
-                    </filter>
-                  </React.Fragment>
-                ))}
-              </defs>
-
-              {/* Vòng bezel định vị thanh mảnh phong cách đồng hồ Thụy Sỹ */}
-              <circle cx={cx} cy={cy} r={baseOuterRadius + 10} fill="none" stroke="#E2E8F0" strokeWidth="1" strokeDasharray="2 4" opacity="0.8" />
-              <circle cx={cx} cy={cy} r={baseOuterRadius + 4} fill="none" stroke="#E2E8F0" strokeWidth="0.8" opacity="0.6" />
-              <circle cx={cx} cy={cy} r={baseInnerRadius - 5} fill="none" stroke="#E2E8F0" strokeWidth="0.8" opacity="0.6" />
-
-              {/* 6 mảnh ghép phân khúc vòm kiến trúc tối giản */}
-              {practiceAreas.map((item, i) => {
-                const isSliceActive = hoveredIndex !== null ? hoveredIndex === i : selectedIndex === i;
-
-                // Góc bắt đầu và kết thúc với khe hở thanh mảnh 1.2 độ
-                const startAngle = i * 60 + 1.2;
-                const endAngle = (i + 1) * 60 - 1.2;
-                const midAngle = i * 60 + 30;
-
-                // Độ dịch chuyển nhẹ ra ngoài khi active (7px)
-                const offsetDistance = isSliceActive ? 7 : 0;
-                const offsetAngleRad = ((midAngle - 90) * Math.PI) / 180.0;
-                const tx = Math.cos(offsetAngleRad) * offsetDistance;
-                const ty = Math.sin(offsetAngleRad) * offsetDistance;
-
-                // Vị trí nhãn cố định tương đối với mảnh ghép
-                const labelRadius = (baseInnerRadius + baseOuterRadius) / 2;
-                const labelPos = polarToCartesian(cx, cy, labelRadius, midAngle);
-
-                // Đường vẽ mảnh ghép visual với bán kính cố định
-                const slicePath = describeDonutSlice(cx, cy, baseInnerRadius, baseOuterRadius, startAngle, endAngle);
-
-                // Vùng nhận tương tác chuột tĩnh (Hit Area) - bao trọn cả khi di chuyển, không bao giờ xê dịch -> triệt tiêu hoàn toàn hiện tượng rung/nhấp nháy ở mép
-                const hitPath = describeDonutSlice(cx, cy, baseInnerRadius - 6, baseOuterRadius + 14, i * 60, (i + 1) * 60);
-
-                return (
-                  <g key={item.id} className="relative">
-                    {/* Lớp hiển thị trực quan (visual) - pointer-events-none để không bao giờ bị văng chuột khi chuyển động */}
-                    <g
-                      className="pointer-events-none select-none transition-transform duration-300 ease-out"
-                      transform={`translate(${tx.toFixed(2)}, ${ty.toFixed(2)})`}
-                    >
-                      {/* Bề mặt mảnh ghép: Nền màu đặc trưng tương ứng từng lĩnh vực */}
-                      <path
-                        d={slicePath}
-                        fill={isSliceActive ? `url(#slice-grad-active-${item.id})` : `url(#slice-grad-${item.id})`}
-                        filter={isSliceActive ? `url(#slice-glow-${item.id})` : 'none'}
-                        stroke="#FFFFFF"
-                        strokeWidth={isSliceActive ? '2.5' : '2'}
-                        className="transition-all duration-300 ease-out"
-                      />
-
-                      {/* Nội dung nhãn chuyên môn trên mảnh ghép */}
-                      <g transform={`translate(${labelPos.x.toFixed(2)}, ${labelPos.y.toFixed(2)})`}>
-                        {/* Số thứ tự phân khúc tinh giản (01 - 06) */}
-                        <text
-                          textAnchor="middle"
-                          y={-14}
-                          fill={isSliceActive ? '#FFFFFF' : item.numberColor}
-                          fontSize="10"
-                          fontWeight="800"
-                          letterSpacing="1px"
-                          className="transition-colors duration-300 font-mono"
-                        >
-                          {item.num}
-                        </text>
-
-                        {/* Tiêu đề dòng 1 */}
-                        <text
-                          textAnchor="middle"
-                          y={0}
-                          fill="#FFFFFF"
-                          fontSize={isSliceActive ? '12' : '11'}
-                          fontWeight="700"
-                          letterSpacing="0.2px"
-                          className="transition-all duration-300 font-sans"
-                        >
-                          {item.sliceLines[0]}
-                        </text>
-
-                        {/* Tiêu đề dòng 2 */}
-                        <text
-                          textAnchor="middle"
-                          y={14}
-                          fill="rgba(255, 255, 255, 0.95)"
-                          fontSize={isSliceActive ? '11' : '10'}
-                          fontWeight="600"
-                          letterSpacing="0.2px"
-                          className="transition-all duration-300 font-sans"
-                        >
-                          {item.sliceLines[1]}
-                        </text>
-
-                        {/* Điểm nhấn tối giản khi active */}
-                        {isSliceActive && (
-                          <circle
-                            cx={0}
-                            cy={24}
-                            r={2.5}
-                            fill="#FFFFFF"
-                            opacity="0.95"
-                          />
-                        )}
-                      </g>
-                    </g>
-
-                    {/* Vùng cảm ứng chuột tĩnh (Hit Target) có hỗ trợ trợ năng bàn phím ARIA */}
-                    <path
-                      d={hitPath}
-                      fill="#FFFFFF"
-                      fillOpacity="0.001"
-                      style={{ pointerEvents: 'all' }}
-                      className="cursor-pointer focus:outline-none focus-visible:stroke-amber-400 focus-visible:stroke-2"
-                      role="button"
-                      tabIndex={0}
-                      aria-label={`${item.name} (${item.num})`}
-                      aria-pressed={isSliceActive}
-                      onClick={() => handleSliceClick(i)}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                          e.preventDefault();
-                          handleSliceClick(i);
-                        }
-                      }}
-                      onMouseEnter={() => setHoveredIndex(i)}
-                      onMouseLeave={() => setHoveredIndex((prev) => (prev === i ? null : prev))}
-                    />
-                  </g>
-                );
-              })}
-            </svg>
+    <section id="linh-vuc" className="border-b border-slate-200/80 overflow-x-clip">
+      {/* Apple-style Spaced Blocks (2x3 Desktop Grid, Horizontal Snap on Mobile) */}
+      <div className="bg-[#F5F5F7] py-16 sm:py-24">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl mx-auto text-center mb-12 sm:mb-14">
+            <p className="text-xs font-bold text-slate-500 mb-3 uppercase tracking-[0.2em]">
+              {servicesText.eyebrow}
+            </p>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0F2144] tracking-tight leading-[1.3]">
+              {servicesText.title}
+            </h2>
+            <p className="mt-3.5 text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl mx-auto">
+              {servicesText.desc}
+            </p>
           </div>
 
-        </div>
+          <div className="flex md:grid md:grid-cols-2 overflow-x-auto md:overflow-visible snap-x snap-mandatory gap-4 md:gap-6 pb-3 md:pb-0 -mx-4 px-4 md:mx-0 md:px-0 scroll-pl-4 [&>a:last-child]:mr-4 md:[&>a:last-child]:mr-0">
+            {servicesText.items.map((item) => {
+              const Icon = ICON_MAP[item.id] || ScaleIcon;
+              return (
+                <a
+                  key={item.id}
+                  href={`#/linh-vuc/${item.id}`}
+                  className="group shrink-0 w-[83vw] max-w-[360px] md:w-auto md:max-w-none snap-start rounded-[22px] bg-white p-6 sm:p-8 border border-slate-200/70 shadow-[0_2px_16px_rgba(15,33,68,0.04)] hover:shadow-[0_14px_36px_rgba(15,33,68,0.09)] hover:border-[#0F2144]/25 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] flex flex-col justify-between text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0F2144]"
+                >
+                  <div>
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="w-11 h-11 rounded-xl bg-[#0F2144]/5 border border-[#0F2144]/10 text-[#0F2144] group-hover:bg-[#0F2144] group-hover:text-amber-300 transition-colors flex items-center justify-center shrink-0">
+                        <Icon className="w-5 h-5" />
+                      </div>
+                      <span className="font-mono tabular-nums text-xs font-bold text-slate-400 group-hover:text-amber-700 transition-colors">
+                        {item.num}
+                      </span>
+                    </div>
 
-        {/* ================= QUY TRÌNH TIẾP NHẬN VÀ GIẢI QUYẾT VỤ VIỆC ================= */}
-        <div className="mt-20 pt-16 border-t border-slate-200/80 w-full">
+                    <h3 className="mt-5 text-lg sm:text-xl font-bold text-[#0F2144] leading-snug tracking-tight">
+                      {item.title}
+                    </h3>
+
+                    <p className="mt-2.5 text-sm text-slate-600 leading-relaxed">
+                      {item.shortDesc}
+                    </p>
+                  </div>
+
+                  <div className="mt-6 pt-4 border-t border-slate-100 space-y-3">
+                    <p className="text-xs text-slate-500 leading-relaxed">
+                      <span className="font-semibold text-[#0F2144]">{basisLabel}: </span>
+                      {item.basis}
+                    </p>
+
+                    <span className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[#0F2144] group-hover:text-amber-700 min-h-[28px] transition-colors">
+                      <span>{actionLabel}</span>
+                      <ArrowRightIcon className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
+                    </span>
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* Quy trình tiếp nhận & giải quyết vụ việc trên nền trắng tách biệt */}
+      <div className="bg-white py-16 sm:py-20 border-t border-slate-200/80">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <CaseWorkflowTimeline />
         </div>
-
       </div>
     </section>
   );
