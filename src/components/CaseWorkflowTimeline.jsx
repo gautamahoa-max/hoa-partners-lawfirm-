@@ -1,43 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
+import { useScrollReveal } from '../hooks/useScrollReveal';
 
 function WorkflowStepCard({ step, index, isLeft }) {
-  const [isVisible, setIsVisible] = useState(false);
-  const cardRef = useRef(null);
-
-  useEffect(() => {
-    // Tôn trọng tùy chọn giảm chuyển động và fallback nếu trình duyệt không hỗ trợ IntersectionObserver
-    if (
-      typeof IntersectionObserver === 'undefined' ||
-      (typeof window !== 'undefined' &&
-        window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches)
-    ) {
-      setIsVisible(true);
-      return undefined;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          // Khi đã xuất hiện thì giữ nguyên trạng thái hiển thị
-          observer.unobserve(entry.target);
-        }
-      },
-      {
-        threshold: 0.15,
-        rootMargin: '0px 0px -60px 0px',
-      }
-    );
-
-    if (cardRef.current) {
-      observer.observe(cardRef.current);
-    }
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
+  const [cardRef, isVisible] = useScrollReveal();
 
   return (
     <div
