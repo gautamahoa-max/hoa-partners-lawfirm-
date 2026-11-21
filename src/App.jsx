@@ -10,7 +10,6 @@ import Footer from './components/Footer';
 import FloatingContact from './components/FloatingContact';
 import { purgeLegacySensitiveStorage } from './utils/security';
 
-const ServiceDetailPage = React.lazy(() => import('./components/ServiceDetailPage'));
 const LawyerBioPage = React.lazy(() => import('./components/LawyerBioPage'));
 const ContactPage = React.lazy(() => import('./components/ContactPage'));
 const LegalKnowledgePage = React.lazy(() => import('./components/LegalKnowledgePage'));
@@ -103,27 +102,6 @@ function MainContent() {
           articleId={activeArticleId}
           onBack={() => {
             window.location.hash = '';
-          }}
-        />
-      </React.Suspense>
-    );
-  }
-
-  // Kiểm tra nếu route là dạng #/linh-vuc/:id hoặc #/dich-vu/:id
-  const serviceMatch = currentRoute.match(/^#(?:(?:\/linh-vuc\/)|\/dich-vu\/)([\w-]+)/);
-  const activeServiceId = serviceMatch ? serviceMatch[1] : null;
-
-  // Nếu đang ở trang chi tiết chuyên môn
-  if (activeServiceId) {
-    return (
-      <React.Suspense fallback={<div className="min-h-screen bg-white" />}>
-        <ServiceDetailPage
-          serviceId={activeServiceId}
-          onBack={() => {
-            window.location.hash = '';
-          }}
-          onSelectService={(id) => {
-            window.location.hash = `#/linh-vuc/${id}`;
           }}
         />
       </React.Suspense>
