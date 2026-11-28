@@ -4,6 +4,7 @@ import Footer from './Footer';
 import FloatingContact from './FloatingContact';
 import { useLanguage } from '../context/LanguageContext';
 import { PRIVACY_POLICY_CONTENT } from '../i18n/privacyPolicy';
+import { TERMS_OF_USE_CONTENT } from '../i18n/termsOfUse';
 
 const PdfConsentModal = React.lazy(() => import('./PdfConsentModal'));
 
@@ -282,13 +283,12 @@ function ArticleCard({ article }) {
   );
 }
 
-function PrivacyPolicyView({ locale, pages, onOpenConsent, onBack }) {
-  const p = PRIVACY_POLICY_CONTENT[locale];
-  const [activeId, setActiveId] = useState(p.articles[0].id);
+function PolicyDocumentView({ data, backLabel, crossLinkHref, onOpenConsent, onBack }) {
+  const [activeId, setActiveId] = useState(data.articles[0].id);
 
   useEffect(() => {
-    setActiveId(p.articles[0].id);
-  }, [locale, p.articles]);
+    setActiveId(data.articles[0].id);
+  }, [data]);
 
   useEffect(() => {
     if (typeof IntersectionObserver === 'undefined') return undefined;
@@ -302,13 +302,13 @@ function PrivacyPolicyView({ locale, pages, onOpenConsent, onBack }) {
       { rootMargin: '-25% 0px -65% 0px', threshold: 0 },
     );
 
-    p.articles.forEach((article) => {
+    data.articles.forEach((article) => {
       const el = document.getElementById(article.id);
       if (el) observer.observe(el);
     });
 
     return () => observer.disconnect();
-  }, [p.articles]);
+  }, [data.articles]);
 
   const scrollToSection = (sectionId) => {
     setActiveId(sectionId);
@@ -323,40 +323,42 @@ function PrivacyPolicyView({ locale, pages, onOpenConsent, onBack }) {
       {/* Institutional Header Band */}
       <section className="bg-[#FAF9F6] border-b border-slate-200/80 py-10 sm:py-14 text-left">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <BreadcrumbNav backLabel={pages.backHome} currentTitle={p.title} onBack={onBack} />
+          <BreadcrumbNav backLabel={backLabel} currentTitle={data.title} onBack={onBack} />
 
           <div className="max-w-4xl space-y-4">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-600 ykvn-accent-block">
-              {p.eyebrow}
+              {data.eyebrow}
             </p>
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0F2144] tracking-tight leading-tight">
-              {p.title}
+              {data.title}
             </h1>
 
-            <div className="pt-2">
-              <button
-                type="button"
-                onClick={onOpenConsent}
-                className="min-h-[44px] px-5 py-2.5 rounded-full bg-[#0F2144] hover:bg-[#162A56] text-white text-xs sm:text-sm font-semibold transition-colors inline-flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <svg
-                  className="w-4 h-4 shrink-0"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  aria-hidden="true"
+            {onOpenConsent && data.viewConsentBtn && (
+              <div className="pt-2">
+                <button
+                  type="button"
+                  onClick={onOpenConsent}
+                  className="min-h-[44px] px-5 py-2.5 rounded-full bg-[#0F2144] hover:bg-[#162A56] text-white text-xs sm:text-sm font-semibold transition-colors inline-flex items-center justify-center gap-2 cursor-pointer"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
-                  />
-                  <polyline points="14 2 14 8 20 8" />
-                </svg>
-                <span>{p.viewConsentBtn}</span>
-              </button>
-            </div>
+                  <svg
+                    className="w-4 h-4 shrink-0"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                    />
+                    <polyline points="14 2 14 8 20 8" />
+                  </svg>
+                  <span>{data.viewConsentBtn}</span>
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -364,7 +366,7 @@ function PrivacyPolicyView({ locale, pages, onOpenConsent, onBack }) {
       {/* Mobile Horizontal Quick-Jump Strip */}
       <div className="lg:hidden bg-white border-b border-slate-200/80 py-3">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 flex items-center gap-2 overflow-x-auto">
-          {p.articles.map((article) => {
+          {data.articles.map((article) => {
             const isActive = activeId === article.id;
             return (
               <button
@@ -390,14 +392,14 @@ function PrivacyPolicyView({ locale, pages, onOpenConsent, onBack }) {
           {/* Desktop Sticky Sidebar */}
           <aside className="hidden lg:block lg:col-span-4 xl:col-span-3 lg:sticky lg:top-32 space-y-5">
             <nav
-              aria-label={p.tocTitle}
+              aria-label={data.tocTitle}
               className="rounded-2xl bg-white border border-slate-200/80 p-4 shadow-[0_2px_16px_rgba(15,33,68,0.03)] space-y-2"
             >
               <p className="px-2.5 pt-1 pb-2 text-xs font-bold uppercase tracking-wider text-slate-600 border-b border-slate-100">
-                {p.tocTitle}
+                {data.tocTitle}
               </p>
               <ul className="space-y-1">
-                {p.articles.map((article) => {
+                {data.articles.map((article) => {
                   const isActive = activeId === article.id;
                   return (
                     <li key={article.id}>
@@ -426,93 +428,27 @@ function PrivacyPolicyView({ locale, pages, onOpenConsent, onBack }) {
             </nav>
           </aside>
 
-          {/* Main 8-Article Content Column */}
+          {/* Main Articles Column */}
           <div className="lg:col-span-8 xl:col-span-9 space-y-6">
-            {p.articles.map((article) => (
+            {data.articles.map((article) => (
               <ArticleCard key={article.id} article={article} />
             ))}
 
             {/* Bottom Cross-Navigation Bar */}
             <div className="flex flex-wrap items-center justify-between gap-3 pt-2 text-xs sm:text-sm">
               <a
-                href="#/dieu-khoan-su-dung"
+                href={crossLinkHref}
                 className="font-semibold text-[#0F2144] underline underline-offset-4 hover:text-amber-800"
               >
-                {p.crossTermsLabel}
+                {data.crossLinkLabel || data.crossTermsLabel}
               </a>
               <a
                 href="#/lien-he"
                 className="min-h-[44px] px-5 py-2.5 rounded-full bg-[#0F2144] hover:bg-[#162A56] text-white text-xs sm:text-sm font-semibold inline-flex items-center transition-colors"
               >
-                {p.contactPageCta}
+                {data.contactPageCta}
               </a>
             </div>
-          </div>
-        </div>
-      </section>
-    </>
-  );
-}
-
-function TermsPolicyView({ locale, pages, content, onBack }) {
-  return (
-    <>
-      <section className="bg-[#FAF9F6] border-b border-slate-200/80 py-10 sm:py-14 text-left">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <BreadcrumbNav backLabel={pages.backHome} currentTitle={content.title} onBack={onBack} />
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-600 mb-3 ykvn-accent-block">
-            {content.eyebrow}
-          </p>
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0F2144] tracking-tight leading-tight">
-            {content.title}
-          </h1>
-          <p className="mt-3 text-xs sm:text-sm font-medium text-slate-600">{content.updated}</p>
-        </div>
-      </section>
-
-      <section className="py-10 sm:py-14 text-left">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-          <div className="rounded-2xl bg-white border border-slate-200/80 p-6 sm:p-8 shadow-[0_2px_16px_rgba(15,33,68,0.04)] space-y-6">
-            <p className="text-sm sm:text-base text-slate-700 leading-relaxed">{content.intro}</p>
-
-            <div className="divide-y divide-slate-200/80">
-              {content.sections.map((section) => (
-                <div key={section.heading} className="py-5 first:pt-2 last:pb-0 space-y-2.5">
-                  <h2 className="text-base sm:text-lg font-bold text-[#0F2144] tracking-tight">
-                    {section.heading}
-                  </h2>
-                  {section.paragraphs?.map((para, idx) => (
-                    <p key={idx} className="text-xs sm:text-sm text-slate-700 leading-relaxed">
-                      {para}
-                    </p>
-                  ))}
-                  {section.bullets && (
-                    <ul className="list-disc pl-5 space-y-1.5 text-xs sm:text-sm text-slate-700 leading-relaxed">
-                      {section.bullets.map((bullet, idx) => (
-                        <li key={idx}>{bullet}</li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm">
-            <a
-              href="#/chinh-sach-bao-mat"
-              className="font-semibold text-[#0F2144] underline underline-offset-4 hover:text-amber-800"
-            >
-              {locale === 'vi'
-                ? 'Xem Chính sách bảo mật dữ liệu cá nhân →'
-                : 'View Personal Data Privacy Policy →'}
-            </a>
-            <a
-              href="#/lien-he"
-              className="min-h-[44px] px-5 py-2.5 rounded-full bg-[#0F2144] hover:bg-[#162A56] text-white text-xs font-semibold inline-flex items-center transition-colors"
-            >
-              {locale === 'vi' ? 'Liên hệ tư vấn trực tiếp' : 'Contact Our Attorneys'}
-            </a>
           </div>
         </div>
       </section>
@@ -526,6 +462,10 @@ export default function LegalPolicyPage({ mode = 'privacy', onBack }) {
   const pages = t.legalPages;
   const [showConsentModal, setShowConsentModal] = useState(false);
 
+  const isTerms = mode === 'terms';
+  const activeDoc = isTerms ? TERMS_OF_USE_CONTENT[locale] : PRIVACY_POLICY_CONTENT[locale];
+  const crossLinkHref = isTerms ? '#/chinh-sach-bao-mat' : '#/dieu-khoan-su-dung';
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [mode]);
@@ -535,21 +475,13 @@ export default function LegalPolicyPage({ mode = 'privacy', onBack }) {
       <Navbar />
 
       <main id="main-content" className="flex-grow">
-        {mode === 'terms' ? (
-          <TermsPolicyView
-            locale={locale}
-            pages={pages}
-            content={pages.terms}
-            onBack={onBack}
-          />
-        ) : (
-          <PrivacyPolicyView
-            locale={locale}
-            pages={pages}
-            onOpenConsent={() => setShowConsentModal(true)}
-            onBack={onBack}
-          />
-        )}
+        <PolicyDocumentView
+          data={activeDoc}
+          backLabel={pages.backHome}
+          crossLinkHref={crossLinkHref}
+          onOpenConsent={isTerms ? undefined : () => setShowConsentModal(true)}
+          onBack={onBack}
+        />
       </main>
 
       <Footer />

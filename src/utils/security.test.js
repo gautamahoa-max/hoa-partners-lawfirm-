@@ -41,6 +41,7 @@ import {
 } from '../i18n/feeSchedule.js';
 import { TRANSLATIONS } from '../i18n/translations.js';
 import { PRIVACY_POLICY_CONTENT } from '../i18n/privacyPolicy.js';
+import { TERMS_OF_USE_CONTENT } from '../i18n/termsOfUse.js';
 
 test('sanitizeInput strips HTML, control characters, dangerous protocols, and enforces maxLength', () => {
   assert.equal(sanitizeInput('<script>alert(1)</script>Hello'), 'alert(1)Hello');
@@ -583,5 +584,32 @@ test('Structured Privacy Policy content covers 8 PDPL articles, SLAs, 10 rights,
     assert.ok(byId['bao-mat-va-khuyen-cao']?.safetyAdvisory?.items?.length >= 3);
     assert.equal(byId['luu-tru-va-thoi-han']?.slaRows?.length, 5);
     assert.equal(byId['quyen-va-nghia-vu']?.rightsList?.length, 10);
+  }
+});
+
+test('Structured Terms of Use & Legal Disclaimer adapts Kirkland disclaimer to Vietnamese law for VI & EN', () => {
+  for (const locale of ['vi', 'en']) {
+    const content = TERMS_OF_USE_CONTENT[locale];
+    assert.equal(content.articles?.length, 7);
+
+    const ids = content.articles.map((a) => a.id);
+    assert.equal(new Set(ids).size, 7);
+    for (const id of ids) {
+      assert.match(id, /^[a-z0-9-]+$/);
+    }
+
+    const serialized = JSON.stringify(content);
+    assert.equal(serialized.includes('Kirkland'), false);
+    assert.equal(serialized.includes('certain states'), false);
+
+    const byId = Object.fromEntries(content.articles.map((a) => [a.id, a]));
+    if (locale === 'vi') {
+      const externalText = byId['lien-ket-ngoai']?.paragraphs?.join(' ') || '';
+      assert.ok(externalText.includes('tuyên bố hay cam đoan'));
+      assert.equal(externalText.includes('bảo đảm'), false);
+    }
+    const ipText = byId['thong-tin-hanh-nghe-va-shtt']?.paragraphs?.join(' ') || '';
+    assert.ok(ipText.includes('Duy Nguyen'));
+    assert.ok(ipText.includes('Pexels License'));
   }
 });
