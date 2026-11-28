@@ -7,6 +7,10 @@ export const TRANSLATIONS = {
       subtitle: 'Chuyên sâu Tranh tụng Dân sự tại Tòa án các cấp, giải quyết tranh chấp Đất đai & Bất động sản, Thừa kế, Hợp đồng và Hôn nhân gia đình — kết hợp nền tảng tài chính ngân hàng cùng biểu phí minh bạch.',
       primaryCta: 'Đặt lịch tư vấn',
       secondaryCta: 'Xem biểu phí 20 dịch vụ',
+      videoCaption: 'TP. HỒ CHÍ MINH • NHỊP SỐNG ĐÔ THỊ',
+      videoAriaLabel: 'Video ngắn nhịp sống đô thị TP. Hồ Chí Minh',
+      pauseVideo: 'Tạm dừng video nền',
+      playVideo: 'Phát video nền',
     },
     navbar: {
       locations: 'TP.HCM • Đắk Lắk',
@@ -383,6 +387,7 @@ export const TRANSLATIONS = {
             heading: '5. Thông tin hành nghề & Sở hữu trí tuệ',
             paragraphs: [
               'Website này là trang thông tin hành nghề luật sư của Công ty Luật TNHH Hoà và Cộng sự. Nội dung bài viết, cấu trúc dữ liệu và tài liệu trên website thuộc bản quyền của Công ty Luật TNHH Hoà và Cộng sự.',
+              'Tư liệu video nhịp sống đô thị TP. Hồ Chí Minh ở phần mở đầu (hero-saigon-life.mp4) được chuyển thể (cân chỉnh sắc độ và lặp mượt) từ tác phẩm "Traffic-d7-high.webm" của tác giả Karel Bilek trên Wikimedia Commons, phát hành theo giấy phép Creative Commons Ghi công – Chia sẻ tương tự 4.0 Quốc tế (CC BY-SA 4.0).',
             ],
           },
         ],
@@ -473,6 +478,10 @@ export const TRANSLATIONS = {
       subtitle: 'Focused on civil court litigation, land and real estate disputes, inheritance, civil contracts, and family law — combining banking acumen with transparent upfront fee schedules.',
       primaryCta: 'Schedule Consultation',
       secondaryCta: 'View 20-Item Fee Schedule',
+      videoCaption: 'HO CHI MINH CITY • URBAN PULSE',
+      videoAriaLabel: 'Short ambient video of Ho Chi Minh City urban life',
+      pauseVideo: 'Pause ambient video',
+      playVideo: 'Play ambient video',
     },
     navbar: {
       locations: 'HCMC • Dak Lak',
@@ -849,6 +858,7 @@ export const TRANSLATIONS = {
             heading: '5. Attorney Advertising & Intellectual Property',
             paragraphs: [
               'This website constitutes attorney practice information of Hoa & Associates Law Firm LLC. All original articles, materials, and trademarks are owned by Hoa & Associates Law Firm LLC.',
+              'The ambient Ho Chi Minh City urban-life hero video (hero-saigon-life.mp4) is adapted (cropped, color-graded, and seamlessly looped) from "Traffic-d7-high.webm" by Karel Bilek via Wikimedia Commons, licensed under Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0); this adapted clip is shared under CC BY-SA 4.0.',
             ],
           },
         ],
