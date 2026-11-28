@@ -40,6 +40,7 @@ import {
   FEE_SCHEDULE_ITEMS,
 } from '../i18n/feeSchedule.js';
 import { TRANSLATIONS } from '../i18n/translations.js';
+import { PRIVACY_POLICY_CONTENT } from '../i18n/privacyPolicy.js';
 
 test('sanitizeInput strips HTML, control characters, dangerous protocols, and enforces maxLength', () => {
   assert.equal(sanitizeInput('<script>alert(1)</script>Hello'), 'alert(1)Hello');
@@ -560,5 +561,27 @@ test('P0 bilingual Hero, Legal Disclaimer, Privacy Policy, and Terms copy exist 
     assert.ok(t.articleDisclaimer?.title && t.articleDisclaimer?.text);
     assert.ok(t.legalPages?.privacy?.sections?.length >= 4);
     assert.ok(t.legalPages?.terms?.sections?.length >= 4);
+  }
+});
+
+test('Structured Privacy Policy content covers 8 PDPL articles, SLAs, 10 rights, and safety advisory in VI & EN', () => {
+  for (const locale of ['vi', 'en']) {
+    const content = PRIVACY_POLICY_CONTENT[locale];
+    assert.equal(content.summaryPillars?.length, 3);
+    assert.equal(content.articles?.length, 8);
+
+    const ids = content.articles.map((a) => a.id);
+    assert.equal(new Set(ids).size, 8);
+    for (const id of ids) {
+      assert.match(id, /^[a-z0-9-]+$/);
+    }
+
+    const byId = Object.fromEntries(content.articles.map((a) => [a.id, a]));
+    assert.equal(byId['du-lieu-thu-thap']?.twoColCards?.length, 2);
+    assert.equal(byId['muc-dich-xu-ly']?.purposeGroups?.length, 2);
+    assert.equal(byId['chia-se-va-xuyen-bien-gioi']?.recipientCards?.length, 3);
+    assert.ok(byId['bao-mat-va-khuyen-cao']?.safetyAdvisory?.items?.length >= 3);
+    assert.equal(byId['luu-tru-va-thoi-han']?.slaRows?.length, 5);
+    assert.equal(byId['quyen-va-nghia-vu']?.rightsList?.length, 10);
   }
 });
