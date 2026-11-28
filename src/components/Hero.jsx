@@ -6,7 +6,6 @@ export default function Hero() {
   const hero = t.hero;
   const videoRef = useRef(null);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(true);
 
   useEffect(() => {
     const mq =
@@ -21,37 +20,19 @@ export default function Hero() {
 
     if (reduced) {
       videoEl.pause();
-      setIsPlaying(false);
     } else {
-      videoEl.play().catch(() => {
-        setIsPlaying(false);
-      });
+      videoEl.play().catch(() => {});
     }
 
     const handleMotionChange = (e) => {
       setPrefersReducedMotion(e.matches);
       if (e.matches && videoRef.current) {
         videoRef.current.pause();
-        setIsPlaying(false);
       }
     };
     mq?.addEventListener?.('change', handleMotionChange);
     return () => mq?.removeEventListener?.('change', handleMotionChange);
   }, []);
-
-  const handleTogglePlayback = () => {
-    const videoEl = videoRef.current;
-    if (!videoEl) return;
-    if (videoEl.paused) {
-      videoEl
-        .play()
-        .then(() => setIsPlaying(true))
-        .catch(() => setIsPlaying(false));
-    } else {
-      videoEl.pause();
-      setIsPlaying(false);
-    }
-  };
 
   return (
     <section
@@ -67,9 +48,7 @@ export default function Hero() {
         playsInline
         preload="metadata"
         poster="./hero-saigon-poster.webp"
-        aria-label={hero.videoAriaLabel}
-        onPlay={() => setIsPlaying(true)}
-        onPause={() => setIsPlaying(false)}
+        aria-hidden="true"
         className="absolute inset-0 w-full h-full object-cover object-center block"
       >
         <source src="./hero-saigon-life.mp4" type="video/mp4" />
@@ -90,7 +69,7 @@ export default function Hero() {
       />
 
       {/* Unified Foreground Editorial Copy & CTAs */}
-      <div className="relative z-10 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-16 pb-20 sm:py-20 lg:py-24">
+      <div className="relative z-10 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24">
         <div className="max-w-2xl text-left">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-700 mb-4 sm:mb-5 ykvn-accent-block">
             {hero.eyebrow}
@@ -122,33 +101,6 @@ export default function Hero() {
             </a>
           </div>
         </div>
-      </div>
-
-      {/* Quiet Ambient Caption Pill & WCAG 2.2.2 Pause/Play Control */}
-      <div className="absolute right-4 sm:right-6 lg:right-8 bottom-4 sm:bottom-5 z-20 flex items-center gap-2.5">
-        <div className="hidden sm:inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 backdrop-blur-md border border-slate-200/90 shadow-sm text-xs font-semibold uppercase tracking-[0.14em] text-[#0F2144]">
-          <span aria-hidden="true" className="w-1.5 h-1.5 bg-amber-600 shrink-0" />
-          <span>{hero.videoCaption}</span>
-        </div>
-
-        <button
-          type="button"
-          onClick={handleTogglePlayback}
-          aria-label={isPlaying ? hero.pauseVideo : hero.playVideo}
-          aria-pressed={!isPlaying}
-          className="min-h-[44px] min-w-[44px] rounded-full bg-white/85 hover:bg-white backdrop-blur-md border border-slate-300/90 shadow-sm text-[#0F2144] inline-flex items-center justify-center transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0F2144]"
-        >
-          {isPlaying ? (
-            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <rect x="6" y="5" width="4" height="14" rx="1" />
-              <rect x="14" y="5" width="4" height="14" rx="1" />
-            </svg>
-          ) : (
-            <svg className="w-4 h-4 translate-x-0.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <polygon points="6,4 20,12 6,20" />
-            </svg>
-          )}
-        </button>
       </div>
     </section>
   );

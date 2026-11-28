@@ -7,10 +7,6 @@ export const TRANSLATIONS = {
       subtitle: 'Chuyên sâu Tranh tụng Dân sự tại Tòa án các cấp, giải quyết tranh chấp Đất đai & Bất động sản, Thừa kế, Hợp đồng và Hôn nhân gia đình — kết hợp nền tảng tài chính ngân hàng cùng biểu phí minh bạch.',
       primaryCta: 'Đặt lịch tư vấn',
       secondaryCta: 'Xem biểu phí 20 dịch vụ',
-      videoCaption: 'TP. HỒ CHÍ MINH • SÔNG SÀI GÒN',
-      videoAriaLabel: 'Video flycam toàn cảnh cầu Ba Son, sông Sài Gòn và trung tâm TP. Hồ Chí Minh',
-      pauseVideo: 'Tạm dừng video nền',
-      playVideo: 'Phát video nền',
     },
     navbar: {
       locations: 'TP.HCM • Đắk Lắk',
@@ -478,10 +474,6 @@ export const TRANSLATIONS = {
       subtitle: 'Focused on civil court litigation, land and real estate disputes, inheritance, civil contracts, and family law — combining banking acumen with transparent upfront fee schedules.',
       primaryCta: 'Schedule Consultation',
       secondaryCta: 'View 20-Item Fee Schedule',
-      videoCaption: 'HO CHI MINH CITY • SAIGON RIVER',
-      videoAriaLabel: 'Aerial video of Ba Son Bridge, Saigon River, and Ho Chi Minh City skyline',
-      pauseVideo: 'Pause ambient video',
-      playVideo: 'Play ambient video',
     },
     navbar: {
       locations: 'HCMC • Dak Lak',
