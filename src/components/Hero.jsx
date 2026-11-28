@@ -56,101 +56,99 @@ export default function Hero() {
   return (
     <section
       aria-label={lang === 'en' ? 'Firm Overview' : 'Giới thiệu hãng luật'}
-      className="w-full bg-gradient-to-br from-[#FAF9F6] via-[#FFFFFF] to-[#EEF3FA] text-slate-900 border-b border-slate-200/80 overflow-hidden"
+      className="relative w-full min-h-[480px] sm:min-h-[540px] lg:min-h-[600px] flex items-center bg-[#FAF9F6] text-slate-900 border-b border-slate-200/80 overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-24">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-12 items-center">
-          {/* Editorial Copy & CTAs */}
-          <div className="lg:col-span-7 text-left">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-600 mb-4 sm:mb-5 ykvn-accent-block">
-              {hero.eyebrow}
-            </p>
+      {/* Full-bleed Saigon urban pulse video canvas */}
+      <video
+        ref={videoRef}
+        autoPlay={!prefersReducedMotion}
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        poster="./hero-saigon-poster.webp"
+        aria-label={hero.videoAriaLabel}
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
+        className="absolute inset-0 w-full h-full object-cover object-center block"
+      >
+        <source src="./hero-saigon-life.mp4" type="video/mp4" />
+      </video>
 
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.16] text-[#0F2144]">
-              <span className="block">{hero.headlineLine1}</span>
-              <span className="block mt-1.5 text-[#1E3A6D]">{hero.headlineLine2}</span>
-            </h1>
+      {/* Atmospheric light veils integrating video cleanly with typography & light palette */}
+      <div
+        aria-hidden="true"
+        className="hidden lg:block pointer-events-none absolute inset-0 bg-gradient-to-r from-[#FAF9F6] via-[#FAF9F6]/88 via-[42%] to-transparent"
+      />
+      <div
+        aria-hidden="true"
+        className="lg:hidden pointer-events-none absolute inset-0 bg-gradient-to-b from-[#FAF9F6]/95 via-[#FAF9F6]/90 to-[#EEF3FA]/45"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#FAF9F6]/35 via-transparent to-white/25"
+      />
 
-            <p className="mt-5 sm:mt-6 text-sm sm:text-base lg:text-lg text-slate-600 leading-relaxed max-w-xl">
-              {hero.subtitle}
-            </p>
+      {/* Unified Foreground Editorial Copy & CTAs */}
+      <div className="relative z-10 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-16 pb-20 sm:py-20 lg:py-24">
+        <div className="max-w-2xl text-left">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-700 mb-4 sm:mb-5 ykvn-accent-block">
+            {hero.eyebrow}
+          </p>
 
-            <div className="mt-7 sm:mt-9 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 sm:gap-4">
-              <a
-                href="#/lien-he"
-                className="min-h-[48px] px-7 py-3 rounded-full bg-[#0F2144] hover:bg-[#162A56] text-white font-semibold text-sm sm:text-base shadow-[0_8px_24px_rgba(15,33,68,0.16)] active:scale-[0.98] transition-all inline-flex items-center justify-center gap-2 text-center"
-              >
-                <span>{hero.primaryCta}</span>
-                <span aria-hidden="true">→</span>
-              </a>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.16] text-[#0F2144]">
+            <span className="block">{hero.headlineLine1}</span>
+            <span className="block mt-1.5 text-[#1E3A6D]">{hero.headlineLine2}</span>
+          </h1>
 
-              <a
-                href="#/bang-gia"
-                className="min-h-[48px] px-7 py-3 rounded-full bg-white hover:bg-slate-50 border border-slate-300 hover:border-[#0F2144]/40 text-[#0F2144] font-semibold text-sm sm:text-base shadow-[0_2px_10px_rgba(15,33,68,0.04)] active:scale-[0.98] transition-all inline-flex items-center justify-center text-center"
-              >
-                {hero.secondaryCta}
-              </a>
-            </div>
-          </div>
+          <p className="mt-5 sm:mt-6 text-sm sm:text-base lg:text-lg text-slate-700 leading-relaxed max-w-xl">
+            {hero.subtitle}
+          </p>
 
-          {/* Original Light-Editorial Living Cinema Viewport (Saigon Urban Pulse) */}
-          <div className="lg:col-span-5">
-            <div className="relative aspect-[16/10] lg:aspect-[4/3] rounded-[22px] sm:rounded-[24px] overflow-hidden border border-slate-200/90 shadow-[0_24px_60px_rgba(15,33,68,0.10)] bg-[#0F2144]">
-              <video
-                ref={videoRef}
-                autoPlay={!prefersReducedMotion}
-                muted
-                loop
-                playsInline
-                preload="metadata"
-                poster="./hero-saigon-poster.webp"
-                aria-label={hero.videoAriaLabel}
-                onPlay={() => setIsPlaying(true)}
-                onPause={() => setIsPlaying(false)}
-                className="w-full h-full object-cover object-center block"
-              >
-                <source src="./hero-saigon-life.mp4" type="video/mp4" />
-              </video>
+          <div className="mt-7 sm:mt-9 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 sm:gap-4">
+            <a
+              href="#/lien-he"
+              className="min-h-[48px] px-7 py-3 rounded-full bg-[#0F2144] hover:bg-[#162A56] text-white font-semibold text-sm sm:text-base shadow-[0_8px_24px_rgba(15,33,68,0.16)] active:scale-[0.98] transition-all inline-flex items-center justify-center gap-2 text-center"
+            >
+              <span>{hero.primaryCta}</span>
+              <span aria-hidden="true">→</span>
+            </a>
 
-              {/* Bottom editorial legibility scrim + crisp inner edge */}
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#07192E]/70 via-[#07192E]/10 to-transparent"
-              />
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-black/5 rounded-[22px] sm:rounded-[24px]"
-              />
-
-              {/* Subtle Caption Pill & WCAG 2.2.2 Pause/Play Control */}
-              <div className="absolute inset-x-3.5 sm:inset-x-4 bottom-3.5 sm:bottom-4 flex items-center justify-between gap-2">
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#07192E]/70 backdrop-blur-md border border-white/15 text-xs font-semibold uppercase tracking-[0.14em] text-white/95">
-                  <span aria-hidden="true" className="w-1.5 h-1.5 bg-amber-400 shrink-0" />
-                  <span>{hero.videoCaption}</span>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={handleTogglePlayback}
-                  aria-label={isPlaying ? hero.pauseVideo : hero.playVideo}
-                  aria-pressed={!isPlaying}
-                  className="min-h-[44px] min-w-[44px] rounded-full bg-[#07192E]/75 hover:bg-[#07192E]/95 backdrop-blur-md border border-white/25 text-white inline-flex items-center justify-center transition-colors shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300"
-                >
-                  {isPlaying ? (
-                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                      <rect x="6" y="5" width="4" height="14" rx="1" />
-                      <rect x="14" y="5" width="4" height="14" rx="1" />
-                    </svg>
-                  ) : (
-                    <svg className="w-4 h-4 translate-x-0.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                      <polygon points="6,4 20,12 6,20" />
-                    </svg>
-                  )}
-                </button>
-              </div>
-            </div>
+            <a
+              href="#/bang-gia"
+              className="min-h-[48px] px-7 py-3 rounded-full bg-white/90 hover:bg-white backdrop-blur-md border border-slate-300 hover:border-[#0F2144]/40 text-[#0F2144] font-semibold text-sm sm:text-base shadow-[0_2px_10px_rgba(15,33,68,0.04)] active:scale-[0.98] transition-all inline-flex items-center justify-center text-center"
+            >
+              {hero.secondaryCta}
+            </a>
           </div>
         </div>
+      </div>
+
+      {/* Quiet Ambient Caption Pill & WCAG 2.2.2 Pause/Play Control */}
+      <div className="absolute right-4 sm:right-6 lg:right-8 bottom-4 sm:bottom-5 z-20 flex items-center gap-2.5">
+        <div className="hidden sm:inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 backdrop-blur-md border border-slate-200/90 shadow-sm text-xs font-semibold uppercase tracking-[0.14em] text-[#0F2144]">
+          <span aria-hidden="true" className="w-1.5 h-1.5 bg-amber-600 shrink-0" />
+          <span>{hero.videoCaption}</span>
+        </div>
+
+        <button
+          type="button"
+          onClick={handleTogglePlayback}
+          aria-label={isPlaying ? hero.pauseVideo : hero.playVideo}
+          aria-pressed={!isPlaying}
+          className="min-h-[44px] min-w-[44px] rounded-full bg-white/85 hover:bg-white backdrop-blur-md border border-slate-300/90 shadow-sm text-[#0F2144] inline-flex items-center justify-center transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0F2144]"
+        >
+          {isPlaying ? (
+            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <rect x="6" y="5" width="4" height="14" rx="1" />
+              <rect x="14" y="5" width="4" height="14" rx="1" />
+            </svg>
+          ) : (
+            <svg className="w-4 h-4 translate-x-0.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <polygon points="6,4 20,12 6,20" />
+            </svg>
+          )}
+        </button>
       </div>
     </section>
   );
