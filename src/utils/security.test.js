@@ -567,7 +567,7 @@ test('P0 bilingual Hero, Legal Disclaimer, Privacy Policy, and Terms copy exist 
 test('Structured Privacy Policy content covers 8 PDPL articles, SLAs, 10 rights, and safety advisory in VI & EN', () => {
   for (const locale of ['vi', 'en']) {
     const content = PRIVACY_POLICY_CONTENT[locale];
-    assert.equal(content.summaryPillars?.length, 3);
+    assert.ok(content.viewConsentBtn && !content.viewConsentBtn.includes('HP-PDPL-03/2026'));
     assert.equal(content.articles?.length, 8);
 
     const ids = content.articles.map((a) => a.id);

@@ -7,53 +7,8 @@ export const PRIVACY_POLICY_CONTENT = {
   vi: {
     eyebrow: 'BẢO VỆ DỮ LIỆU CÁ NHÂN • LUẬT 91/2025/QH15 & ĐIỀU 25 LUẬT LUẬT SƯ',
     title: 'Chính sách Bảo mật Dữ liệu Cá nhân',
-    updated: 'Phiên bản áp dụng: HP-PDPL-03/2026 • Cập nhật: 28/11/2026',
-    intro:
-      'Ban Giám đốc, các Luật sư điều hành và đội ngũ chuyên viên của Công ty Luật TNHH Hoà và Cộng sự đặt quyền riêng tư của Quý khách và bí mật nghề nghiệp luật sư lên hàng đầu. Mọi dữ liệu cá nhân, tình tiết hồ sơ được cung cấp trong quá trình tiếp nhận và giải quyết vụ việc đều được xử lý minh bạch theo Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15, Nghị định 356/2025/NĐ-CP và Điều 25 Luật Luật sư.',
-    viewConsentBtn: 'Xem toàn văn Thư chấp thuận (HP-PDPL-03/2026)',
-    jumpToDeskBtn: 'Kênh tiếp nhận yêu cầu dữ liệu',
-    summaryPillars: [
-      {
-        label: 'VĂN BẢN PHÁP LÝ ÁP DỤNG',
-        value: 'HP-PDPL-03/2026 (Việt – Anh)',
-        detail: 'Thư chấp thuận song ngữ thống nhất có giá trị đối chiếu điện tử.',
-      },
-      {
-        label: 'THỜI HẠN XỬ LÝ YÊU CẦU',
-        value: '02 ngày làm việc • ≤ 15 ngày',
-        detail: 'Phản hồi ban đầu ≤ 02 ngày; hoàn tất chỉnh sửa/xóa tối đa 15 ngày.',
-      },
-      {
-        label: 'THÔNG BÁO SỰ CỐ DỮ LIỆU',
-        value: 'Chậm nhất 72 giờ',
-        detail: 'Tuân thủ Điều 23 Luật 91/2025/QH15 khi phát sinh sự cố có thể gây tổn hại.',
-      },
-    ],
+    viewConsentBtn: 'Xem toàn văn Thư chấp thuận',
     tocTitle: 'Mục lục Chính sách (08 Điều)',
-    docBoxTitle: 'Chứng từ Pháp lý Hiện hành',
-    docBoxSubtitle: 'Bản gốc Thư chấp thuận xử lý Dữ liệu cá nhân đang áp dụng trên cổng trực tuyến:',
-    docVersionCode: 'HP-PDPL-03/2026',
-    docVersionStatus: 'Đang hiệu lực',
-    termsLinkLabel: 'Xem Điều khoản sử dụng & Miễn trừ trách nhiệm →',
-    deskTitle: 'Đầu mối Tiếp nhận Yêu cầu Dữ liệu Cá nhân',
-    deskSubtitle:
-      'Quý khách có quyền yêu cầu biết, xem, chỉnh sửa, rút đồng ý hoặc xóa dữ liệu qua các kênh chính thức dưới đây:',
-    hotlineLabel: 'Hotline 24/7',
-    hotlineDisplay: '098.888.6447',
-    hotlineHref: 'tel:0988886447',
-    emailLabel: 'Email pháp chế & dữ liệu',
-    email: 'gautamahoa@gmail.com',
-    officesTitle: 'Địa điểm tiếp nhận trực tiếp',
-    offices: [
-      {
-        label: 'Trụ sở chính (Đắk Lắk)',
-        address: '9/12 Chu Huy Mân, phường Tân An, tỉnh Đắk Lắk',
-      },
-      {
-        label: 'Văn phòng đại diện (TP.HCM)',
-        address: '2A đường 33, phường Bình Trưng, TP. Hồ Chí Minh',
-      },
-    ],
     crossTermsLabel: 'Xem Điều khoản sử dụng & Miễn trừ trách nhiệm →',
     contactPageCta: 'Đặt lịch tư vấn trực tiếp',
     articles: [
@@ -295,53 +250,8 @@ export const PRIVACY_POLICY_CONTENT = {
   en: {
     eyebrow: 'PERSONAL DATA PROTECTION • LAW 91/2025/QH15 & ART. 25 LAW ON LAWYERS',
     title: 'Personal Data Privacy Policy',
-    updated: 'Active Version: HP-PDPL-03/2026 • Last Updated: Nov 28, 2026',
-    intro:
-      'The Managing Partners, Attorneys, and Legal Specialists of Hoa & Associates Law Firm LLC place the privacy of our clients and statutory attorney–client confidentiality among our highest professional obligations. Every category of personal data and case material entrusted to us is safeguarded strictly in compliance with Law No. 91/2025/QH15 on Personal Data Protection, Decree No. 356/2025/ND-CP, and Article 25 of the Law on Lawyers.',
-    viewConsentBtn: 'View Official Letter of Consent (HP-PDPL-03/2026)',
-    jumpToDeskBtn: 'Data Subject Request Desk',
-    summaryPillars: [
-      {
-        label: 'ACTIVE LEGAL INSTRUMENT',
-        value: 'HP-PDPL-03/2026 (VN – EN)',
-        detail: 'Unified bilingual Letter of Consent with verifiable electronic reference.',
-      },
-      {
-        label: 'REQUEST RESPONSE SLA',
-        value: '02 Business Days • ≤ 15 Days',
-        detail: 'Initial response ≤ 2 business days; rectification or erasure within 15 days.',
-      },
-      {
-        label: 'BREACH NOTIFICATION',
-        value: 'Within 72 Hours',
-        detail: 'Reported to competent authorities & data subjects per Art. 23, Law 91/2025/QH15.',
-      },
-    ],
+    viewConsentBtn: 'View Official Letter of Consent',
     tocTitle: 'Policy Contents (8 Articles)',
-    docBoxTitle: 'Authoritative Legal Instrument',
-    docBoxSubtitle: 'Inspect the full bilingual Letter of Consent governing online intake:',
-    docVersionCode: 'HP-PDPL-03/2026',
-    docVersionStatus: 'In Force',
-    termsLinkLabel: 'View Terms of Use & Legal Disclaimer →',
-    deskTitle: 'Data Subject Request & Privacy Desk',
-    deskSubtitle:
-      'Exercise your statutory rights to access, rectify, withdraw consent, or erase data via our verified channels:',
-    hotlineLabel: '24/7 Hotline',
-    hotlineDisplay: '+84 98.888.6447',
-    hotlineHref: 'tel:0988886447',
-    emailLabel: 'Legal & Privacy Email',
-    email: 'gautamahoa@gmail.com',
-    officesTitle: 'Physical Offices',
-    offices: [
-      {
-        label: 'Headquarters (Dak Lak)',
-        address: '9/12 Chu Huy Man, Tan An Ward, Dak Lak Province',
-      },
-      {
-        label: 'Representative Office (HCMC)',
-        address: '2A 33rd Street, Binh Trung Ward, Ho Chi Minh City',
-      },
-    ],
     crossTermsLabel: 'View Terms of Use & Legal Disclaimer →',
     contactPageCta: 'Schedule Consultation',
     articles: [

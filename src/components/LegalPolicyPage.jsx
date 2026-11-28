@@ -332,10 +332,8 @@ function PrivacyPolicyView({ locale, pages, onOpenConsent, onBack }) {
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0F2144] tracking-tight leading-tight">
               {p.title}
             </h1>
-            <p className="text-xs sm:text-sm font-medium text-slate-600">{p.updated}</p>
-            <p className="text-sm sm:text-base text-slate-700 leading-relaxed pt-1">{p.intro}</p>
 
-            <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+            <div className="pt-2">
               <button
                 type="button"
                 onClick={onOpenConsent}
@@ -358,31 +356,7 @@ function PrivacyPolicyView({ locale, pages, onOpenConsent, onBack }) {
                 </svg>
                 <span>{p.viewConsentBtn}</span>
               </button>
-
-              <button
-                type="button"
-                onClick={() => scrollToSection('privacy-desk')}
-                className="min-h-[44px] px-5 py-2.5 rounded-full bg-white hover:bg-slate-50 border border-slate-300 hover:border-[#0F2144]/40 text-[#0F2144] text-xs sm:text-sm font-semibold transition-colors inline-flex items-center justify-center cursor-pointer"
-              >
-                {p.jumpToDeskBtn}
-              </button>
             </div>
-          </div>
-
-          {/* 3-Column Governance Pillar Strip */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4 mt-8 pt-7 border-t border-slate-200/80">
-            {p.summaryPillars.map((pillar) => (
-              <div
-                key={pillar.label}
-                className="rounded-xl bg-white border border-slate-200/90 p-4 shadow-[0_2px_10px_rgba(15,33,68,0.03)] space-y-1"
-              >
-                <p className="text-xs font-bold uppercase tracking-wider text-slate-600">
-                  {pillar.label}
-                </p>
-                <p className="text-sm sm:text-base font-bold text-[#0F2144]">{pillar.value}</p>
-                <p className="text-xs text-slate-600 leading-relaxed">{pillar.detail}</p>
-              </div>
-            ))}
           </div>
         </div>
       </section>
@@ -414,7 +388,7 @@ function PrivacyPolicyView({ locale, pages, onOpenConsent, onBack }) {
       <section className="py-10 sm:py-14 text-left">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
           {/* Desktop Sticky Sidebar */}
-          <aside className="hidden lg:block lg:col-span-4 xl:col-span-3 lg:sticky lg:top-32 lg:max-h-[calc(100vh-8.5rem)] lg:overflow-y-auto space-y-5">
+          <aside className="hidden lg:block lg:col-span-4 xl:col-span-3 lg:sticky lg:top-32 space-y-5">
             <nav
               aria-label={p.tocTitle}
               className="rounded-2xl bg-white border border-slate-200/80 p-4 shadow-[0_2px_16px_rgba(15,33,68,0.03)] space-y-2"
@@ -450,35 +424,6 @@ function PrivacyPolicyView({ locale, pages, onOpenConsent, onBack }) {
                 })}
               </ul>
             </nav>
-
-            {/* Authoritative Document Card */}
-            <div className="rounded-2xl bg-[#0F2144] text-white p-5 space-y-3 shadow-[0_6px_24px_rgba(15,33,68,0.12)]">
-              <div className="flex items-center justify-between gap-2">
-                <span className="text-xs font-bold uppercase tracking-wider text-amber-300">
-                  {p.docVersionCode}
-                </span>
-                <span className="px-2 py-0.5 rounded bg-white/10 text-xs font-medium text-white">
-                  {p.docVersionStatus}
-                </span>
-              </div>
-              <h2 className="text-sm font-bold leading-snug">{p.docBoxTitle}</h2>
-              <p className="text-xs text-slate-300 leading-relaxed">{p.docBoxSubtitle}</p>
-              <button
-                type="button"
-                onClick={onOpenConsent}
-                className="w-full min-h-[44px] px-4 py-2 rounded-xl bg-white hover:bg-slate-100 text-[#0F2144] text-xs font-bold transition-colors cursor-pointer"
-              >
-                {p.viewConsentBtn}
-              </button>
-              <div className="pt-1 border-t border-white/15">
-                <a
-                  href="#/dieu-khoan-su-dung"
-                  className="text-xs font-medium text-slate-200 hover:text-white underline underline-offset-4"
-                >
-                  {p.termsLinkLabel}
-                </a>
-              </div>
-            </div>
           </aside>
 
           {/* Main 8-Article Content Column */}
@@ -486,57 +431,6 @@ function PrivacyPolicyView({ locale, pages, onOpenConsent, onBack }) {
             {p.articles.map((article) => (
               <ArticleCard key={article.id} article={article} />
             ))}
-
-            {/* Unified Data Subject Privacy Desk Card */}
-            <div
-              id="privacy-desk"
-              className="scroll-mt-24 lg:scroll-mt-32 rounded-2xl bg-[#FAF9F6] border border-slate-200 p-6 sm:p-8 space-y-5"
-            >
-              <div className="space-y-1.5">
-                <h2 className="text-base sm:text-lg font-bold text-[#0F2144]">{p.deskTitle}</h2>
-                <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
-                  {p.deskSubtitle}
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <a
-                  href={p.hotlineHref}
-                  className="min-h-[44px] rounded-xl bg-white border border-slate-200/90 hover:border-[#0F2144]/40 p-4 transition-colors block"
-                >
-                  <p className="text-xs font-bold uppercase tracking-wider text-slate-600">
-                    {p.hotlineLabel}
-                  </p>
-                  <p className="mt-1 text-base font-bold text-[#0F2144]">{p.hotlineDisplay}</p>
-                </a>
-
-                <a
-                  href={`mailto:${p.email}`}
-                  className="min-h-[44px] rounded-xl bg-white border border-slate-200/90 hover:border-[#0F2144]/40 p-4 transition-colors block"
-                >
-                  <p className="text-xs font-bold uppercase tracking-wider text-slate-600">
-                    {p.emailLabel}
-                  </p>
-                  <p className="mt-1 text-sm sm:text-base font-bold text-[#0F2144] break-all">
-                    {p.email}
-                  </p>
-                </a>
-              </div>
-
-              <div className="pt-2 border-t border-slate-200/80 space-y-2">
-                <p className="text-xs font-bold uppercase tracking-wider text-slate-600">
-                  {p.officesTitle}
-                </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm text-slate-700">
-                  {p.offices.map((office) => (
-                    <div key={office.label}>
-                      <span className="font-bold text-[#0F2144]">{office.label}: </span>
-                      <span>{office.address}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
 
             {/* Bottom Cross-Navigation Bar */}
             <div className="flex flex-wrap items-center justify-between gap-3 pt-2 text-xs sm:text-sm">
