@@ -38,7 +38,7 @@ export default function Hero() {
         className="absolute inset-0 bg-gradient-to-t from-[#051329]/90 via-transparent to-[#051329]/45"
       />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-10 sm:pt-20 sm:pb-14 lg:pt-24 lg:pb-16">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 lg:py-24">
         <div className="max-w-3xl text-left">
           <p className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.2em] text-amber-300 mb-4 sm:mb-5 ykvn-accent-block">
             {hero.eyebrow}
@@ -69,23 +69,6 @@ export default function Hero() {
               {hero.secondaryCta}
             </a>
           </div>
-        </div>
-
-        {/* Institutional Trust Bar */}
-        <div className="mt-10 sm:mt-14 pt-6 border-t border-white/15 grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-5 text-left">
-          {hero.trustItems.map((item) => (
-            <div
-              key={item.label}
-              className="rounded-xl bg-white/[0.06] backdrop-blur-sm border border-white/15 px-4 py-3.5"
-            >
-              <span className="block text-[11px] font-semibold uppercase tracking-wider text-slate-300">
-                {item.label}
-              </span>
-              <span className="mt-1 block text-sm sm:text-[15px] font-bold text-white">
-                {item.value}
-              </span>
-            </div>
-          ))}
         </div>
       </div>
     </section>

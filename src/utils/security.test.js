@@ -555,7 +555,6 @@ test('P0 bilingual Hero, Legal Disclaimer, Privacy Policy, and Terms copy exist 
     const t = TRANSLATIONS[locale];
     assert.ok(t.hero?.headlineLine1 && t.hero?.headlineLine2 && t.hero?.subtitle);
     assert.ok(t.hero?.primaryCta && t.hero?.secondaryCta);
-    assert.equal(t.hero?.trustItems?.length, 3);
     assert.ok(t.footer?.privacyLink && t.footer?.termsLink && t.footer?.disclaimer);
     assert.ok(t.contactPage?.form?.disclaimerTitle && t.contactPage?.form?.disclaimerText);
     assert.ok(t.articleDisclaimer?.title && t.articleDisclaimer?.text);

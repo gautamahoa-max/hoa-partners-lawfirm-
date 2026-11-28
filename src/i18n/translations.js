@@ -7,11 +7,6 @@ export const TRANSLATIONS = {
       subtitle: 'Chuyên sâu Tranh tụng Dân sự tại Tòa án các cấp, giải quyết tranh chấp Đất đai & Bất động sản, Thừa kế, Hợp đồng và Hôn nhân gia đình — kết hợp nền tảng tài chính ngân hàng cùng biểu phí minh bạch.',
       primaryCta: 'Đặt lịch tư vấn',
       secondaryCta: 'Xem biểu phí 20 dịch vụ',
-      trustItems: [
-        { label: 'Địa bàn hoạt động', value: 'TP.HCM & Đắk Lắk' },
-        { label: 'Minh bạch thù lao', value: '20 hạng mục niêm yết' },
-        { label: 'Bảo mật thân chủ', value: 'Điều 25 Luật Luật sư & PDPL' },
-      ],
     },
     navbar: {
       locations: 'TP.HCM • Đắk Lắk',
@@ -478,11 +473,6 @@ export const TRANSLATIONS = {
       subtitle: 'Focused on civil court litigation, land and real estate disputes, inheritance, civil contracts, and family law — combining banking acumen with transparent upfront fee schedules.',
       primaryCta: 'Schedule Consultation',
       secondaryCta: 'View 20-Item Fee Schedule',
-      trustItems: [
-        { label: 'Offices', value: 'HCMC & Dak Lak' },
-        { label: 'Fee Transparency', value: '20 Listed Services' },
-        { label: 'Client Confidentiality', value: 'Art. 25 Law on Lawyers & PDPL' },
-      ],
     },
     navbar: {
       locations: 'HCMC • Dak Lak',
