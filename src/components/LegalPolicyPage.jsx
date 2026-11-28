@@ -8,188 +8,140 @@ import { TERMS_OF_USE_CONTENT } from '../i18n/termsOfUse';
 
 const PdfConsentModal = React.lazy(() => import('./PdfConsentModal'));
 
-function BreadcrumbNav({ backLabel, currentTitle, onBack }) {
-  return (
-    <nav aria-label="Breadcrumb" className="text-xs text-slate-600 mb-5 flex items-center gap-2">
-      <a
-        href="#"
-        onClick={(e) => {
-          e.preventDefault();
-          if (onBack) onBack();
-          else window.location.hash = '';
-        }}
-        className="hover:text-[#0F2144] transition-colors font-medium"
-      >
-        {backLabel}
-      </a>
-      <span aria-hidden="true">/</span>
-      <span className="text-[#0F2144] font-semibold">{currentTitle}</span>
-    </nav>
-  );
+function formatKirklandHeading(article) {
+  const cleaned = String(article.heading || '').replace(/^(?:Điều|Article)\s+\d+\.\s*/i, '');
+  const num = Number.parseInt(article.number, 10);
+  return Number.isNaN(num) ? cleaned : `${num} ${cleaned}`;
 }
 
-function ArticleCard({ article }) {
-  return (
-    <article
-      id={article.id}
-      className="scroll-mt-24 lg:scroll-mt-32 rounded-2xl bg-white border border-slate-200/80 p-6 sm:p-8 shadow-[0_2px_16px_rgba(15,33,68,0.03)] space-y-5"
-    >
-      <div className="flex items-start gap-3.5 border-b border-slate-100 pb-4">
-        <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-[#EEF3FA] border border-slate-200/90 text-xs font-bold text-[#0F2144] shrink-0 mt-0.5 tabular-nums">
-          {article.number}
-        </span>
-        <h2 className="text-base sm:text-lg lg:text-xl font-bold text-[#0F2144] tracking-tight leading-snug">
-          {article.heading}
-        </h2>
-      </div>
+function renderLabeledText(text) {
+  const str = String(text || '');
+  const colonIdx = str.indexOf(': ');
+  if (colonIdx > 0 && colonIdx < 110) {
+    const label = str.slice(0, colonIdx);
+    const rest = str.slice(colonIdx + 2);
+    return (
+      <>
+        <span className="underline underline-offset-4 decoration-[#333333]/60">{label}</span>:{' '}
+        {rest}
+      </>
+    );
+  }
+  return str;
+}
 
-      {article.intro && (
-        <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">{article.intro}</p>
-      )}
+const PROSE_PARAGRAPH_CLASS = 'text-base sm:text-lg font-normal text-[#333333] leading-[1.7] mb-5';
+const PROSE_LIST_CLASS =
+  'list-disc pl-8 sm:pl-10 space-y-3.5 my-5 text-base sm:text-lg font-normal text-[#333333] leading-[1.7]';
+const UNDERLINE_LEAD_CLASS = 'underline underline-offset-4 decoration-[#333333]/60';
+
+function KirklandArticle({ article, locale, isFirst }) {
+  const purposeHeaders =
+    locale === 'vi'
+      ? { left: 'Nhóm mục đích', right: 'Nội dung xử lý cụ thể' }
+      : { left: 'Purpose Group', right: 'Specific Processing Activities' };
+
+  return (
+    <section id={article.id} className={isFirst ? '' : 'pt-5'}>
+      <h2
+        className={`text-base sm:text-lg font-bold text-[#222222] leading-[1.67] mb-5 ${
+          isFirst ? 'mt-0' : 'mt-5'
+        }`}
+      >
+        {formatKirklandHeading(article)}
+      </h2>
+
+      {article.intro && <p className={PROSE_PARAGRAPH_CLASS}>{article.intro}</p>}
 
       {article.paragraphs?.map((para, idx) => (
-        <p key={idx} className="text-xs sm:text-sm text-slate-700 leading-relaxed">
+        <p key={idx} className={PROSE_PARAGRAPH_CLASS}>
           {para}
         </p>
       ))}
 
       {article.controllerFacts && (
-        <dl className="grid grid-cols-1 sm:grid-cols-2 gap-3 rounded-xl bg-[#FAF9F6] border border-slate-200/90 p-4 sm:p-5">
-          {article.controllerFacts.map((fact, idx) => (
-            <div
-              key={fact.label}
-              className={idx === article.controllerFacts.length - 1 ? 'sm:col-span-2' : ''}
-            >
-              <dt className="text-xs font-bold uppercase tracking-wider text-slate-600">
-                {fact.label}
-              </dt>
-              <dd className="mt-1 text-xs sm:text-sm font-medium text-[#0F2144] leading-relaxed">
-                {fact.value}
-              </dd>
-            </div>
+        <ul className={PROSE_LIST_CLASS}>
+          {article.controllerFacts.map((fact) => (
+            <li key={fact.label}>
+              <span className={UNDERLINE_LEAD_CLASS}>{fact.label}</span>: {fact.value}
+            </li>
           ))}
-        </dl>
+        </ul>
       )}
 
-      {article.twoColCards && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {article.twoColCards.map((card) => (
-            <div
-              key={card.title}
-              className="rounded-xl bg-[#FAF9F6] border border-slate-200/90 p-4 sm:p-5 space-y-3"
-            >
-              <span className="inline-block text-xs font-bold uppercase tracking-wider text-[#1E3A6D]">
-                {card.badge}
-              </span>
-              <h3 className="text-sm sm:text-base font-bold text-[#0F2144]">{card.title}</h3>
-              <ul className="list-disc pl-4 space-y-2 text-xs sm:text-sm text-slate-700 leading-relaxed">
-                {card.bullets.map((b, i) => (
-                  <li key={i}>{b}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
+      {article.twoColCards?.map((card) => (
+        <div key={card.title} className="mt-6">
+          <p className="text-base sm:text-lg font-normal text-[#333333] leading-[1.7] mb-3">
+            <span className={UNDERLINE_LEAD_CLASS}>{card.title}</span>:
+          </p>
+          <ul className={PROSE_LIST_CLASS}>
+            {card.bullets.map((bullet, idx) => (
+              <li key={idx}>{bullet}</li>
+            ))}
+          </ul>
         </div>
-      )}
+      ))}
 
       {article.purposeGroups && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {article.purposeGroups.map((group) => (
-            <div
-              key={group.title}
-              className="rounded-xl border border-slate-200 bg-white p-4 sm:p-5 space-y-3"
-            >
-              <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-[#0F2144] text-white text-xs font-bold tracking-wider">
-                {group.badge}
-              </div>
-              <h3 className="text-sm sm:text-base font-bold text-[#0F2144] leading-snug">
-                {group.title}
-              </h3>
-              <ul className="list-disc pl-4 space-y-2 text-xs sm:text-sm text-slate-700 leading-relaxed">
-                {group.bullets.map((b, i) => (
-                  <li key={i}>{b}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
+        <div className="overflow-x-auto my-7">
+          <table className="w-full min-w-[540px] border border-[#CCCCCC] border-collapse text-left">
+            <thead>
+              <tr className="bg-[#1A1A1A] text-white">
+                <th className="w-1/2 py-2.5 px-3.5 text-base sm:text-lg font-normal">
+                  {purposeHeaders.left}
+                </th>
+                <th className="w-1/2 py-2.5 px-3.5 text-base sm:text-lg font-normal">
+                  {purposeHeaders.right}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {article.purposeGroups.map((group) => (
+                <tr key={group.title} className="odd:bg-white even:bg-[#E6E6E6] border-t border-[#CCCCCC]">
+                  <td className="w-1/2 py-3 px-3.5 align-top text-base font-normal text-[#333333] leading-[1.65]">
+                    {group.title}
+                  </td>
+                  <td className="w-1/2 py-3 px-3.5 align-top text-base font-normal text-[#333333] leading-[1.65] space-y-1.5">
+                    {group.bullets.map((item, idx) => (
+                      <p key={idx}>
+                        ({String.fromCharCode(97 + idx)}) {item}
+                      </p>
+                    ))}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
 
       {article.recipientCards && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <ul className={PROSE_LIST_CLASS}>
           {article.recipientCards.map((rec) => (
-            <div
-              key={rec.number}
-              className="rounded-xl bg-[#FAF9F6] border border-slate-200/90 p-4 sm:p-5 space-y-2.5"
-            >
-              <div className="flex items-center gap-2">
-                <span className="w-6 h-6 rounded-full bg-[#0F2144] text-white text-xs font-bold inline-flex items-center justify-center shrink-0 tabular-nums">
-                  {rec.number}
-                </span>
-                <h3 className="text-sm font-bold text-[#0F2144] leading-snug">{rec.title}</h3>
-              </div>
-              <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">{rec.text}</p>
-            </div>
+            <li key={rec.number}>
+              <span className={UNDERLINE_LEAD_CLASS}>{rec.title}</span>: {rec.text}
+            </li>
           ))}
-        </div>
+        </ul>
       )}
 
       {article.securityControls && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+        <ul className={PROSE_LIST_CLASS}>
           {article.securityControls.map((ctrl) => (
-            <div
-              key={ctrl.title}
-              className="rounded-xl bg-[#FAF9F6] border border-slate-200/90 p-4 space-y-1.5"
-            >
-              <div className="flex items-center gap-2 text-[#0F2144]">
-                <svg
-                  className="w-4 h-4 text-[#1E3A6D] shrink-0"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"
-                  />
-                  <path strokeLinecap="round" strokeLinejoin="round" d="m9 12 2 2 4-4" />
-                </svg>
-                <h3 className="text-sm font-bold text-[#0F2144]">{ctrl.title}</h3>
-              </div>
-              <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">{ctrl.detail}</p>
-            </div>
+            <li key={ctrl.title}>
+              <span className={UNDERLINE_LEAD_CLASS}>{ctrl.title}</span>: {ctrl.detail}
+            </li>
           ))}
-        </div>
+        </ul>
       )}
 
       {article.safetyAdvisory && (
-        <div className="rounded-xl border border-amber-300/90 bg-amber-50/70 p-4 sm:p-5 space-y-3">
-          <div className="flex items-start gap-2.5">
-            <svg
-              className="w-5 h-5 text-amber-700 shrink-0 mt-0.5"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 9v4m0 4h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"
-              />
-            </svg>
-            <div className="space-y-1">
-              <h3 className="text-sm sm:text-base font-bold text-[#0F2144]">
-                {article.safetyAdvisory.title}
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-700">{article.safetyAdvisory.subtitle}</p>
-            </div>
-          </div>
-          <ul className="list-disc pl-5 space-y-2 text-xs sm:text-sm text-slate-800 leading-relaxed">
+        <div className="mt-6">
+          <p className="text-base sm:text-lg font-normal text-[#333333] leading-[1.7] mb-3">
+            <span className={UNDERLINE_LEAD_CLASS}>{article.safetyAdvisory.title}</span>:{' '}
+            {article.safetyAdvisory.subtitle}
+          </p>
+          <ul className={PROSE_LIST_CLASS}>
             {article.safetyAdvisory.items.map((item, idx) => (
               <li key={idx}>{item}</li>
             ))}
@@ -198,31 +150,33 @@ function ArticleCard({ article }) {
       )}
 
       {article.slaRows && (
-        <div className="overflow-x-auto rounded-xl border border-slate-200">
-          <table className="w-full text-left border-collapse">
-            <thead className="bg-[#FAF9F6] border-b border-slate-200">
-              <tr>
-                <th className="py-3 px-4 text-xs font-bold uppercase tracking-wider text-[#0F2144]">
+        <div className="overflow-x-auto my-7">
+          <table className="w-full min-w-[600px] border border-[#CCCCCC] border-collapse text-left">
+            <thead>
+              <tr className="bg-[#1A1A1A] text-white">
+                <th className="py-2.5 px-3.5 text-base sm:text-lg font-normal">
                   {article.slaTableHeaders.metric}
                 </th>
-                <th className="py-3 px-4 text-xs font-bold uppercase tracking-wider text-[#0F2144] whitespace-nowrap">
+                <th className="py-2.5 px-3.5 text-base sm:text-lg font-normal whitespace-nowrap">
                   {article.slaTableHeaders.timeline}
                 </th>
-                <th className="py-3 px-4 text-xs font-bold uppercase tracking-wider text-[#0F2144]">
+                <th className="py-2.5 px-3.5 text-base sm:text-lg font-normal">
                   {article.slaTableHeaders.detail}
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-200/80 text-xs sm:text-sm text-slate-700">
+            <tbody>
               {article.slaRows.map((row) => (
-                <tr key={row.metric} className="align-top">
-                  <td className="py-3.5 px-4 font-semibold text-[#0F2144]">{row.metric}</td>
-                  <td className="py-3.5 px-4 whitespace-nowrap">
-                    <span className="inline-block px-2.5 py-1 rounded-md bg-[#EEF3FA] text-[#0F2144] text-xs font-bold">
-                      {row.timeline}
-                    </span>
+                <tr key={row.metric} className="odd:bg-white even:bg-[#E6E6E6] border-t border-[#CCCCCC]">
+                  <td className="py-3 px-3.5 align-top text-base font-normal text-[#333333] leading-[1.65]">
+                    {row.metric}
                   </td>
-                  <td className="py-3.5 px-4 leading-relaxed">{row.detail}</td>
+                  <td className="py-3 px-3.5 align-top text-base font-normal text-[#333333] leading-[1.65] whitespace-nowrap">
+                    {row.timeline}
+                  </td>
+                  <td className="py-3 px-3.5 align-top text-base font-normal text-[#333333] leading-[1.65]">
+                    {row.detail}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -231,25 +185,19 @@ function ArticleCard({ article }) {
       )}
 
       {article.rightsList && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <ul className={PROSE_LIST_CLASS}>
           {article.rightsList.map((right) => (
-            <div
-              key={right.num}
-              className="flex items-start gap-3 rounded-xl bg-[#FAF9F6] border border-slate-200/80 p-3.5"
-            >
-              <span className="text-xs font-bold text-[#1E3A6D] bg-white border border-slate-200 rounded-md px-2 py-0.5 shrink-0 tabular-nums">
-                {right.num}
-              </span>
-              <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">{right.text}</p>
-            </div>
+            <li key={right.num}>{right.text}</li>
           ))}
-        </div>
+        </ul>
       )}
 
       {article.obligations && (
-        <div className="rounded-xl bg-[#FAF9F6] border border-slate-200/90 p-4 sm:p-5 space-y-2.5">
-          <h3 className="text-sm font-bold text-[#0F2144]">{article.obligationsTitle}</h3>
-          <ul className="list-disc pl-5 space-y-1.5 text-xs sm:text-sm text-slate-700 leading-relaxed">
+        <div className="mt-6">
+          <p className="text-base sm:text-lg font-normal text-[#333333] leading-[1.7] mb-3">
+            <span className={UNDERLINE_LEAD_CLASS}>{article.obligationsTitle}</span>:
+          </p>
+          <ul className={PROSE_LIST_CLASS}>
             {article.obligations.map((ob, idx) => (
               <li key={idx}>{ob}</li>
             ))}
@@ -258,230 +206,194 @@ function ArticleCard({ article }) {
       )}
 
       {article.bullets && (
-        <ul className="list-disc pl-5 space-y-2.5 text-xs sm:text-sm text-slate-700 leading-relaxed">
+        <ul className={PROSE_LIST_CLASS}>
           {article.bullets.map((bullet, idx) => (
-            <li key={idx}>{bullet}</li>
+            <li key={idx}>{renderLabeledText(bullet)}</li>
           ))}
         </ul>
       )}
 
       {article.callout && (
-        <div className="rounded-xl bg-[#EEF3FA]/75 border border-[#0F2144]/15 p-4 sm:p-5 space-y-1.5">
-          <h3 className="text-xs sm:text-sm font-bold text-[#0F2144]">{article.callout.title}</h3>
-          <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
-            {article.callout.text}
-          </p>
-        </div>
-      )}
-
-      {article.footnote && (
-        <p className="text-xs text-slate-600 leading-relaxed pt-1 border-t border-slate-100">
-          {article.footnote}
+        <p className={PROSE_PARAGRAPH_CLASS}>
+          <span className={UNDERLINE_LEAD_CLASS}>{article.callout.title}</span>:{' '}
+          {article.callout.text}
         </p>
       )}
-    </article>
+
+      {article.footnote && <p className={PROSE_PARAGRAPH_CLASS}>{renderLabeledText(article.footnote)}</p>}
+    </section>
   );
 }
 
-function PolicyDocumentView({ data, backLabel, crossLinkHref, onOpenConsent, onBack }) {
-  const [activeId, setActiveId] = useState(data.articles[0].id);
+export default function LegalPolicyPage({ mode = 'privacy' }) {
+  const { lang, t } = useLanguage();
+  const locale = lang === 'en' ? 'en' : 'vi';
+  const [showConsentModal, setShowConsentModal] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const isTerms = mode === 'terms';
+  const privacyDoc = PRIVACY_POLICY_CONTENT[locale];
+  const termsDoc = TERMS_OF_USE_CONTENT[locale];
+  const activeDoc = isTerms ? termsDoc : privacyDoc;
 
   useEffect(() => {
-    setActiveId(data.articles[0].id);
-  }, [data]);
+    setMobileMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [mode, locale]);
 
-  useEffect(() => {
-    if (typeof IntersectionObserver === 'undefined') return undefined;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries.find((entry) => entry.isIntersecting);
-        if (visible?.target?.id) {
-          setActiveId(visible.target.id);
-        }
-      },
-      { rootMargin: '-25% 0px -65% 0px', threshold: 0 },
-    );
+  const navItems = [
+    {
+      key: 'privacy',
+      label: privacyDoc.title,
+      href: '#/chinh-sach-bao-mat',
+      active: !isTerms,
+    },
+    {
+      key: 'terms',
+      label: termsDoc.title,
+      href: '#/dieu-khoan-su-dung',
+      active: isTerms,
+    },
+  ];
 
-    data.articles.forEach((article) => {
-      const el = document.getElementById(article.id);
-      if (el) observer.observe(el);
-    });
-
-    return () => observer.disconnect();
-  }, [data.articles]);
-
-  const scrollToSection = (sectionId) => {
-    setActiveId(sectionId);
-    const el = document.getElementById(sectionId);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
+  const menuHeading = locale === 'vi' ? 'Danh mục' : 'Menu';
+  const consentLabel = privacyDoc.viewConsentBtn;
+  const updatedLabel = locale === 'vi' ? 'Cập nhật: Tháng 11/2026' : 'Updated: November 2026';
 
   return (
-    <>
-      {/* Institutional Header Band */}
-      <section className="bg-[#FAF9F6] border-b border-slate-200/80 py-10 sm:py-14 text-left">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <BreadcrumbNav backLabel={backLabel} currentTitle={data.title} onBack={onBack} />
+    <div className="min-h-screen bg-white text-[#333333] flex flex-col font-sans selection:bg-amber-100 selection:text-amber-900 overflow-x-clip">
+      <Navbar />
 
-          <div className="max-w-4xl space-y-4">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-600 ykvn-accent-block">
-              {data.eyebrow}
-            </p>
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0F2144] tracking-tight leading-tight">
-              {data.title}
+      <main id="main-content" className="flex-grow">
+        {/* Band 1: Dark Architectural Title Banner */}
+        <section className="relative overflow-hidden bg-[#0F2144] text-white text-left">
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 1440 360"
+            preserveAspectRatio="none"
+            className="pointer-events-none absolute inset-0 w-full h-full opacity-10"
+          >
+            <polygon points="0,360 520,0 760,0 240,360" fill="#FFFFFF" />
+            <polygon points="620,360 1120,0 1320,0 820,360" fill="#94A3B8" />
+            <line x1="0" y1="220" x2="1440" y2="80" stroke="#FFFFFF" strokeWidth="1.5" />
+            <line x1="340" y1="0" x2="1080" y2="360" stroke="#CBD5E1" strokeWidth="1" />
+          </svg>
+          <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 py-16 sm:py-24 lg:py-28">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-normal tracking-tight text-white leading-tight">
+              {activeDoc.title}
             </h1>
+          </div>
+        </section>
 
-            {onOpenConsent && data.viewConsentBtn && (
-              <div className="pt-2">
+        {/* Band 2: Full-Width Light-Gray Menu Switcher Band */}
+        <section aria-label={menuHeading} className="bg-[#E6E6E6] text-left">
+          <div className="max-w-7xl mx-auto px-6 sm:px-10 py-10 sm:py-14">
+            <div className="md:flex md:items-center md:gap-12 lg:gap-16">
+              <div className="shrink-0">
+                <p className="text-lg sm:text-xl font-normal text-[#333333]">{menuHeading}</p>
+                <div aria-hidden="true" className="w-7 h-px bg-[#666666] mt-3" />
+              </div>
+
+              {/* Desktop Rectangular Switcher Buttons */}
+              <div className="hidden md:flex md:flex-wrap md:items-center md:gap-3.5 lg:gap-4">
+                {navItems.map((item) => (
+                  <a
+                    key={item.key}
+                    href={item.href}
+                    aria-current={item.active ? 'page' : undefined}
+                    className={`min-h-[46px] px-6 py-2.5 rounded-none text-sm font-medium transition-colors inline-flex items-center justify-center ${
+                      item.active
+                        ? 'bg-[#0F2144] text-white border border-[#0F2144]'
+                        : 'bg-white text-[#0F2144] border border-[#0F2144] hover:bg-[#0F2144]/5'
+                    }`}
+                  >
+                    {item.label}
+                  </a>
+                ))}
+
                 <button
                   type="button"
-                  onClick={onOpenConsent}
-                  className="min-h-[44px] px-5 py-2.5 rounded-full bg-[#0F2144] hover:bg-[#162A56] text-white text-xs sm:text-sm font-semibold transition-colors inline-flex items-center justify-center gap-2 cursor-pointer"
+                  onClick={() => setShowConsentModal(true)}
+                  className="min-h-[46px] px-6 py-2.5 rounded-none text-sm font-medium bg-white text-[#0F2144] border border-[#0F2144] hover:bg-[#0F2144] hover:text-white transition-colors inline-flex items-center justify-center cursor-pointer"
                 >
+                  {consentLabel}
+                </button>
+              </div>
+
+              {/* Mobile Sharp-Cornered Dropdown Switcher */}
+              <div className="md:hidden mt-5">
+                <button
+                  type="button"
+                  aria-expanded={mobileMenuOpen}
+                  onClick={() => setMobileMenuOpen((prev) => !prev)}
+                  className="w-full min-h-[46px] px-4 py-2.5 rounded-none bg-[#0F2144] text-white text-sm font-medium flex items-center justify-between gap-3 cursor-pointer"
+                >
+                  <span className="truncate">{activeDoc.title}</span>
                   <svg
-                    className="w-4 h-4 shrink-0"
+                    aria-hidden="true"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="2"
-                    aria-hidden="true"
+                    className={`w-4 h-4 shrink-0 transition-transform ${
+                      mobileMenuOpen ? 'rotate-180' : ''
+                    }`}
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
-                    />
-                    <polyline points="14 2 14 8 20 8" />
+                    <polyline points="6 9 12 15 18 9" />
                   </svg>
-                  <span>{data.viewConsentBtn}</span>
                 </button>
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
 
-      {/* Mobile Horizontal Quick-Jump Strip */}
-      <div className="lg:hidden bg-white border-b border-slate-200/80 py-3">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 flex items-center gap-2 overflow-x-auto">
-          {data.articles.map((article) => {
-            const isActive = activeId === article.id;
-            return (
-              <button
-                key={article.id}
-                type="button"
-                onClick={() => scrollToSection(article.id)}
-                className={`min-h-[44px] px-3.5 py-2 rounded-full text-xs font-semibold whitespace-nowrap shrink-0 transition-colors cursor-pointer ${
-                  isActive
-                    ? 'bg-[#0F2144] text-white'
-                    : 'bg-[#FAF9F6] border border-slate-200 text-[#0F2144] hover:border-slate-300'
-                }`}
-              >
-                {article.number}. {article.shortTitle}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Two-Column Body: Sticky Sidebar + Main Articles */}
-      <section className="py-10 sm:py-14 text-left">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
-          {/* Desktop Sticky Sidebar */}
-          <aside className="hidden lg:block lg:col-span-4 xl:col-span-3 lg:sticky lg:top-32 space-y-5">
-            <nav
-              aria-label={data.tocTitle}
-              className="rounded-2xl bg-white border border-slate-200/80 p-4 shadow-[0_2px_16px_rgba(15,33,68,0.03)] space-y-2"
-            >
-              <p className="px-2.5 pt-1 pb-2 text-xs font-bold uppercase tracking-wider text-slate-600 border-b border-slate-100">
-                {data.tocTitle}
-              </p>
-              <ul className="space-y-1">
-                {data.articles.map((article) => {
-                  const isActive = activeId === article.id;
-                  return (
-                    <li key={article.id}>
-                      <button
-                        type="button"
-                        onClick={() => scrollToSection(article.id)}
-                        className={`w-full min-h-[44px] px-2.5 py-2 rounded-xl text-left text-xs font-semibold transition-colors flex items-center gap-2.5 cursor-pointer ${
-                          isActive
-                            ? 'bg-[#EEF3FA] text-[#0F2144] border border-slate-200/90'
-                            : 'text-slate-700 hover:bg-[#FAF9F6] hover:text-[#0F2144]'
+                {mobileMenuOpen && (
+                  <div className="rounded-none border border-[#0F2144] border-t-0 bg-white divide-y divide-slate-200">
+                    {navItems.map((item) => (
+                      <a
+                        key={item.key}
+                        href={item.href}
+                        onClick={() => setMobileMenuOpen(false)}
+                        aria-current={item.active ? 'page' : undefined}
+                        className={`min-h-[44px] px-4 py-2.5 text-sm font-medium flex items-center ${
+                          item.active
+                            ? 'bg-[#EEF3FA] text-[#0F2144] font-semibold'
+                            : 'text-[#0F2144] hover:bg-slate-50'
                         }`}
                       >
-                        <span
-                          className={`text-xs font-bold tabular-nums shrink-0 ${
-                            isActive ? 'text-[#0F2144]' : 'text-slate-500'
-                          }`}
-                        >
-                          {article.number}
-                        </span>
-                        <span className="leading-snug">{article.shortTitle}</span>
-                      </button>
-                    </li>
-                  );
-                })}
-              </ul>
-            </nav>
-          </aside>
-
-          {/* Main Articles Column */}
-          <div className="lg:col-span-8 xl:col-span-9 space-y-6">
-            {data.articles.map((article) => (
-              <ArticleCard key={article.id} article={article} />
-            ))}
-
-            {/* Bottom Cross-Navigation Bar */}
-            <div className="flex flex-wrap items-center justify-between gap-3 pt-2 text-xs sm:text-sm">
-              <a
-                href={crossLinkHref}
-                className="font-semibold text-[#0F2144] underline underline-offset-4 hover:text-amber-800"
-              >
-                {data.crossLinkLabel || data.crossTermsLabel}
-              </a>
-              <a
-                href="#/lien-he"
-                className="min-h-[44px] px-5 py-2.5 rounded-full bg-[#0F2144] hover:bg-[#162A56] text-white text-xs sm:text-sm font-semibold inline-flex items-center transition-colors"
-              >
-                {data.contactPageCta}
-              </a>
+                        {item.label}
+                      </a>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setMobileMenuOpen(false);
+                        setShowConsentModal(true);
+                      }}
+                      className="w-full min-h-[44px] px-4 py-2.5 text-left text-sm font-medium text-[#0F2144] hover:bg-slate-50 cursor-pointer"
+                    >
+                      {consentLabel}
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-    </>
-  );
-}
+        </section>
 
-export default function LegalPolicyPage({ mode = 'privacy', onBack }) {
-  const { lang, t } = useLanguage();
-  const locale = lang === 'en' ? 'en' : 'vi';
-  const pages = t.legalPages;
-  const [showConsentModal, setShowConsentModal] = useState(false);
+        {/* Band 3: Pure White Flat Editorial Prose Canvas */}
+        <section className="bg-white py-12 sm:py-16 lg:py-20 text-left">
+          <div className="max-w-7xl mx-auto px-6 sm:px-10">
+            {activeDoc.articles.map((article, idx) => (
+              <KirklandArticle
+                key={article.id}
+                article={article}
+                locale={locale}
+                isFirst={idx === 0}
+              />
+            ))}
 
-  const isTerms = mode === 'terms';
-  const activeDoc = isTerms ? TERMS_OF_USE_CONTENT[locale] : PRIVACY_POLICY_CONTENT[locale];
-  const crossLinkHref = isTerms ? '#/chinh-sach-bao-mat' : '#/dieu-khoan-su-dung';
-
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [mode]);
-
-  return (
-    <div className="min-h-screen bg-[#F5F5F7] text-slate-900 flex flex-col font-sans selection:bg-amber-100 selection:text-amber-900 overflow-x-clip">
-      <Navbar />
-
-      <main id="main-content" className="flex-grow">
-        <PolicyDocumentView
-          data={activeDoc}
-          backLabel={pages.backHome}
-          crossLinkHref={crossLinkHref}
-          onOpenConsent={isTerms ? undefined : () => setShowConsentModal(true)}
-          onBack={onBack}
-        />
+            <p className="text-base sm:text-lg font-normal text-[#333333] leading-[1.7] mt-12">
+              {updatedLabel}
+            </p>
+          </div>
+        </section>
       </main>
 
       <Footer />
