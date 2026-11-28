@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 
 export default function LocationSection() {
   const { t, lang } = useLanguage();
   const location = t.location;
   const [activeId, setActiveId] = useState('hcm');
+  const tabRefs = useRef([]);
 
   const offices = location?.offices || [];
   const activeOffice = offices.find((o) => o.id === activeId) || offices[0];
@@ -14,6 +15,19 @@ export default function LocationSection() {
   const embedUrl = `https://www.google.com/maps/embed?origin=mfe&pb=!1m2!2m1!1s${encodedQuery}&hl=${lang === 'en' ? 'en' : 'vi'}&z=16`;
   const externalMapUrl =
     activeOffice.mapUrl || `https://www.google.com/maps/search/?api=1&query=${encodedQuery}`;
+
+  const handleTabKeyDown = (e, idx) => {
+    if (offices.length < 2) return;
+    let nextIdx = null;
+    if (e.key === 'ArrowRight') nextIdx = (idx + 1) % offices.length;
+    else if (e.key === 'ArrowLeft') nextIdx = (idx - 1 + offices.length) % offices.length;
+    else if (e.key === 'Home') nextIdx = 0;
+    else if (e.key === 'End') nextIdx = offices.length - 1;
+    if (nextIdx === null) return;
+    e.preventDefault();
+    setActiveId(offices[nextIdx].id);
+    tabRefs.current[nextIdx]?.focus();
+  };
 
   return (
     <section id="dia-diem" className="py-16 sm:py-20 bg-white scroll-mt-16 cv-auto">
@@ -32,19 +46,26 @@ export default function LocationSection() {
                   role="tablist"
                   aria-label={location.heading}
                 >
-                  {offices.map((office) => {
+                  {offices.map((office, idx) => {
                     const isSelected = office.id === activeOffice.id;
                     return (
                       <button
                         key={office.id}
+                        ref={(el) => {
+                          tabRefs.current[idx] = el;
+                        }}
+                        id={`office-tab-${office.id}`}
                         type="button"
                         role="tab"
                         aria-selected={isSelected}
+                        aria-controls={`office-panel-${office.id}`}
+                        tabIndex={isSelected ? 0 : -1}
                         onClick={() => setActiveId(office.id)}
-                        className={`relative pb-1 text-xs font-semibold uppercase tracking-[0.14em] transition-colors cursor-pointer ${
+                        onKeyDown={(e) => handleTabKeyDown(e, idx)}
+                        className={`relative pb-1 min-h-[36px] text-xs font-semibold uppercase tracking-[0.14em] transition-colors cursor-pointer ${
                           isSelected
                             ? 'text-white'
-                            : 'text-slate-400 hover:text-slate-200'
+                            : 'text-slate-300 hover:text-white'
                         }`}
                       >
                         {office.tabLabel}
@@ -57,31 +78,37 @@ export default function LocationSection() {
                 </div>
               )}
 
-              <h3 className="text-2xl sm:text-[26px] font-bold text-white tracking-tight mb-4">
-                {activeOffice.city}
-              </h3>
+              <div
+                id={`office-panel-${activeOffice.id}`}
+                role="tabpanel"
+                aria-labelledby={`office-tab-${activeOffice.id}`}
+              >
+                <h3 className="text-2xl sm:text-[26px] font-bold text-white tracking-tight mb-4">
+                  {activeOffice.city}
+                </h3>
 
-              {activeOffice.role && (
-                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400 mb-2">
-                  {activeOffice.role}
+                {activeOffice.role && (
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-300 mb-2">
+                    {activeOffice.role}
+                  </p>
+                )}
+
+                <div className="space-y-0.5 text-sm sm:text-[15px] text-slate-200/95 leading-[1.75]">
+                  {activeOffice.lines.map((line, idx) => (
+                    <p key={idx}>{line}</p>
+                  ))}
+                </div>
+
+                <p className="mt-6 text-sm sm:text-[15px] text-slate-200/95">
+                  <span>{location.voiceLabel} </span>
+                  <a
+                    href={`tel:${activeOffice.tel}`}
+                    className="hover:text-white transition-colors"
+                  >
+                    {activeOffice.phone}
+                  </a>
                 </p>
-              )}
-
-              <div className="space-y-0.5 text-sm sm:text-[15px] text-slate-200/95 leading-[1.75]">
-                {activeOffice.lines.map((line, idx) => (
-                  <p key={idx}>{line}</p>
-                ))}
               </div>
-
-              <p className="mt-6 text-sm sm:text-[15px] text-slate-200/95">
-                <span>{location.voiceLabel} </span>
-                <a
-                  href={`tel:${activeOffice.tel}`}
-                  className="hover:text-white transition-colors"
-                >
-                  {activeOffice.phone}
-                </a>
-              </p>
             </div>
 
             <div className="mt-8 pt-2">

@@ -44,7 +44,7 @@ function PracticeAreaCard({ item, isLeft }) {
           {item.title}
         </h3>
 
-        <span className="col-start-3 row-start-1 md:col-start-2 md:row-start-1 justify-self-end pt-1 md:pt-0 font-mono tabular-nums text-xs font-bold text-slate-400">
+        <span className="col-start-3 row-start-1 md:col-start-2 md:row-start-1 justify-self-end pt-1 md:pt-0 font-mono tabular-nums text-xs font-bold text-slate-600">
           {item.num}
         </span>
       </div>
@@ -66,7 +66,7 @@ export default function Services() {
       <div className="bg-[#F5F5F7] py-12 sm:py-20 md:py-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center mb-8 sm:mb-14">
-            <p className="text-xs font-bold text-slate-500 mb-3 uppercase tracking-[0.2em]">
+            <p className="text-xs font-bold text-slate-600 mb-3 uppercase tracking-[0.2em]">
               {servicesText.eyebrow}
             </p>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0F2144] tracking-tight leading-[1.3]">

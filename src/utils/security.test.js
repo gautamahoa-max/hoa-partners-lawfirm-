@@ -39,6 +39,7 @@ import {
   FEE_HOMEPAGE_GROUPS,
   FEE_SCHEDULE_ITEMS,
 } from '../i18n/feeSchedule.js';
+import { TRANSLATIONS } from '../i18n/translations.js';
 
 test('sanitizeInput strips HTML, control characters, dangerous protocols, and enforces maxLength', () => {
   assert.equal(sanitizeInput('<script>alert(1)</script>Hello'), 'alert(1)Hello');
@@ -529,4 +530,36 @@ test('Consent modal zoom clamping and pinch focal-point scroll calculation', () 
     focalY: 200,
   });
   assert.deepEqual(zoomedOutFloor, { zoom: 0.75, scrollLeft: 0, scrollTop: 0 });
+});
+
+test('P0 security hardening: admin email allowlist removed from firebase.js and firestore.rules tightened', async () => {
+  const fs = await import('node:fs');
+  const firebaseModule = await import('../services/firebase.js');
+  const firebaseSrc = fs.readFileSync(new URL('../services/firebase.js', import.meta.url), 'utf8');
+  assert.equal('AUTHORIZED_EMAILS' in firebaseModule, false);
+  assert.equal('isAuthorizedAdmin' in firebaseModule, false);
+  assert.equal(firebaseSrc.includes('vovanhoa.bank@gmail.com'), false);
+  assert.equal(firebaseSrc.includes('AUTHORIZED_EMAILS'), false);
+
+  const rules = fs.readFileSync(new URL('../../firestore.rules', import.meta.url), 'utf8');
+  assert.ok(rules.includes('request.auth.token.admin == true'));
+  assert.ok(rules.includes('request.auth.token.email_verified == true'));
+  assert.equal(rules.includes('email_verified == true : true'), false);
+  assert.ok(rules.includes('data.createdAt == request.time'));
+  assert.ok(rules.includes("'consentVersion' in data"));
+  assert.ok(rules.includes("'consentAcceptedAt' in data"));
+});
+
+test('P0 bilingual Hero, Legal Disclaimer, Privacy Policy, and Terms copy exist for VI & EN', () => {
+  for (const locale of ['vi', 'en']) {
+    const t = TRANSLATIONS[locale];
+    assert.ok(t.hero?.headlineLine1 && t.hero?.headlineLine2 && t.hero?.subtitle);
+    assert.ok(t.hero?.primaryCta && t.hero?.secondaryCta);
+    assert.equal(t.hero?.trustItems?.length, 3);
+    assert.ok(t.footer?.privacyLink && t.footer?.termsLink && t.footer?.disclaimer);
+    assert.ok(t.contactPage?.form?.disclaimerTitle && t.contactPage?.form?.disclaimerText);
+    assert.ok(t.articleDisclaimer?.title && t.articleDisclaimer?.text);
+    assert.ok(t.legalPages?.privacy?.sections?.length >= 4);
+    assert.ok(t.legalPages?.terms?.sections?.length >= 4);
+  }
 });

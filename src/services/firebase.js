@@ -1,4 +1,5 @@
 import { initializeApp } from 'firebase/app';
+import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
 import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
@@ -14,6 +15,19 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+
+// Opt-in Firebase App Check when reCAPTCHA v3 site key is provisioned at build time
+const appCheckSiteKey =
+  typeof import.meta !== 'undefined' && import.meta.env
+    ? String(import.meta.env.VITE_FIREBASE_APPCHECK_SITE_KEY || '').trim()
+    : '';
+if (typeof window !== 'undefined' && appCheckSiteKey) {
+  initializeAppCheck(app, {
+    provider: new ReCaptchaV3Provider(appCheckSiteKey),
+    isTokenAutoRefreshEnabled: true,
+  });
+}
+
 export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
 googleProvider.setCustomParameters({
@@ -21,14 +35,3 @@ googleProvider.setCustomParameters({
 });
 
 export const db = getFirestore(app);
-
-// Danh sách email luật sư / quản trị viên được phép truy cập trang quản trị
-export const AUTHORIZED_EMAILS = [
-  'gautamahoa@gmail.com',
-  'vovanhoa.bank@gmail.com',
-];
-
-export function isAuthorizedAdmin(user) {
-  if (!user || !user.email) return false;
-  return AUTHORIZED_EMAILS.includes(user.email.toLowerCase().trim());
-}

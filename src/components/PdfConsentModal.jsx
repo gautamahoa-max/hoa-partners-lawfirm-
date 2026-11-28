@@ -8,7 +8,6 @@ import {
   computePinchZoomScroll,
   renderConsentPdfPage,
 } from '../utils/consentPdf';
-import { fetchNextConsentNumber } from '../services/consultations';
 import { formatConsentDateLabels } from '../utils/formatters';
 
 const EMPTY_OVERLAYS = [];
@@ -97,11 +96,14 @@ export default function PdfConsentModal({
   onAgree,
 }) {
   const scrollRef = useRef(null);
+  const dialogRef = useRef(null);
+  const closeBtnRef = useRef(null);
+  const previouslyFocusedRef = useRef(null);
   const pageRefs = useRef({});
   const hasAutoJumpedRef = useRef(false);
   const dateLabels = useMemo(() => formatConsentDateLabels(consentAcceptedAt), [consentAcceptedAt]);
   const archiveEntry = useMemo(() => getConsentArchiveEntry(), []);
-  const [previewConsentNumber, setPreviewConsentNumber] = useState(consentNumber);
+  const previewConsentNumber = consentNumber || '';
 
   const [pdfDoc, setPdfDoc] = useState(null);
   const [numPages, setNumPages] = useState(0);
@@ -218,22 +220,6 @@ export default function PdfConsentModal({
   }, []);
 
   useEffect(() => {
-    if (consentNumber) {
-      setPreviewConsentNumber(consentNumber);
-      return undefined;
-    }
-    let active = true;
-    fetchNextConsentNumber(consentAcceptedAt).then((res) => {
-      if (active && res?.consentNumber) {
-        setPreviewConsentNumber(res.consentNumber);
-      }
-    });
-    return () => {
-      active = false;
-    };
-  }, [consentNumber, consentAcceptedAt]);
-
-  useEffect(() => {
     const updateWidth = () => {
       if (!scrollRef.current) return;
       const available = scrollRef.current.clientWidth - 32;
@@ -247,9 +233,33 @@ export default function PdfConsentModal({
   useEffect(() => {
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
+    previouslyFocusedRef.current = document.activeElement;
+    closeBtnRef.current?.focus();
+
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
         onClose();
+        return;
+      }
+      if (e.key === 'Tab' && dialogRef.current) {
+        const focusable = Array.from(
+          dialogRef.current.querySelectorAll(
+            'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+          )
+        ).filter((el) => el.offsetParent !== null);
+        if (focusable.length === 0) {
+          e.preventDefault();
+          return;
+        }
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && (!dialogRef.current.contains(document.activeElement) || document.activeElement === first)) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && (!dialogRef.current.contains(document.activeElement) || document.activeElement === last)) {
+          e.preventDefault();
+          first.focus();
+        }
         return;
       }
       if ((e.ctrlKey || e.metaKey) && ['s', 'p', 'c', 'u'].includes(e.key.toLowerCase())) {
@@ -261,6 +271,9 @@ export default function PdfConsentModal({
     return () => {
       document.body.style.overflow = prevOverflow;
       window.removeEventListener('keydown', handleKeyDown, true);
+      if (previouslyFocusedRef.current && typeof previouslyFocusedRef.current.focus === 'function') {
+        previouslyFocusedRef.current.focus();
+      }
     };
   }, [onClose]);
 
@@ -337,6 +350,7 @@ export default function PdfConsentModal({
       onDragStart={(e) => e.preventDefault()}
     >
       <div
+        ref={dialogRef}
         className="bg-slate-100 border border-slate-300 rounded-2xl max-w-4xl w-full h-full max-h-full sm:h-[90vh] flex flex-col shadow-2xl overflow-hidden text-left"
         onClick={(e) => e.stopPropagation()}
       >
@@ -349,7 +363,7 @@ export default function PdfConsentModal({
             >
               {formT.privacyModalTitle}
             </h2>
-            <p className="text-[11px] sm:text-xs text-slate-500 mt-0.5 truncate">
+            <p className="text-[11px] sm:text-xs text-slate-600 mt-0.5 truncate">
               {formT.privacyModalSubtitle}
             </p>
           </div>
@@ -379,7 +393,7 @@ export default function PdfConsentModal({
                 type="button"
                 onClick={() => setZoom((z) => clampConsentZoom(z - 0.15))}
                 disabled={zoom <= CONSENT_ZOOM_MIN}
-                aria-label="Thu nhỏ"
+                aria-label={lang === 'en' ? 'Zoom out' : 'Thu nhỏ'}
                 className="min-h-[36px] px-2 sm:px-2.5 py-1 hover:bg-slate-50 disabled:opacity-40 cursor-pointer"
               >
                 −
@@ -396,7 +410,7 @@ export default function PdfConsentModal({
                 type="button"
                 onClick={() => setZoom((z) => clampConsentZoom(z + 0.15))}
                 disabled={zoom >= CONSENT_ZOOM_MAX}
-                aria-label="Phóng to"
+                aria-label={lang === 'en' ? 'Zoom in' : 'Phóng to'}
                 className="min-h-[36px] px-2 sm:px-2.5 py-1 hover:bg-slate-50 disabled:opacity-40 cursor-pointer"
               >
                 +
@@ -404,6 +418,7 @@ export default function PdfConsentModal({
             </div>
 
             <button
+              ref={closeBtnRef}
               type="button"
               onClick={onClose}
               aria-label={formT.privacyModalClose}
@@ -471,7 +486,7 @@ export default function PdfConsentModal({
                       watermarkLabel={formT.privacyWatermark}
                       overlays={pageOverlays}
                     />
-                    <p className="text-center text-[11px] text-slate-500 font-medium">
+                    <p className="text-center text-[11px] text-slate-600 font-medium">
                       {lang === 'en' ? `Page ${pageNumber} / ${numPages}` : `Trang ${pageNumber} / ${numPages}`}
                     </p>
                   </div>
@@ -483,7 +498,7 @@ export default function PdfConsentModal({
 
         {/* Sticky Footer */}
         <div className="px-3.5 sm:px-6 py-2.5 sm:py-3.5 border-t border-slate-200 bg-white flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5 shrink-0">
-          <span className="hidden sm:inline text-[11px] text-slate-500 text-left">
+          <span className="hidden sm:inline text-[11px] text-slate-600 text-left">
             {formT.privacyFooterHint}
           </span>
           <div className="flex items-center gap-2 w-full sm:w-auto">
@@ -494,13 +509,15 @@ export default function PdfConsentModal({
             >
               {lang === 'en' ? 'Close' : 'Đóng'}
             </button>
-            <button
-              type="button"
-              onClick={onAgree}
-              className="flex-1 sm:flex-initial min-h-[44px] px-4 sm:px-5 py-2 rounded-lg bg-[#0F2144] text-white text-xs sm:text-sm font-semibold hover:bg-[#162A56] transition-colors cursor-pointer"
-            >
-              {formT.privacyModalAgreeBtn}
-            </button>
+            {typeof onAgree === 'function' && (
+              <button
+                type="button"
+                onClick={onAgree}
+                className="flex-1 sm:flex-initial min-h-[44px] px-4 sm:px-5 py-2 rounded-lg bg-[#0F2144] text-white text-xs sm:text-sm font-semibold hover:bg-[#162A56] transition-colors cursor-pointer"
+              >
+                {formT.privacyModalAgreeBtn}
+              </button>
+            )}
           </div>
         </div>
       </div>

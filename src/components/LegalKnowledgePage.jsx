@@ -132,20 +132,20 @@ export default function LegalKnowledgePage({ articleId, onBack }) {
       <div className="min-h-screen bg-[#FFFFFF] text-slate-900 flex flex-col font-sans selection:bg-slate-200 selection:text-slate-900">
         <Navbar />
 
-        <main className="flex-grow pt-6 sm:pt-8 pb-20">
+        <main id="main-content" className="flex-grow pt-6 sm:pt-8 pb-20">
           <div className="max-w-[1140px] mx-auto px-4 sm:px-6 lg:px-8">
             
             {/* Top Utility Bar: Back link on left, Print & Share icons on right */}
             <div className="flex items-center justify-between mb-4">
               <button
                 onClick={backToList}
-                className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-[#1E345B] py-1 px-2 -ml-2 rounded hover:bg-slate-100 transition-colors uppercase tracking-wider"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-[#1E345B] py-1 px-2 -ml-2 rounded hover:bg-slate-100 transition-colors uppercase tracking-wider"
               >
                 {knowledge.backToListBtn}
               </button>
 
               {/* Print & Share Icons (Exact YKVN Top-Right Action Bar) */}
-              <div className="flex items-center gap-3 text-slate-400 relative">
+              <div className="flex items-center gap-3 text-slate-600 relative">
                 <button
                   onClick={() => window.print()}
                   title={knowledge.printLabel}
@@ -216,7 +216,7 @@ export default function LegalKnowledgePage({ articleId, onBack }) {
             </h1>
 
             {/* Publication Date */}
-            <p className="text-[13px] sm:text-[14px] text-[#777777] mb-8">
+            <p className="text-[13px] sm:text-[14px] text-slate-600 mb-8">
               {activeArticle.date}
             </p>
 
@@ -310,17 +310,35 @@ export default function LegalKnowledgePage({ articleId, onBack }) {
                   <span className="block text-[14px] font-bold text-[#222222] group-hover:text-[#1E345B] transition-colors">
                     {knowledge.lawyerName}
                   </span>
-                  <span className="block text-[13px] text-[#777777] mt-0.5">
+                  <span className="block text-[13px] text-slate-600 mt-0.5">
                     {knowledge.lawyerRole}
                   </span>
-                  <span className="block text-[13px] text-[#777777]">
+                  <span className="block text-[13px] text-slate-600">
                     {knowledge.lawyerLocation}
                   </span>
                 </a>
               </div>
             </div>
 
-
+            {t.articleDisclaimer && (
+              <aside
+                aria-label={t.articleDisclaimer.title}
+                className="mt-10 rounded-xl bg-[#FAF9F6] border border-slate-200/90 p-5 sm:p-6 text-left space-y-2"
+              >
+                <h2 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[#0F2144]">
+                  {t.articleDisclaimer.title}
+                </h2>
+                <p className="text-xs sm:text-[13.5px] text-slate-700 leading-relaxed">
+                  {t.articleDisclaimer.text}
+                </p>
+                <a
+                  href="#/dieu-khoan-su-dung"
+                  className="inline-block text-xs font-semibold text-[#0F2144] underline underline-offset-4 hover:text-amber-800"
+                >
+                  {t.articleDisclaimer.linkText}
+                </a>
+              </aside>
+            )}
 
           </div>
         </main>
@@ -356,7 +374,7 @@ export default function LegalKnowledgePage({ articleId, onBack }) {
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent pointer-events-none" />
       </div>
 
-      <main className="flex-grow pt-8 sm:pt-10 pb-20">
+      <main id="main-content" className="flex-grow pt-8 sm:pt-10 pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           {/* Tiêu đề trang Cập Nhật Pháp Luật */}
@@ -409,7 +427,7 @@ export default function LegalKnowledgePage({ articleId, onBack }) {
                         </h2>
 
                         {/* Ngày đăng: in nghiêng, font serif/italic nhẹ */}
-                        <time className="text-xs italic text-slate-500 font-serif block mb-3">
+                        <time className="text-xs italic text-slate-600 font-serif block mb-3">
                           {article.date}
                         </time>
 
@@ -447,7 +465,7 @@ export default function LegalKnowledgePage({ articleId, onBack }) {
                     value={searchKeyword}
                     onChange={(e) => setSearchKeyword(e.target.value)}
                     placeholder={knowledge.filterKeywordPlaceholder}
-                    className="w-full bg-white border border-slate-300 rounded px-3 py-2 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#0F2144] focus:ring-1 focus:ring-[#0F2144] pr-9 transition-colors"
+                    className="w-full bg-white border border-slate-300 rounded px-3 py-2 text-xs sm:text-sm text-slate-800 placeholder-slate-600 focus:outline-none focus:border-[#0F2144] focus:ring-1 focus:ring-[#0F2144] pr-9 transition-colors"
                   />
                   <button
                     type="button"
@@ -557,7 +575,7 @@ export default function LegalKnowledgePage({ articleId, onBack }) {
                   <button
                     onClick={handleReset}
                     type="button"
-                    className="text-xs text-slate-500 hover:text-[#0F2144] hover:underline font-medium transition-colors"
+                    className="text-xs text-slate-600 hover:text-[#0F2144] hover:underline font-medium transition-colors"
                   >
                     {knowledge.resetBtn}
                   </button>

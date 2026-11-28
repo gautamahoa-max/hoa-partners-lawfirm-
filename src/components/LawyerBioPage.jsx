@@ -19,11 +19,11 @@ export default function LawyerBioPage({ onBack }) {
       <Navbar />
 
       {/* Main Container */}
-      <main className="flex-grow py-8 sm:py-12 lg:py-16">
+      <main id="main-content" className="flex-grow py-8 sm:py-12 lg:py-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           
           {/* Breadcrumb tối giản */}
-          <nav className="text-xs text-slate-500 mb-6 flex items-center gap-2">
+          <nav aria-label="Breadcrumb" className="text-xs text-slate-600 mb-6 flex items-center gap-2">
             <a
               href="#"
               onClick={(e) => {
@@ -42,7 +42,10 @@ export default function LawyerBioPage({ onBack }) {
           </nav>
 
           {/* 2. Top Executive Split Card chuẩn mẫu YKVN */}
-          <section aria-label="Hồ sơ Luật sư Điều hành" className="border border-slate-200/90 shadow-sm bg-white overflow-hidden">
+          <section
+            aria-label={lang === 'en' ? 'Managing Partner Profile' : 'Hồ sơ Luật sư Điều hành'}
+            className="border border-slate-200/90 shadow-sm bg-white overflow-hidden"
+          >
             <div className="grid grid-cols-1 lg:grid-cols-12">
               
               {/* Nửa trái (Nền trắng ~68% width): Ảnh chân dung + Tên + Thông tin chức danh & Liên hệ */}
@@ -88,7 +91,7 @@ export default function LawyerBioPage({ onBack }) {
                       {/* Cột 2: Điện thoại & Email & Nút vCard, Zalo/LinkedIn */}
                       <div className="space-y-1">
                         <div className="flex items-center gap-1.5">
-                          <span className="text-slate-500 font-medium">{lang === 'vi' ? 'ĐT.' : 'Tel.'}</span>
+                          <span className="text-slate-600 font-medium">{lang === 'vi' ? 'ĐT.' : 'Tel.'}</span>
                           <a
                             href={`tel:${bio.phone}`}
                             className="text-[#0F2144] font-medium hover:underline underline-offset-2"
@@ -111,8 +114,8 @@ export default function LawyerBioPage({ onBack }) {
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex items-center justify-center w-5 h-5 rounded bg-[#0F2144] hover:bg-[#18356d] text-white transition-colors shrink-0 ml-1 cursor-pointer"
-                            title="Liên hệ Zalo: 098.888.6447"
-                            aria-label="Liên hệ Zalo"
+                            title={lang === 'en' ? 'Contact via Zalo: +84 98.888.6447' : 'Liên hệ Zalo: 098.888.6447'}
+                            aria-label={lang === 'en' ? 'Contact via Zalo' : 'Liên hệ Zalo'}
                           >
                             <VCardIcon className="w-3.5 h-3.5 text-white" />
                           </a>
@@ -149,7 +152,10 @@ export default function LawyerBioPage({ onBack }) {
           </section>
 
           {/* 3. Lower Section: Nội dung tiểu sử & Học vấn, Đoàn luật sư */}
-          <section aria-label="Tiểu sử và Quá trình công tác" className="mt-12 sm:mt-16 text-left">
+          <section
+            aria-label={lang === 'en' ? 'Biography & Credentials' : 'Tiểu sử và Quá trình công tác'}
+            className="mt-12 sm:mt-16 text-left"
+          >
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
               
               {/* Cột trái (~68% width): 4 Đoạn văn bản tiểu sử trang trọng chuẩn YKVN */}

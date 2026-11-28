@@ -8,20 +8,20 @@ rules_version = '2';
 // Document ID: auto-generated
 // Fields:
 //   - fullName: string (required on create, 1..150 chars) - client full name
-//   - phone: string (required on create, 5..25 chars) - client phone number
+//   - phone: string (required on create, 5..25 chars, matches '^[0-9+() .-]{5,25}$') - client phone number
 //   - notes: string (required on create, 1..3000 chars) - consultation details
-//   - createdAt: timestamp | string (required on create, immutable, 1..50 chars if string)
+//   - createdAt: timestamp (required on create == request.time, immutable; legacy string 1..50 chars allowed on update)
 //   - status: string (optional; must be 'new' on create; one of
 //     ['new', 'contacted', 'in_progress', 'completed'] on update)
-//   - source: string (optional, <= 100 chars) - submission source identifier
+//   - source: string (optional, <= 100 chars; offline sources ['zalo', 'hotline', 'office'] require admin on create) - submission source identifier
 //   - email: string (optional, <= 150 chars) - client email address
 //   - topic: string (optional, <= 100 chars) - consultation topic
 //   - service: string (optional, <= 100 chars) - requested legal service
-//   - lang: string (optional, <= 10 chars) - UI language code (e.g. 'vi', 'en')
-//   - consentVersion: string (optional on create, immutable once set, 1..50 chars) - accepted consent document version (e.g. 'HP-PDPL-02/2026')
-//   - consentAcceptedAt: timestamp | string (optional on create, immutable once set, 1..50 chars if string) - timestamp when visitor checked/confirmed consent
-//   - consentSeq: int (optional on create, paired with consentNumber, immutable once set, 1..1000000) - sequential consent number for the year
-//   - consentNumber: string (optional on create, paired with consentSeq, immutable once set, 1..50 chars, matches '^[0-9]{2,6}/20[2-9][0-9]/TCT-HCS$') - formatted consent reference number (e.g. '01/2026/TCT-HCS')
+//   - lang: string (optional, 'vi' | 'en' on create, <= 10 chars on update) - UI language code
+//   - consentVersion: string (required for non-admin create, optional for admin manual create, immutable once set, 1..50 chars) - accepted consent document version (e.g. 'HP-PDPL-03/2026')
+//   - consentAcceptedAt: timestamp | string (required for non-admin create, optional for admin manual create, immutable once set, == request.time or ISO 8601 string 20..50 chars) - timestamp when visitor checked/confirmed consent
+//   - consentSeq: int (required for non-admin create, paired with consentNumber, immutable once set, 1..1000000) - sequential consent number for the year
+//   - consentNumber: string (required for non-admin create, paired with consentSeq, immutable once set, 1..50 chars, matches '^[0-9]{2,6}/20[2-9][0-9]/TCT-HCS$') - formatted consent reference number (e.g. '01/2026/TCT-HCS')
 //   - lawyerNotes: string (optional, admin update only, <= 5000 chars)
 //   - updatedAt: timestamp | string (optional, admin update only, <= 50 chars if string)
 //   - updatedBy: string (optional, admin update only, <= 150 chars)
@@ -47,15 +47,21 @@ service cloud.firestore {
     }
 
     // Verify if the authenticated user is an authorized attorney admin
-    // Enforces verified email address to prevent privilege escalation via unverified accounts
+    // Accepts Firebase Auth custom claims ('admin == true') or verified allowlisted email
     function isAdmin() {
-      return isAuthenticated() &&
-        'email' in request.auth.token &&
+      return isAuthenticated() && (
+        ('admin' in request.auth.token && request.auth.token.admin == true) ||
         (
-          request.auth.token.email in ['gautamahoa@gmail.com', 'vovanhoa.bank@gmail.com'] ||
-          request.auth.token.email.lower() in ['gautamahoa@gmail.com', 'vovanhoa.bank@gmail.com']
-        ) &&
-        ('email_verified' in request.auth.token ? request.auth.token.email_verified == true : true);
+          'email' in request.auth.token &&
+          'email_verified' in request.auth.token &&
+          request.auth.token.email_verified == true &&
+          request.auth.token.email is string &&
+          (
+            request.auth.token.email in ['gautamahoa@gmail.com', 'vovanhoa.bank@gmail.com'] ||
+            request.auth.token.email.lower() in ['gautamahoa@gmail.com', 'vovanhoa.bank@gmail.com']
+          )
+        )
+      );
     }
 
     // =========================================================================
@@ -87,7 +93,8 @@ service cloud.firestore {
         );
     }
 
-    // Validates consultation inquiry documents created by unauthenticated visitors
+    // Validates consultation inquiry documents created by public visitors (PDPL consent required)
+    // or authorized admins (offline manual leads allowed without consent fields, or full consent)
     function isValidConsultationCreate(data, consultationId) {
       return
         // 1. Mandatory schema bounds & required fields
@@ -109,7 +116,7 @@ service cloud.firestore {
           'consentNumber'
         ]) &&
 
-        // 2. Strict type safety and character limits
+        // 2. Strict type safety, format, and character limits
         data.fullName is string &&
         data.fullName.size() >= 1 &&
         data.fullName.size() <= 150 &&
@@ -117,32 +124,66 @@ service cloud.firestore {
         data.phone is string &&
         data.phone.size() >= 5 &&
         data.phone.size() <= 25 &&
+        data.phone.matches('^[0-9+() .-]{5,25}$') &&
 
         data.notes is string &&
         data.notes.size() >= 1 &&
         data.notes.size() <= 3000 &&
 
-        // 3. createdAt must be a Firestore Timestamp (e.g., serverTimestamp()) or ISO string
-        (
-          data.createdAt is timestamp ||
-          (data.createdAt is string && data.createdAt.size() >= 1 && data.createdAt.size() <= 50)
-        ) &&
+        // 3. createdAt must be serverTimestamp() (equals request.time)
+        data.createdAt is timestamp &&
+        data.createdAt == request.time &&
 
-        // 4. Optional fields validation (visitors can only create with 'new' status if provided)
+        // 4. Optional fields validation (creates can only use 'new' status if provided)
         (!('status' in data) || (data.status is string && data.status == 'new')) &&
         (!('source' in data) || (data.source is string && data.source.size() <= 100)) &&
         (!('email' in data) || (data.email is string && data.email.size() <= 150)) &&
         (!('topic' in data) || (data.topic is string && data.topic.size() <= 100)) &&
         (!('service' in data) || (data['service'] is string && data['service'].size() <= 100)) &&
-        (!('lang' in data) || (data.lang is string && data.lang.size() <= 10)) &&
+        (!('lang' in data) || (data.lang is string && data.lang in ['vi', 'en'])) &&
         (!('consentVersion' in data) || (data.consentVersion is string && data.consentVersion.size() >= 1 && data.consentVersion.size() <= 50)) &&
         (
           !('consentAcceptedAt' in data) ||
-          data.consentAcceptedAt is timestamp ||
-          (data.consentAcceptedAt is string && data.consentAcceptedAt.size() >= 1 && data.consentAcceptedAt.size() <= 50)
+          (data.consentAcceptedAt is timestamp && data.consentAcceptedAt == request.time) ||
+          (
+            data.consentAcceptedAt is string &&
+            data.consentAcceptedAt.size() >= 20 &&
+            data.consentAcceptedAt.size() <= 50 &&
+            data.consentAcceptedAt.matches('^20[2-9][0-9]-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9](\\.[0-9]+)?(Z|[+-][0-2][0-9]:[0-5][0-9])$')
+          )
         ) &&
 
-        // 5. Optional consent numbering fields must appear together and bind atomically to counters/consent_YYYY
+        // 5. Public visitors must not spoof offline manual sources and must include complete PDPL consent proof;
+        // admins may create offline manual leads without consent fields or records with full consent proof
+        (
+          (
+            !isAdmin() &&
+            (!('source' in data) || !(data.source in ['zalo', 'hotline', 'office'])) &&
+            'consentVersion' in data &&
+            'consentAcceptedAt' in data &&
+            'consentSeq' in data &&
+            'consentNumber' in data
+          ) ||
+          (
+            isAdmin() &&
+            (
+              (
+                !('consentVersion' in data) &&
+                !('consentAcceptedAt' in data) &&
+                !('consentSeq' in data) &&
+                !('consentNumber' in data)
+              ) ||
+              (
+                'consentVersion' in data &&
+                'consentAcceptedAt' in data &&
+                'consentSeq' in data &&
+                'consentNumber' in data
+              )
+            )
+          )
+        ) &&
+
+        // 6. Consent numbering fields must appear together and bind atomically to counters/consent_YYYY
         (('consentSeq' in data) == ('consentNumber' in data)) &&
         (
           !('consentSeq' in data) ||
@@ -345,6 +386,7 @@ service cloud.firestore {
     match /counters/{counterId} {
       // Single-document read allowed for matching consent_YYYY counters so visitors
       // can preview the next reference number and execute atomic counter transactions
+      // shortcut: client-side atomic consent transaction requires counter get on Spark plan; lock to isAdmin() and enforce request.app != null once intake moves to a server-side endpoint
       allow get: if isValidConsentCounterId(counterId) || isAdmin();
 
       // Collection queries restricted to authorized admin lawyers

@@ -3,8 +3,9 @@ import {
   signInWithPopup,
   signOut,
   onAuthStateChanged,
+  getIdTokenResult,
 } from 'firebase/auth';
-import { auth, googleProvider, isAuthorizedAdmin } from '../services/firebase';
+import { auth, googleProvider } from '../services/firebase';
 import {
   CONSULTATION_STATUSES,
   subscribeConsultations,
@@ -38,6 +39,7 @@ function formatViTimestamp(ts, fallback = '') {
 export default function AdminPage({ onBack }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
+  const [adminStatus, setAdminStatus] = useState('idle'); // 'idle' | 'checking' | 'authorized' | 'denied'
   const [authError, setAuthError] = useState('');
   const [inquiries, setInquiries] = useState([]);
   const [isDataLoading, setIsDataLoading] = useState(false);
@@ -57,33 +59,41 @@ export default function AdminPage({ onBack }) {
   const [isSavingManual, setIsSavingManual] = useState(false);
   const hasSyncedCounterRef = useRef(false);
 
-  // Lắng nghe trạng thái đăng nhập
+  // Lắng nghe trạng thái đăng nhập (không lưu danh sách email admin trong client bundle)
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
       setIsAuthLoading(false);
-      if (user && !isAuthorizedAdmin(user)) {
-        setAuthError(`Tài khoản ${user.email} không có quyền truy cập vào cổng quản trị của Luật sư.`);
+      setAuthError('');
+      if (!user) {
+        setAdminStatus('idle');
       } else {
-        setAuthError('');
+        setAdminStatus('checking');
       }
     });
 
     return () => unsubscribe();
   }, []);
 
-  // Lắng nghe dữ liệu yêu cầu tư vấn khi đã đăng nhập đúng quyền
+  // Kiểm tra quyền qua Custom Claims (nếu có) và Firestore Security Rules trên server
   useEffect(() => {
-    if (!currentUser || !isAuthorizedAdmin(currentUser)) {
+    if (!currentUser) {
       setInquiries([]);
       setDataError('');
       return;
     }
 
+    let cancelled = false;
     setIsDataLoading(true);
     setDataError('');
+    setAdminStatus('checking');
+
+    getIdTokenResult(currentUser).catch(() => {});
+
     const unsubscribe = subscribeConsultations(
       (list) => {
+        if (cancelled) return;
+        setAdminStatus('authorized');
         setInquiries(list);
         setIsDataLoading(false);
         setDataError('');
@@ -93,13 +103,23 @@ export default function AdminPage({ onBack }) {
         }
       },
       (error) => {
+        if (cancelled) return;
         console.error('Lỗi tải dữ liệu Firestore:', error);
-        setDataError(`Không thể tải danh sách hồ sơ: ${error?.message || 'Lỗi kết nối Firestore.'}`);
+        if (error?.code === 'permission-denied') {
+          setAdminStatus('denied');
+          setInquiries([]);
+          setAuthError(`Tài khoản ${currentUser.email} không có quyền truy cập vào cổng quản trị của Luật sư.`);
+        } else {
+          setDataError(`Không thể tải danh sách hồ sơ: ${error?.message || 'Lỗi kết nối Firestore.'}`);
+        }
         setIsDataLoading(false);
       }
     );
 
-    return () => unsubscribe();
+    return () => {
+      cancelled = true;
+      unsubscribe();
+    };
   }, [currentUser]);
 
   const handleGoogleLogin = async () => {
@@ -291,10 +311,10 @@ export default function AdminPage({ onBack }) {
       </header>
 
       {/* Main Content Area */}
-      <main className="flex-grow p-4 sm:p-8 max-w-7xl mx-auto w-full">
-        {isAuthLoading ? (
-          <div className="py-20 text-center text-slate-500 text-sm">
-            Đang xác thực thông tin tài khoản...
+      <main id="main-content" className="flex-grow p-4 sm:p-8 max-w-7xl mx-auto w-full">
+        {isAuthLoading || (currentUser && adminStatus === 'checking') ? (
+          <div className="py-20 text-center text-slate-600 text-sm">
+            Đang xác thực thông tin tài khoản và phân quyền quản trị...
           </div>
         ) : !currentUser ? (
           /* Màn hình đăng nhập dành cho Luật sư */
@@ -315,7 +335,7 @@ export default function AdminPage({ onBack }) {
 
             <div>
               <h2 className="text-xl font-bold text-[#0F2144]">Đăng Nhập Cổng Luật Sư</h2>
-              <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">
+              <p className="text-xs text-slate-600 mt-1.5 leading-relaxed">
                 Khu vực dành riêng cho Luật sư và Ban Quản trị Công ty Luật TNHH Hòa & Cộng sự.
               </p>
             </div>
@@ -339,11 +359,11 @@ export default function AdminPage({ onBack }) {
               <span>Đăng nhập với Google</span>
             </button>
 
-            <div className="pt-2 text-[11px] text-slate-500 border-t border-slate-100 leading-relaxed">
+            <div className="pt-2 text-[11px] text-slate-600 border-t border-slate-100 leading-relaxed">
               Hệ thống bảo mật xác thực bởi Google Firebase. Chỉ email trong danh sách quản trị viên được cấp quyền truy cập dữ liệu.
             </div>
           </div>
-        ) : !isAuthorizedAdmin(currentUser) ? (
+        ) : adminStatus === 'denied' ? (
           /* Màn hình chặn truy cập khi tài khoản Google không thuộc danh sách luật sư */
           <div className="max-w-md mx-auto my-12 bg-white rounded-2xl border border-red-200 p-8 shadow-sm text-center space-y-4">
             <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto text-xl font-bold">
@@ -382,14 +402,14 @@ export default function AdminPage({ onBack }) {
                       Admin
                     </span>
                   </div>
-                  <p className="text-xs text-slate-500 font-mono mt-0.5">{currentUser.email}</p>
+                  <p className="text-xs text-slate-600 font-mono mt-0.5">{currentUser.email}</p>
                 </div>
               </div>
 
               {/* Thẻ thống kê nhanh */}
               <div className="flex items-center gap-3 text-xs">
                 <div className="bg-slate-100 px-3.5 py-2 rounded-lg">
-                  <span className="text-slate-500 block text-[10px] uppercase font-semibold">Tổng hồ sơ</span>
+                  <span className="text-slate-600 block text-[10px] uppercase font-semibold">Tổng hồ sơ</span>
                   <span className="text-base font-extrabold text-[#0F2144]">{inquiries.length}</span>
                 </div>
                 <div className="bg-amber-50 border border-amber-200 px-3.5 py-2 rounded-lg">
@@ -431,7 +451,7 @@ export default function AdminPage({ onBack }) {
               </div>
 
               <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto text-xs font-semibold justify-end">
-                <span className="text-slate-500 shrink-0">Lọc theo:</span>
+                <span className="text-slate-600 shrink-0">Lọc theo:</span>
                 <select
                   value={filterStatus}
                   onChange={(e) => setFilterStatus(e.target.value)}
@@ -485,7 +505,7 @@ export default function AdminPage({ onBack }) {
                     <h3 className="text-xs font-bold uppercase tracking-wider text-[#0F2144]">
                       Ghi nhận khách liên hệ ngoài website (Zalo / Hotline / Trực tiếp)
                     </h3>
-                    <p className="text-[11px] text-slate-500 mt-0.5">
+                    <p className="text-[11px] text-slate-600 mt-0.5">
                       Số điện thoại được tự động chuẩn hóa để phát hiện trùng lặp, không cấp số Thư chấp thuận trực tuyến.
                     </p>
                   </div>
@@ -593,15 +613,15 @@ export default function AdminPage({ onBack }) {
                 <h3 className="text-sm font-bold text-[#0F2144] uppercase tracking-wider">
                   Danh Sách Khách Hàng Gửi Yêu Cầu Tư Vấn
                 </h3>
-                <span className="text-xs text-slate-500">Hiển thị {filteredInquiries.length} hồ sơ</span>
+                <span className="text-xs text-slate-600">Hiển thị {filteredInquiries.length} hồ sơ</span>
               </div>
 
               {isDataLoading ? (
-                <div className="py-12 text-center text-xs text-slate-500">Đang tải dữ liệu hồ sơ từ đám mây...</div>
+                <div className="py-12 text-center text-xs text-slate-600">Đang tải dữ liệu hồ sơ từ đám mây...</div>
               ) : filteredInquiries.length === 0 ? (
-                <div className="py-14 text-center text-slate-500 space-y-2">
+                <div className="py-14 text-center text-slate-600 space-y-2">
                   <p className="text-sm font-medium">Chưa có hồ sơ yêu cầu tư vấn nào phù hợp.</p>
-                  <p className="text-xs text-slate-500">Dữ liệu từ trang liên hệ của khách hàng sẽ tự động xuất hiện tại đây theo thời gian thực.</p>
+                  <p className="text-xs text-slate-600">Dữ liệu từ trang liên hệ của khách hàng sẽ tự động xuất hiện tại đây theo thời gian thực.</p>
                 </div>
               ) : (
                 <div className="divide-y divide-slate-100">
@@ -627,7 +647,7 @@ export default function AdminPage({ onBack }) {
                               <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
                                 {formatConsultationSource(item.source)}
                               </span>
-                              <span className="text-[11px] text-slate-500">{formattedDate}</span>
+                              <span className="text-[11px] text-slate-600">{formattedDate}</span>
                               {resolvedConsentNumber && (
                                 <span
                                   className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-[#0F2144]/5 text-[#0F2144] border border-[#0F2144]/20"
@@ -729,7 +749,7 @@ export default function AdminPage({ onBack }) {
                                     {item.lawyerNotes ? (
                                       <span>{item.lawyerNotes}</span>
                                     ) : (
-                                      <span className="text-slate-400 italic">Chưa có ghi chú nội bộ</span>
+                                      <span className="text-slate-600 italic">Chưa có ghi chú nội bộ</span>
                                     )}
                                   </div>
                                   <button

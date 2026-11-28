@@ -14,6 +14,7 @@ const LawyerBioPage = React.lazy(() => import('./components/LawyerBioPage'));
 const ContactPage = React.lazy(() => import('./components/ContactPage'));
 const LegalKnowledgePage = React.lazy(() => import('./components/LegalKnowledgePage'));
 const FeeSchedulePage = React.lazy(() => import('./components/FeeSchedulePage'));
+const LegalPolicyPage = React.lazy(() => import('./components/LegalPolicyPage'));
 const AdminPage = React.lazy(() => import('./components/AdminPage'));
 
 function MainContent() {
@@ -92,6 +93,36 @@ function MainContent() {
     );
   }
 
+  // Kiểm tra nếu route là trang Chính sách bảo mật (#/chinh-sach-bao-mat hoặc #/privacy-policy)
+  const isPrivacyRoute = /^#(?:(?:\/)?(?:chinh-sach-bao-mat|privacy-policy))(?:\/)?$/.test(currentRoute);
+  if (isPrivacyRoute) {
+    return (
+      <React.Suspense fallback={<div className="min-h-screen bg-white" />}>
+        <LegalPolicyPage
+          mode="privacy"
+          onBack={() => {
+            window.location.hash = '';
+          }}
+        />
+      </React.Suspense>
+    );
+  }
+
+  // Kiểm tra nếu route là trang Điều khoản sử dụng & Miễn trừ trách nhiệm
+  const isTermsRoute = /^#(?:(?:\/)?(?:dieu-khoan-su-dung|terms-of-use|legal-disclaimer))(?:\/)?$/.test(currentRoute);
+  if (isTermsRoute) {
+    return (
+      <React.Suspense fallback={<div className="min-h-screen bg-white" />}>
+        <LegalPolicyPage
+          mode="terms"
+          onBack={() => {
+            window.location.hash = '';
+          }}
+        />
+      </React.Suspense>
+    );
+  }
+
   // Kiểm tra nếu route là trang kiến thức pháp luật / cập nhật pháp luật (bao gồm cả chi tiết bài viết)
   const knowledgeMatch = currentRoute.match(/^#(?:\/)?(?:cap-nhat-phap-luat|legal-updates|kien-thuc-phap-luat|kien-thuc|legal-knowledge)(?:\/([\w-]+))?(?:\/)?$/);
   if (knowledgeMatch) {
@@ -115,7 +146,7 @@ function MainContent() {
       <Navbar />
 
       {/* Main Content */}
-      <main className="flex-grow">
+      <main id="main-content" className="flex-grow">
         {/* 2. Hero Proclamation */}
         <Hero />
 

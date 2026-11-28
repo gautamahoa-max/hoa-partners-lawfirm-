@@ -217,7 +217,7 @@ export default function ContactPage({ onBack }) {
       <Navbar />
 
       {/* Main Content */}
-      <main className="flex-grow">
+      <main id="main-content" className="flex-grow">
         
         {/* Header tinh gọn */}
         <section className="bg-[#FAF9F6] border-b border-slate-200 py-10 sm:py-14 text-center">
@@ -239,9 +239,9 @@ export default function ContactPage({ onBack }) {
                   <CheckCircleIcon className="w-6 h-6" />
                 </div>
 
-                <h3 className="text-xl sm:text-2xl font-bold text-[#0F2144] tracking-tight">
+                <h2 className="text-xl sm:text-2xl font-bold text-[#0F2144] tracking-tight">
                   {formT.successTitle}
-                </h3>
+                </h2>
                 <p className="mt-2.5 text-sm text-slate-600 leading-relaxed max-w-md mx-auto">
                   {formT.successSubtitle}
                 </p>
@@ -295,9 +295,9 @@ export default function ContactPage({ onBack }) {
                   <span className="text-xs font-bold text-slate-600 uppercase tracking-widest font-mono block">
                     {formT.legend}
                   </span>
-                  <h3 className="text-lg font-bold text-[#0F2144] mt-1">
+                  <h2 className="text-lg font-bold text-[#0F2144] mt-1">
                     {lang === 'vi' ? 'Tiếp nhận thông tin vụ việc sơ bộ' : 'Preliminary Case Intake'}
-                  </h3>
+                  </h2>
                 </div>
 
                 {errorMessage && (
@@ -337,10 +337,11 @@ export default function ContactPage({ onBack }) {
 
                   {/* 1. Họ và tên */}
                   <div>
-                    <label className="block text-xs font-bold text-[#0F2144] uppercase tracking-wider mb-1.5">
-                      {formT.nameLabel} <span className="text-red-500">*</span>
+                    <label htmlFor="contact-fullName" className="block text-xs font-bold text-[#0F2144] uppercase tracking-wider mb-1.5">
+                      {formT.nameLabel} <span className="text-red-600" aria-hidden="true">*</span>
                     </label>
                     <input
+                      id="contact-fullName"
                       type="text"
                       name="fullName"
                       value={formData.fullName}
@@ -348,17 +349,19 @@ export default function ContactPage({ onBack }) {
                       placeholder={formT.namePlaceholder}
                       maxLength={120}
                       autoComplete="name"
+                      aria-required="true"
                       required
-                      className="w-full px-4 py-3 text-xs sm:text-sm rounded-lg bg-white border border-slate-300 text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0F2144] focus:border-transparent transition-all placeholder:text-slate-500"
+                      className="w-full px-4 py-3 text-xs sm:text-sm rounded-lg bg-white border border-slate-300 text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0F2144] focus:border-transparent transition-all placeholder:text-slate-600"
                     />
                   </div>
 
                   {/* 2. Số điện thoại */}
                   <div>
-                    <label className="block text-xs font-bold text-[#0F2144] uppercase tracking-wider mb-1.5">
-                      {formT.phoneLabel} <span className="text-red-500">*</span>
+                    <label htmlFor="contact-phone" className="block text-xs font-bold text-[#0F2144] uppercase tracking-wider mb-1.5">
+                      {formT.phoneLabel} <span className="text-red-600" aria-hidden="true">*</span>
                     </label>
                     <input
+                      id="contact-phone"
                       type="tel"
                       name="phone"
                       value={formData.phone}
@@ -367,26 +370,49 @@ export default function ContactPage({ onBack }) {
                       maxLength={20}
                       autoComplete="tel"
                       inputMode="tel"
+                      aria-required="true"
                       required
-                      className="w-full px-4 py-3 text-xs sm:text-sm rounded-lg bg-white border border-slate-300 text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0F2144] focus:border-transparent transition-all placeholder:text-slate-500"
+                      className="w-full px-4 py-3 text-xs sm:text-sm rounded-lg bg-white border border-slate-300 text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0F2144] focus:border-transparent transition-all placeholder:text-slate-600"
                     />
                   </div>
 
                   {/* 3. Nội dung vụ việc */}
                   <div>
-                    <label className="block text-xs font-bold text-[#0F2144] uppercase tracking-wider mb-1.5">
-                      {formT.notesLabel} <span className="text-red-500">*</span>
+                    <label htmlFor="contact-notes" className="block text-xs font-bold text-[#0F2144] uppercase tracking-wider mb-1.5">
+                      {formT.notesLabel} <span className="text-red-600" aria-hidden="true">*</span>
                     </label>
                     <textarea
+                      id="contact-notes"
                       rows={5}
                       name="notes"
                       value={formData.notes}
                       onChange={handleChange}
                       placeholder={formT.notesPlaceholder}
                       maxLength={2000}
+                      aria-required="true"
                       required
-                      className="w-full px-4 py-3 text-xs sm:text-sm rounded-lg bg-white border border-slate-300 text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0F2144] focus:border-transparent transition-all placeholder:text-slate-500 leading-relaxed"
+                      className="w-full px-4 py-3 text-xs sm:text-sm rounded-lg bg-white border border-slate-300 text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0F2144] focus:border-transparent transition-all placeholder:text-slate-600 leading-relaxed"
                     ></textarea>
+                  </div>
+
+                  {/* Lưu ý bảo mật Điều 25 & Miễn trừ trách nhiệm tiếp nhận sơ bộ */}
+                  <div className="rounded-xl bg-amber-50/70 border border-amber-200/90 p-3.5 sm:p-4 text-left space-y-1.5">
+                    <p className="text-[11px] font-bold uppercase tracking-wider text-amber-950">
+                      {formT.disclaimerTitle}
+                    </p>
+                    <p className="text-xs text-slate-700 leading-relaxed">
+                      {formT.confidentialityText}
+                    </p>
+                    <p className="text-xs text-slate-700 leading-relaxed">
+                      {formT.disclaimerText}{' '}
+                      <a href="#/dieu-khoan-su-dung" className="font-semibold text-[#0F2144] underline underline-offset-2 hover:text-amber-800">
+                        {lang === 'en' ? 'Terms & Disclaimer' : 'Điều khoản & Miễn trừ'}
+                      </a>
+                      {' • '}
+                      <a href="#/chinh-sach-bao-mat" className="font-semibold text-[#0F2144] underline underline-offset-2 hover:text-amber-800">
+                        {lang === 'en' ? 'Privacy Policy' : 'Chính sách bảo mật'}
+                      </a>
+                    </p>
                   </div>
 
                   {/* 4. Ô đồng ý xử lý dữ liệu cá nhân (mặc định không tick sẵn) */}

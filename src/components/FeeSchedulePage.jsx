@@ -81,7 +81,7 @@ export default function FeeSchedulePage() {
     <div className="min-h-screen bg-[#F5F5F7] text-slate-900 flex flex-col font-sans selection:bg-amber-100 selection:text-amber-900 overflow-x-hidden">
       <Navbar />
 
-      <main className="flex-grow">
+      <main id="main-content" className="flex-grow">
         {/* Editorial Header Band */}
         <section className="bg-[#FAF9F6] border-b border-slate-200/80 py-12 sm:py-16 text-left">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -131,13 +131,13 @@ export default function FeeSchedulePage() {
                 placeholder={
                   locale === 'vi' ? 'Tìm dịch vụ, mức phí...' : 'Search service or fee...'
                 }
-                className="w-full min-h-[44px] px-4 pr-16 rounded-full text-xs sm:text-sm bg-[#F5F5F7] border border-transparent text-slate-900 placeholder:text-slate-500 focus:outline-none focus:bg-white focus:border-slate-300 transition-colors"
+                className="w-full min-h-[44px] px-4 pr-16 rounded-full text-xs sm:text-sm bg-[#F5F5F7] border border-transparent text-slate-900 placeholder:text-slate-600 focus:outline-none focus:bg-white focus:border-slate-300 transition-colors"
               />
               {searchQuery && (
                 <button
                   type="button"
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 px-2 py-1 text-[11px] font-semibold text-slate-500 hover:text-[#0F2144] cursor-pointer"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 px-2 py-1 text-[11px] font-semibold text-slate-600 hover:text-[#0F2144] cursor-pointer"
                 >
                   {locale === 'vi' ? 'Xóa' : 'Clear'}
                 </button>
@@ -149,7 +149,7 @@ export default function FeeSchedulePage() {
         {/* Apple-inspired Spaced Service Blocks Grid */}
         <section className="py-10 sm:py-14 bg-[#F5F5F7] text-left">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between mb-6 text-xs text-slate-500">
+            <div className="flex items-center justify-between mb-6 text-xs text-slate-600">
               <span>
                 {locale === 'vi'
                   ? `Hiển thị ${filteredItems.length} / ${FEE_SCHEDULE_ITEMS.length} hạng mục dịch vụ`
@@ -192,7 +192,7 @@ export default function FeeSchedulePage() {
                           <span className="text-[11px] font-bold uppercase tracking-wider text-amber-700">
                             {categoryLabel}
                           </span>
-                          <span className="font-mono tabular-nums text-xs font-semibold text-slate-400">
+                          <span className="font-mono tabular-nums text-xs font-semibold text-slate-600">
                             {String(item.stt).padStart(2, '0')}
                           </span>
                         </div>
@@ -210,7 +210,7 @@ export default function FeeSchedulePage() {
 
                       <div className="mt-6 pt-5 border-t border-slate-100 flex flex-wrap items-center justify-between gap-4">
                         <div>
-                          <span className="block text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+                          <span className="block text-[11px] font-semibold uppercase tracking-wider text-slate-600">
                             {locale === 'vi' ? 'Mức phí tham khảo' : 'Reference Fee'}
                           </span>
                           <span className="mt-0.5 block font-mono tabular-nums text-lg sm:text-xl font-bold text-[#0F2144]">

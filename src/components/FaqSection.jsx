@@ -14,7 +14,7 @@ export default function FaqSection({ compact = false }) {
     >
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-10 sm:mb-12">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500 mb-2">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-600 mb-2">
             {locale === 'vi' ? 'GIẢI ĐÁP THẮC MẮC' : 'FREQUENTLY ASKED QUESTIONS'}
           </p>
           <h2 className="text-2xl sm:text-3xl font-bold text-[#0F2144] tracking-tight font-serif">
@@ -40,7 +40,7 @@ export default function FaqSection({ compact = false }) {
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className="w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 group-open:rotate-180 group-open:text-[#0F2144]"
+                  className="w-4 h-4 text-slate-600 shrink-0 transition-transform duration-200 group-open:rotate-180 group-open:text-[#0F2144]"
                 >
                   <polyline points="6 9 12 15 18 9" />
                 </svg>

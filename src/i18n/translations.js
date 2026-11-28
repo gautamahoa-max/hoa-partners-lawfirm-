@@ -1,5 +1,18 @@
 export const TRANSLATIONS = {
   vi: {
+    hero: {
+      eyebrow: 'ĐOÀN LUẬT SƯ TP. HỒ CHÍ MINH • TP.HCM & ĐẮK LẮK',
+      headlineLine1: 'Bản lĩnh Tranh tụng.',
+      headlineLine2: 'Điểm tựa Pháp lý Vững chắc.',
+      subtitle: 'Chuyên sâu Tranh tụng Dân sự tại Tòa án các cấp, giải quyết tranh chấp Đất đai & Bất động sản, Thừa kế, Hợp đồng và Hôn nhân gia đình — kết hợp nền tảng tài chính ngân hàng cùng biểu phí minh bạch.',
+      primaryCta: 'Đặt lịch tư vấn',
+      secondaryCta: 'Xem biểu phí 20 dịch vụ',
+      trustItems: [
+        { label: 'Địa bàn hoạt động', value: 'TP.HCM & Đắk Lắk' },
+        { label: 'Minh bạch thù lao', value: '20 hạng mục niêm yết' },
+        { label: 'Bảo mật thân chủ', value: 'Điều 25 Luật Luật sư & PDPL' },
+      ],
+    },
     navbar: {
       locations: 'TP.HCM • Đắk Lắk',
       tagline: 'Hãng luật tranh tụng & tư vấn pháp luật Dân sự',
@@ -294,7 +307,91 @@ export const TRANSLATIONS = {
       dossier: 'DANH SÁCH VỤ ÁN',
       about: 'GIỚI THIỆU',
       knowledge: 'KIẾN THỨC PHÁP LUẬT',
+      privacyLink: 'CHÍNH SÁCH BẢO MẬT',
+      termsLink: 'ĐIỀU KHOẢN & MIỄN TRỪ',
+      disclaimer: 'Nội dung trên website chỉ nhằm mục đích thông tin tham khảo, không cấu thành ý kiến tư vấn pháp lý chính thức và không tự động thiết lập quan hệ Luật sư – Thân chủ.',
       copyright: 'Thông tin hành nghề luật sư. © {year} Công ty Luật TNHH Hòa & Cộng sự.',
+    },
+    articleDisclaimer: {
+      title: 'Miễn trừ trách nhiệm pháp lý',
+      text: 'Bài viết chỉ mang tính chất thông tin và phân tích tham khảo tại thời điểm công bố, không phải ý kiến tư vấn pháp lý áp dụng cho vụ việc cụ thể và không thiết lập quan hệ Luật sư – Thân chủ. Quy định pháp luật có thể được sửa đổi hoặc bổ sung; vui lòng trao đổi trực tiếp với Luật sư trước khi quyết định pháp lý.',
+      linkText: 'Xem Điều khoản sử dụng & Miễn trừ trách nhiệm →',
+    },
+    legalPages: {
+      backHome: 'Trang chủ',
+      viewConsentPdfBtn: 'Xem Thư chấp thuận (HP-PDPL-03/2026)',
+      privacy: {
+        eyebrow: 'BẢO VỆ DỮ LIỆU CÁ NHÂN • LUẬT 91/2025/QH15',
+        title: 'Chính sách Bảo mật Dữ liệu Cá nhân',
+        updated: 'Phiên bản áp dụng: HP-PDPL-03/2026 • Cập nhật: 28/11/2026',
+        intro: 'Công ty Luật TNHH Hoà và Cộng sự cam kết tôn trọng, bảo vệ dữ liệu cá nhân và bí mật thông tin thân chủ theo Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15, Nghị định 356/2025/NĐ-CP và Điều 25 Luật Luật sư.',
+        sections: [
+          {
+            heading: '1. Bên Kiểm soát & Xử lý dữ liệu cá nhân',
+            paragraphs: [
+              'Công ty Luật TNHH Hoà và Cộng sự (Trụ sở chính: 9/12 Chu Huy Mân, phường Tân An, tỉnh Đắk Lắk; Văn phòng đại diện: 2A đường 33, phường Bình Trưng, TP. Hồ Chí Minh; Điện thoại: 098.888.6447; Email: gautamahoa@gmail.com).',
+            ],
+          },
+          {
+            heading: '2. Dữ liệu thu thập và nguyên tắc không theo dõi quảng cáo',
+            bullets: [
+              'Khi Quý khách gửi yêu cầu tư vấn tại mục Liên hệ (#/lien-he), hệ thống chỉ thu thập Họ và tên, Số điện thoại, Tóm tắt nội dung vụ việc và bằng chứng đồng thuận điện tử (mã số Thư chấp thuận XX/2026/TCT-HCS, phiên bản HP-PDPL-03/2026, dấu thời gian GMT+7).',
+              'Website không cài đặt cookie theo dõi quảng cáo của bên thứ ba và không lưu thông tin vụ việc nhạy cảm vào bộ nhớ trình duyệt dài hạn.',
+            ],
+          },
+          {
+            heading: '3. Mục đích, căn cứ pháp lý và phạm vi lưu giữ',
+            bullets: [
+              'Mục đích: Tiếp nhận yêu cầu đặt lịch tư vấn, kiểm tra xung đột lợi ích nghề nghiệp, liên hệ trao đổi sơ bộ và lập chứng từ đồng thuận hợp pháp theo quy định.',
+              'Bí mật nghề nghiệp: Toàn bộ dữ liệu tiếp nhận chỉ được phân quyền cho Luật sư điều hành quản trị đã xác thực; được bảo mật nghiêm ngặt theo Điều 25 Luật Luật sư và không mua bán, chia sẻ thương mại cho bên thứ ba.',
+            ],
+          },
+          {
+            heading: '4. Quyền của chủ thể dữ liệu',
+            paragraphs: [
+              'Quý khách có quyền yêu cầu biết, truy cập, chỉnh sửa, rút lại sự đồng ý hoặc yêu cầu xóa dữ liệu cá nhân của mình bất kỳ lúc nào bằng cách gọi Hotline 098.888.6447 hoặc gửi email về gautamahoa@gmail.com.',
+            ],
+          },
+        ],
+      },
+      terms: {
+        eyebrow: 'THÔNG CÁO PHÁP LÝ & CHUẨN MỰC HÀNH NGHỀ',
+        title: 'Điều khoản Sử dụng & Miễn trừ Trách nhiệm',
+        updated: 'Cập nhật: 28/11/2026',
+        intro: 'Vui lòng đọc kỹ các nguyên tắc dưới đây trước khi sử dụng thông tin hoặc gửi yêu cầu tư vấn qua website của Công ty Luật TNHH Hoà và Cộng sự.',
+        sections: [
+          {
+            heading: '1. Nội dung chỉ mang tính tham khảo (Không phải tư vấn pháp lý)',
+            paragraphs: [
+              'Các bài viết kiến thức pháp luật, biểu mẫu phân tích và thông tin giới thiệu trên website này chỉ nhằm mục đích cung cấp thông tin tổng quan. Mỗi vụ việc dân sự đều phụ thuộc vào hồ sơ chứng cứ và bối cảnh cụ thể; độc giả không nên tự ý hành động hoặc bỏ qua hành động pháp lý chỉ dựa trên nội dung đọc tại website.',
+            ],
+          },
+          {
+            heading: '2. Không tự động thiết lập quan hệ Luật sư – Thân chủ',
+            paragraphs: [
+              'Việc truy cập website, tra cứu biểu phí hay gửi biểu mẫu tiếp nhận sơ bộ tại #/lien-he không tự động tạo lập quan hệ Luật sư – Thân chủ. Quan hệ dịch vụ pháp lý chỉ phát sinh sau khi Công ty Luật hoàn tất kiểm tra xung đột lợi ích và hai bên ký kết Hợp đồng dịch vụ pháp lý bằng văn bản.',
+            ],
+          },
+          {
+            heading: '3. Lưu ý khi gửi thông tin sơ bộ',
+            paragraphs: [
+              'Để tránh rủi ro xung đột lợi ích trước khi ký Hợp đồng dịch vụ pháp lý, Quý khách vui lòng chỉ cung cấp thông tin khái quát qua biểu mẫu trực tuyến và không gửi kèm tài liệu mật nhạy cảm hoặc dữ liệu bí mật của bên thứ ba cho tới khi được Luật sư hướng dẫn xác nhận tiếp nhận.',
+            ],
+          },
+          {
+            heading: '4. Nguyên tắc tham chiếu Biểu phí dịch vụ',
+            paragraphs: [
+              'Mức phí công khai tại #/bang-gia là mức tham chiếu minh bạch đối với 20 nhóm công việc dân sự phổ biến theo Điều 55 Luật Luật sư. Thù lao chính thức được xác định bằng văn bản sau khi thẩm định hồ sơ thực tế và chưa bao gồm án phí Tòa án (Nghị quyết 326/2016/UBTVQH14), lệ phí công chứng, đo đạc, định giá tài sản hay chi phí đi lại ngoài địa bàn (nếu có).',
+            ],
+          },
+          {
+            heading: '5. Thông tin hành nghề & Sở hữu trí tuệ',
+            paragraphs: [
+              'Website này là trang thông tin hành nghề luật sư của Công ty Luật TNHH Hoà và Cộng sự. Nội dung bài viết, cấu trúc dữ liệu và tài liệu trên website thuộc bản quyền của Công ty Luật TNHH Hoà và Cộng sự.',
+            ],
+          },
+        ],
+      },
     },
     contactPage: {
       back: 'Quay lại trang chủ',
@@ -329,6 +426,8 @@ export const TRANSLATIONS = {
         ],
         notesLabel: 'Nội dung vụ việc',
         notesPlaceholder: 'Vui lòng mô tả tóm tắt nội dung tranh chấp, tình tiết sự việc hoặc yêu cầu cần luật sư tư vấn...',
+        disclaimerTitle: 'LƯU Ý TIẾP NHẬN SƠ BỘ & BẢO MẬT',
+        disclaimerText: 'Việc gửi biểu mẫu này chưa thiết lập quan hệ Luật sư – Thân chủ và chưa thay thế bước kiểm tra xung đột lợi ích. Vui lòng không gửi tài liệu mật hoặc thông tin nhạy cảm của bên thứ ba trước khi ký Hợp đồng dịch vụ pháp lý.',
         confidentialityText: 'Cam kết bảo mật tuyệt đối: Toàn bộ thông tin vụ việc, chứng cứ và bí mật đời tư của thân chủ được bảo vệ nghiêm ngặt theo quy định tại Điều 25 Luật Luật sư.',
         consentPrefix: 'Bằng việc đánh dấu vào ô này, Tôi tự nguyện xác nhận đã đọc, hiểu rõ và hoàn toàn đồng ý với toàn bộ nội dung tại ',
         consentLinkText: 'Thư chấp thuận về việc xử lý Dữ liệu cá nhân',
@@ -372,6 +471,19 @@ export const TRANSLATIONS = {
   },
 
   en: {
+    hero: {
+      eyebrow: 'HO CHI MINH CITY BAR ASSOCIATION • HCMC & DAK LAK',
+      headlineLine1: 'Resolute Civil Litigation.',
+      headlineLine2: 'Trusted Legal Counsel in Vietnam.',
+      subtitle: 'Focused on civil court litigation, land and real estate disputes, inheritance, civil contracts, and family law — combining banking acumen with transparent upfront fee schedules.',
+      primaryCta: 'Schedule Consultation',
+      secondaryCta: 'View 20-Item Fee Schedule',
+      trustItems: [
+        { label: 'Offices', value: 'HCMC & Dak Lak' },
+        { label: 'Fee Transparency', value: '20 Listed Services' },
+        { label: 'Client Confidentiality', value: 'Art. 25 Law on Lawyers & PDPL' },
+      ],
+    },
     navbar: {
       locations: 'HCMC • Dak Lak',
       tagline: 'Civil Litigation & Legal Advisory Law Firm',
@@ -666,7 +778,91 @@ export const TRANSLATIONS = {
       dossier: 'CASE DOCKET',
       about: 'ABOUT',
       knowledge: 'LEGAL KNOWLEDGE',
+      privacyLink: 'PRIVACY POLICY',
+      termsLink: 'TERMS & DISCLAIMER',
+      disclaimer: 'Materials on this website are provided for general informational purposes only, do not constitute formal legal advice, and do not create an attorney-client relationship.',
       copyright: 'Attorney Advertising. © {year} Hoa & Associates Law Firm LLC.',
+    },
+    articleDisclaimer: {
+      title: 'Legal Disclaimer',
+      text: 'This publication is intended solely for general informational purposes as of its publication date, does not constitute legal advice for any specific matter, and does not create an attorney-client relationship. Laws may be amended; please consult directly with licensed counsel before acting on any legal issue.',
+      linkText: 'View Terms of Use & Legal Disclaimer →',
+    },
+    legalPages: {
+      backHome: 'Home',
+      viewConsentPdfBtn: 'View Official Letter of Consent (HP-PDPL-03/2026)',
+      privacy: {
+        eyebrow: 'PERSONAL DATA PROTECTION • LAW 91/2025/QH15',
+        title: 'Personal Data Privacy Policy',
+        updated: 'Active Version: HP-PDPL-03/2026 • Last Updated: Nov 28, 2026',
+        intro: 'Hoa & Associates Law Firm LLC respects and safeguards personal data and client secrets pursuant to Vietnam Law No. 91/2025/QH15 on Personal Data Protection, Decree No. 356/2025/ND-CP, and Article 25 of the Law on Lawyers.',
+        sections: [
+          {
+            heading: '1. Data Controller & Processor',
+            paragraphs: [
+              'Hoa & Associates Law Firm LLC (Headquarters: 9/12 Chu Huy Man, Tan An Ward, Dak Lak Province; Representative Office: 2A 33rd Street, Binh Trung Ward, Ho Chi Minh City; Tel: +84 98.888.6447; Email: gautamahoa@gmail.com).',
+            ],
+          },
+          {
+            heading: '2. Data Collected & No Advertising Tracking',
+            bullets: [
+              'When submitting an inquiry on Contact (#/lien-he), only your Full Name, Phone Number, Case Summary, and electronic consent proof (Consent Letter Ref. XX/2026/TCT-HCS, version HP-PDPL-03/2026, GMT+7 timestamp) are collected.',
+              'We do not place third-party advertising tracking cookies and do not retain sensitive inquiry payloads in persistent browser storage.',
+            ],
+          },
+          {
+            heading: '3. Purpose, Legal Basis & Attorney Confidentiality',
+            bullets: [
+              'Collected data is used strictly to intake scheduling requests, perform conflict-of-interest checks, make preliminary contact, and maintain verifiable statutory consent records.',
+              'Professional Secrecy: Submitted files are accessible only to authenticated managing counsel, safeguarded under Article 25 of the Law on Lawyers, and never sold or shared for commercial purposes.',
+            ],
+          },
+          {
+            heading: '4. Data Subject Rights',
+            paragraphs: [
+              'You may request information, access, correction, withdrawal of consent, or deletion of your personal data at any time by calling +84 98.888.6447 or emailing gautamahoa@gmail.com.',
+            ],
+          },
+        ],
+      },
+      terms: {
+        eyebrow: 'ATTORNEY ADVERTISING & PROFESSIONAL NOTICE',
+        title: 'Terms of Use & Legal Disclaimer',
+        updated: 'Last Updated: Nov 28, 2026',
+        intro: 'Please read these terms carefully before relying on materials or submitting a consultation request through the website of Hoa & Associates Law Firm LLC.',
+        sections: [
+          {
+            heading: '1. Informational Purposes Only (Not Legal Advice)',
+            paragraphs: [
+              'Articles, comparative tables, and practice descriptions on this website provide general legal information only. Every civil matter turns on specific facts and evidence; readers should not act or refrain from acting solely on website content without tailored counsel.',
+            ],
+          },
+          {
+            heading: '2. No Attorney-Client Relationship',
+            paragraphs: [
+              'Accessing this website, reviewing fee schedules, or submitting a preliminary intake form via #/lien-he does not create an attorney-client relationship. Representation begins only after conflict-of-interest screening and execution of a written Legal Service Contract.',
+            ],
+          },
+          {
+            heading: '3. Preliminary Intake & Confidential Materials',
+            paragraphs: [
+              'Prior to conflict clearance and formal engagement, please share only a high-level summary in the online intake form and refrain from transmitting confidential third-party secrets or sensitive records until instructed by an attorney.',
+            ],
+          },
+          {
+            heading: '4. Reference Fee Schedule Principles',
+            paragraphs: [
+              'Fees published at #/bang-gia serve as transparent reference ranges for 20 common civil matters under Article 55 of the Law on Lawyers. Binding honoraria are quoted in writing following dossier review and exclude statutory court fees (Resolution 326/2016/UBTVQH14), notarization, surveying, valuation, and out-of-province travel.',
+            ],
+          },
+          {
+            heading: '5. Attorney Advertising & Intellectual Property',
+            paragraphs: [
+              'This website constitutes attorney practice information of Hoa & Associates Law Firm LLC. All original articles, materials, and trademarks are owned by Hoa & Associates Law Firm LLC.',
+            ],
+          },
+        ],
+      },
     },
     contactPage: {
       back: 'Back to Home',
@@ -701,6 +897,8 @@ export const TRANSLATIONS = {
         ],
         notesLabel: 'Case Description / Matter Details',
         notesPlaceholder: 'Please provide a brief description of the dispute facts or legal advice sought...',
+        disclaimerTitle: 'PRELIMINARY INTAKE & CONFLICT NOTICE',
+        disclaimerText: 'Submitting this form does not establish an attorney-client relationship and does not substitute for conflict-of-interest screening. Please refrain from sending confidential or third-party privileged documents until a Legal Service Contract is signed.',
         confidentialityText: 'Strict Confidentiality Guarantee: All case information, client identity, and documents are rigorously protected pursuant to Article 25 of the Vietnam Law on Lawyers.',
         consentPrefix: 'By checking this box, I voluntarily confirm that I have read, understood, and fully agree to all terms of the ',
         consentLinkText: 'Letter of Consent on Personal Data Processing',

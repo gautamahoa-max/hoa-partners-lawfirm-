@@ -36,7 +36,7 @@ export default function Footer() {
                   <source srcSet="./logo-emblem-gold.webp" type="image/webp" />
                   <img
                     src="./logo-emblem-gold.png"
-                    alt="Biểu trưng Công ty Luật TNHH Hoà & Cộng sự"
+                    alt={lang === 'en' ? 'Hoa & Associates Law Firm Emblem' : 'Biểu trưng Công ty Luật TNHH Hoà & Cộng sự'}
                     width="44"
                     height="44"
                     loading="lazy"
@@ -46,10 +46,10 @@ export default function Footer() {
                 </picture>
               </div>
               <div>
-                <h2 className="text-2xl sm:text-[1.75rem] font-bold text-[#0F2144] tracking-tight leading-snug">
+                <p className="text-2xl sm:text-[1.75rem] font-bold text-[#0F2144] tracking-tight leading-snug">
                   {footer.firmTitle}
-                </h2>
-                <p className="text-xs font-semibold uppercase tracking-[0.15em] text-slate-500 mt-0.5">
+                </p>
+                <p className="text-xs font-semibold uppercase tracking-[0.15em] text-slate-600 mt-0.5">
                   {footer.firmSubtitle}
                 </p>
               </div>
@@ -147,10 +147,30 @@ export default function Footer() {
         <div className="border-t border-[#0F2144]/30 mt-14 mb-6" />
 
         {/* Dòng ghi chú bản quyền và thông cáo pháp lý dưới cùng kiểu Cravath */}
-        <div className="text-[11px] text-slate-500 font-medium text-left">
-          <p>
-            {copyrightText}
-          </p>
+        <div className="space-y-3 text-left">
+          <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-slate-600 font-medium">
+            <p>{copyrightText}</p>
+            <div className="flex flex-wrap items-center gap-4 uppercase tracking-wider font-semibold text-[#0F2144]">
+              <a
+                href="#/chinh-sach-bao-mat"
+                className="py-1 hover:underline underline-offset-4 transition-colors"
+              >
+                {footer.privacyLink || (lang === 'en' ? 'PRIVACY POLICY' : 'CHÍNH SÁCH BẢO MẬT')}
+              </a>
+              <span aria-hidden="true" className="text-slate-300">|</span>
+              <a
+                href="#/dieu-khoan-su-dung"
+                className="py-1 hover:underline underline-offset-4 transition-colors"
+              >
+                {footer.termsLink || (lang === 'en' ? 'TERMS & DISCLAIMER' : 'ĐIỀU KHOẢN & MIỄN TRỪ')}
+              </a>
+            </div>
+          </div>
+          {footer.disclaimer && (
+            <p className="text-[11px] sm:text-xs text-slate-600 leading-relaxed max-w-4xl">
+              {footer.disclaimer}
+            </p>
+          )}
         </div>
 
       </div>

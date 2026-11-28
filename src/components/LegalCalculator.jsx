@@ -133,13 +133,13 @@ export default function LegalCalculator() {
                 </h3>
 
                 <div className="-ml-7 sm:-ml-8 pl-7 sm:pl-8 pr-6 py-3 rounded-r-full bg-white/65 backdrop-blur-md border-y border-r border-white/90 shadow-[inset_0_1px_1px_rgba(255,255,255,0.95),0_4px_14px_rgba(15,33,68,0.05)] w-[92%] mb-7 text-left flex items-baseline gap-1.5">
-                  <span className="text-xs font-bold uppercase tracking-wide text-slate-500">
+                  <span className="text-xs font-bold uppercase tracking-wide text-slate-600">
                     {card.fromLabel}
                   </span>
                   <span className="text-2xl sm:text-[26px] font-extrabold text-[#0F2144] tracking-tight tabular-nums">
                     {card.priceText}
                   </span>
-                  <span className="text-xs font-bold text-slate-500">{card.currency}</span>
+                  <span className="text-xs font-bold text-slate-600">{card.currency}</span>
                 </div>
 
                 <p className="text-sm font-bold text-[#0F2144]/85 mb-4 text-left">
