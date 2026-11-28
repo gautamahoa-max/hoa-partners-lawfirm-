@@ -78,15 +78,15 @@ export default function Hero() {
       {/* Atmospheric light veils integrating video cleanly with typography & light palette */}
       <div
         aria-hidden="true"
-        className="hidden lg:block pointer-events-none absolute inset-0 bg-gradient-to-r from-[#FAF9F6] via-[#FAF9F6]/88 via-[42%] to-transparent"
+        className="hidden lg:block pointer-events-none absolute inset-0 bg-gradient-to-r from-[#FAF9F6] via-[#FAF9F6]/86 via-[42%] to-transparent"
       />
       <div
         aria-hidden="true"
-        className="lg:hidden pointer-events-none absolute inset-0 bg-gradient-to-b from-[#FAF9F6]/95 via-[#FAF9F6]/90 to-[#EEF3FA]/45"
+        className="lg:hidden pointer-events-none absolute inset-0 bg-gradient-to-b from-[#FAF9F6]/94 via-[#FAF9F6]/88 to-[#EEF3FA]/30"
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#FAF9F6]/35 via-transparent to-white/25"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#FAF9F6]/25 via-transparent to-white/20"
       />
 
       {/* Unified Foreground Editorial Copy & CTAs */}
